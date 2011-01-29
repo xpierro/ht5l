@@ -1,6 +1,6 @@
 /**
  * Matrice des données représentant un tableau à double entrée, indexé en
- * x et en y.
+ * x et en y par des labels.
  */
 
 var DataMatrix = function(w, h) {
