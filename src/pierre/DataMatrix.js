@@ -17,7 +17,7 @@ var DataMatrix = function() {
 	 * à l'instanciation.
 	 */
     if (typeof DataMatrix.initialized == "undefined" ) {
-    	
+        DataMatrix.initialized = true;
     	/**
     	 * Retourne l'index correspondant à la valeur
     	 * @param value La valeur à retrouver
@@ -178,8 +178,5 @@ var DataMatrix = function() {
     		});
     		return sum;
     	};
-    	
-        DataMatrix.initialized = true; 
-
     }
 };
