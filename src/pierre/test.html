@@ -33,13 +33,23 @@
 			m.setValue("Saturday", "CatsWhoBlog.com", 2045);
 			m.setValue("Sunday", "CatsWhoBlog.com", 950);
 			
-			alert(m.getValue(1, 0));
-			alert(m.getWidth());
-			alert(m.getTopValue());
-			alert(m.getLineTotal("CatsWhoCode.com"));
-			alert(m.getColumnTotal("Monday"));
-			alert(m.getTotal());
+			//alert(m.getValue(1, 0));
+			//alert(m.getWidth());
+			//alert(m.getTopValue());
+			//alert(m.getLineTotal("CatsWhoCode.com"));
+			//alert(m.getColumnTotal("Monday"));
+			//alert(m.getTotal());
 		</script>		
 	</head>
+	
+	<body>
+		<canvas id="diagramme"> Vous n'avez pas canvas </canvas>
+		<script language="JavaScript">
+			var idiag = new IDiagramme(document.getElementsByTagName('canvas')[0]);
+			idiag.setData(m);
+			idiag.setWidth(500);
+			idiag.setHeight(500);
+		</script>
+	</body>
 
 </html>
