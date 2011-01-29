@@ -1,50 +1,61 @@
-var IDiagramme = function() {
+var IDiagramme = function(canvas) {
+	var pencil = canvas;
 	/**
-	 *	Définit la largeur de la fenêtre du diagramme.
-	 *	@param x Largeur de la fenêtre
+	 * Prototypage, toutes les methodes définies ici ne seront pas dupliquées
+	 * à l'instanciation.
 	 */
-	this.setWindowWidth = function(x){};
+    if (typeof IDiagramme.initialized == "undefined" ) {
+        IDiagramme.initialized = true;
+        
+		/**
+		 *	Définit la largeur de la fenêtre du diagramme.
+		 *	@param x Largeur de la fenêtre
+		 */
+		IDiagramme.prototype.setWindowWidth = function(w){
+			
+		};
 	
-	/**
-	 *	Retourne la largeur de la fenêtre du diagramme.
-	 */
-	this.getWindowWidth = function(){};
+		/**
+		 *	Retourne la largeur de la fenêtre du diagramme.
+		 */
+		IDiagramme.prototype.getWindowWidth = function(){};
 	
-	/**
-	 *	Définit la hauteur de la fenêtre du diagramme
-	 *	@param y Hauteur de la fenêtre.
-	 */
-	this.setWindowHeight = function(y){};
+		/**
+		 *	Définit la hauteur de la fenêtre du diagramme
+		 *	@param y Hauteur de la fenêtre.
+		 */
+		IDiagramme.prototype.setWindowHeight = function(h){};
 	
-	/**
-	 *	Retourne la hauteur de la fenêtre du diagramme
-	 */
-	this.getWindowHeight = function(){};
+		/**
+		 *	Retourne la hauteur de la fenêtre du diagramme
+		 */
+		IDiagramme.prototype.getWindowHeight = function(){};
+		
+		/**
+		 * Charge un fichier de style pour le diagramme.
+		 * @param css Url d'un fichier css.
+		 */
+		IDiagramme.prototype.setStyle = function(css) {};
 	
-	/**
-	 * Charge un fichier de style pour le diagramme.
-	 * @param css Url d'un fichier css.
-	 */
-	this.setStyle = function(css) {};
-	
-	/**
-	 * Charge les données du diagramme.
-	 * @param dataMatrix Matrice des données
-	 */
-	this.setData = function(dataMatrix) {};
-	
-	/**
-	 *	Dessine la légende du diagramme
-	 */
-	this.drawLegend = function(){};
-	
-	/**
-	 *	Dessine les abscisses et ordonnées du diagramme
-	 */
-	this.drawAxis = function(){};
-	
-	/**
-	 *	Dessine le diagramme. 
-	 */
-	this.drawDiagram = function(){};
+		/**
+		 * Charge les données du diagramme.
+		 * @param dataMatrix Matrice des données
+		 */
+		IDiagramme.prototype.setData = function(dataMatrix) {};
+		
+		/**
+		 *	Dessine la légende du diagramme
+		 */
+		IDiagramme.prototype.drawLegend = function(){};
+		
+		/**
+		 *	Dessine les abscisses et ordonnées du diagramme
+		 */
+		IDiagramme.prototype.drawAxis = function(){};
+		
+		/**
+		 *	Dessine le diagramme. 
+		 */
+		IDiagramme.prototype.drawDiagram = function(){};
+    }
 };
