@@ -1,6 +1,7 @@
 var IDiagramme = function(canvasRef) {
-	var canvas = canvasRef;
-	var data = null;
+	this.canvas = canvasRef;
+	this.data = null;
+	
 	/**
 	 * Prototypage, toutes les methodes définies ici ne seront pas dupliquées
 	 * à l'instanciation.
@@ -13,7 +14,7 @@ var IDiagramme = function(canvasRef) {
 		 *	@param width Largeur de la fenêtre
 		 */
 		IDiagramme.prototype.setWidth = function(width){
-			canvas.setAttribute('width', width);
+			this.canvas.setAttribute('width', width);
 			this.redraw();
 		};
 	
@@ -29,7 +30,7 @@ var IDiagramme = function(canvasRef) {
 		 *	@param height Hauteur de la fenêtre.
 		 */
 		IDiagramme.prototype.setHeight = function(height){
-			canvas.setAttribute('height', height);
+			this.canvas.setAttribute('height', height);
 			this.redraw();
 		};
 	
@@ -37,7 +38,7 @@ var IDiagramme = function(canvasRef) {
 		 *	Retourne la hauteur de la fenêtre du diagramme
 		 */
 		IDiagramme.prototype.getHeight = function(){
-			return canvas.getAttribute('height');
+			return this.canvas.getAttribute('height');
 		};
 		
 		/**
@@ -51,7 +52,7 @@ var IDiagramme = function(canvasRef) {
 		 * @param dataMatrix Matrice des données
 		 */
 		IDiagramme.prototype.setData = function(dataMatrix) {
-			data = dataMatrix;
+			this.data = dataMatrix;
 		};
 		
 		/**
@@ -71,7 +72,7 @@ var IDiagramme = function(canvasRef) {
 		 * Dessine les abscisses du diagramme
 		 */
 		IDiagramme.prototype.drawXAxis = function() {
-			var context = canvas.getContext('2d');
+			var context = this.canvas.getContext('2d');
 			context.strokeStyle = "black";
 			context.beginPath();
 				// Ligne des abscisses
@@ -86,7 +87,7 @@ var IDiagramme = function(canvasRef) {
 		 */
 		IDiagramme.prototype.drawYAxis = function(){
 			// TODO: Récupérer la couleur dynamiquement à partir du css.
-			var context = canvas.getContext('2d');
+			var context = this.canvas.getContext('2d');
 			context.strokeStyle = "black";
 			context.beginPath();
 				// Ligne des ordonnées
@@ -120,7 +121,9 @@ var IDiagramme = function(canvasRef) {
 		/**
 		 * Dessine les lignes de visée
 		 */
-		IDiagramme.prototype.drawYLines = function() {};
+		IDiagramme.prototype.drawYLines = function() {
+			
+		};
 		
 		IDiagramme.prototype.redraw = function() {
 			this.drawAxis();
