@@ -3,9 +3,9 @@
  * x et en y par des labels.
  */
 
-var DataMatrix = function(w, h) {
-	var width = width;
-	var height = height;
+var DataMatrix = function() {
+	var width = 0;
+	var height = 0;
 	
 	var xLabels = new Array();
 	var yLabels = new Array();
@@ -28,6 +28,14 @@ var DataMatrix = function(w, h) {
 		return index;
 	};
 	
+	this.getWidth = function() {
+		return width;
+	};
+	
+	this.getHeight = function() {
+		return height;
+	};
+	
 	/**
 	 * Spécifie le nom de chaque abscisse
 	 */
@@ -35,6 +43,7 @@ var DataMatrix = function(w, h) {
 		$.each(labels, function(index, value) {
 			xLabels.push(value);
 		});
+		width = xLabels.length;
 	};
 	
 	/**
@@ -44,6 +53,23 @@ var DataMatrix = function(w, h) {
 		$.each(labels, function(index, value) {
 			yLabels.push(value);
 		});
+		height = yLabels.length;
+	};
+	
+	/**
+	 * Ajoute un label d'abscisse.
+	 */
+	this.addXAxisLabel = function(label) {
+		xLabels.push(label);
+		width += 1;
+	};
+	
+	/**
+	 * Ajoute un label d'ordonnée.
+	 */
+	this.addYAxisLabel = function(label) {
+		yLabels.push(label);
+		height += 1;
 	};
 	
 	/**
@@ -59,7 +85,7 @@ var DataMatrix = function(w, h) {
 			}
 			rows[yLabel][xLabel] = value;
 		} else {
-			throw "UndefinedLabel";
+			throw "Label indéfini";
 		}
 	};
 	
@@ -68,7 +94,7 @@ var DataMatrix = function(w, h) {
 	 */
 	this.getValueByLabel = function(xLabel, yLabel) {
 		if (!rows[yLabel] || !rows[yLabel][xLabel]) {
-			throw "UndefinedLabel";
+			throw "Label/Valeur indéfinis : [" + xLabel + ";" + yLabel + "]";
 		}
 		return rows[yLabel][xLabel];
 	};
@@ -79,5 +105,65 @@ var DataMatrix = function(w, h) {
 	 */
 	this.getValue = function(x, y) {
 		return this.getValueByLabel(xLabels[x], yLabels[y]);
+	};
+	
+	/**
+	 * Retourne la valeur maximale contenu dans la matrice
+	 */
+	this.getTopValue = function() {
+		var top = this.getValue(0, 0);
+		for (var x = 0; x < width; x++) {
+			for (var y = 0; y < height; y++) {
+				var value = this.getValue(x, y);
+				if (value > top) {
+					top = value;
+				}
+			}
+		}
+		return top;
+	};
+	
+	/**
+	 * Retourne la somme des valeurs d'une ligne, indéxée par un label en y.
+	 */
+	this.getLineTotal = function(yLabel) {
+		if (findValueInArray(yLabels, yLabel) == -1) {
+			throw "Label inexistant : " + yLabel;
+		}
+		var sum = 0;
+		var ref = this;
+		$.each(xLabels, function(i, xLabel) {
+			sum += ref.getValueByLabel(xLabel, yLabel);
+		});
+		return sum;
+	};
+	
+	/**
+	 * Retourne la somme des valeurs d'une colonne indéxée par un  label en x.
+	 */
+	this.getColumnTotal = function(xLabel) {
+		if (findValueInArray(xLabels, xLabel) == -1) {
+			throw "Label inexistant : " + xLabel;
+		}
+		var sum = 0;
+		var ref = this;
+		$.each(yLabels, function(i, yLabel) {
+			sum += ref.getValueByLabel(xLabel, yLabel);
+		});
+		return sum;
+	};
+	
+	/**
+	 * Renvoie la somme de tous les éléments du tableau.
+	 */
+	this.getTotal = function() {
+		var total = 0;
+		for (var x = 0; x < width; x++) {
+			for (var y = 0; y < height; y++) {
+				var value = this.getValue(x, y);
+				total += value;
+			}
+		}
+		return total;
 	};
 };

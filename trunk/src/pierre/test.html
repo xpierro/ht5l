@@ -6,7 +6,7 @@
 		<script type="text/javascript">
 			var m = new DataMatrix();
 			m.setXAxisLabels(new Array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"));
-			m.setYAxisLabels(new Array("CatsWhoCode.com", "WpRecipes.com", "CatsWhoBlog.com"));
+			m.setYAxisLabels(new Array("CatsWhoCode.com"));
 			m.setValue("Monday", "CatsWhoCode.com", 12541);
 			m.setValue("Tuesday", "CatsWhoCode.com", 11204);
 			m.setValue("Wednesday", "CatsWhoCode.com", 11354);
@@ -15,6 +15,11 @@
 			m.setValue("Saturday", "CatsWhoCode.com", 8254);
 			m.setValue("Sunday", "CatsWhoCode.com", 5477);
 			alert(m.getValue(1, 0));
+			alert(m.getWidth());
+			alert(m.getTopValue());
+			alert(m.getLineTotal("CatsWhoCode.com"));
+			alert(m.getColumnTotal("Monday"));
+			alert(m.getTotal());
 		</script>		
 	</head>
 
