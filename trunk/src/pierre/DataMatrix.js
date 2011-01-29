@@ -49,6 +49,20 @@ var DataMatrix = function() {
     	};
     	
     	/**
+    	 * Retourne les labels en x.
+    	 */
+    	DataMatrix.prototype.getXLabels = function() {
+    		return xLabels;
+    	};
+    	
+    	/**
+    	 * Retourne les labels en y.
+    	 */
+    	DataMatrix.prototype.getYLabels = function() {
+    		return yLabels;
+    	};
+    	
+    	/**
     	 * Renvoie la somme de tous les éléments du tableau.
     	 */
         DataMatrix.prototype.getTotal = function() {

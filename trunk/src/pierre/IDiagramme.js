@@ -22,7 +22,7 @@ var IDiagramme = function(canvasRef) {
 		 *	Retourne la largeur de la fenêtre du diagramme.
 		 */
 		IDiagramme.prototype.getWidth = function(){
-			return canvas.getAttribute('width');
+			return this.canvas.getAttribute('width');
 		};
 	
 		/**
