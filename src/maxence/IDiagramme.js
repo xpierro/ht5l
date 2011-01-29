@@ -1,31 +1,31 @@
 /*
-*	Définit la largeur de la fenêtre du diagramme
+*	DÃ©finit la largeur de la fenÃªtre du diagramme
 *	Argument : 
 		- x : Nombre
 */
 var setWindowWidth = function(x){};
 
 /*
-*	Retourne la largeur de la fenêtre du diagramme
+*	Retourne la largeur de la fenÃªtre du diagramme
 */
 var getWindowWidth = function(){};
 
 /*
-*	Définit la hauteur de la fenêtre du diagramme
+*	DÃ©finit la hauteur de la fenÃªtre du diagramme
 *	Argument :
 *		- y : Nombre
 */
 var setWindowHeight = function(y){};
 
 /*
-*	Retourne la hauteur de la fenêtre du diagramme
+*	Retourne la hauteur de la fenÃªtre du diagramme
 */
 var getWindowHeight = function(){};
 
 /*
-*	Définit la couleur du fond du diagramme (à la limite on peut ajouter un argument pour définir la transparence)
+*	DÃ©finit la couleur du fond du diagramme (Ã  la limite on peut ajouter un argument pour dÃ©finir la transparence)
 *	Argument : 
-*		- color : couleur désirée (codée en hexa?)
+*		- color : couleur dÃ©sirÃ©e (codÃ© en hexa?)
 */
 var setBackgroundColor = function(color){};
 
@@ -35,9 +35,9 @@ var setBackgroundColor = function(color){};
 var getBackgroundColor = function(){};
 
 /*
-*	Dessine la légende du diagramme
+*	Dessine la lÃ©gende du diagramme
 *	Argument :
-*		- Tableau : tableau à deux dimensions avec paires couleur/nom donnée
+*		- Tableau : tableau a deux dimensions avec paires couleur/nom donnÃ©e
 */
 var drawLegend = function(tableau){};
 
