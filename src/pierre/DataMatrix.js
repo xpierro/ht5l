@@ -28,8 +28,9 @@ var DataMatrix = function() {
     		$.each(array, function(i, val) {
     			if (value == val) {
     				index = i;
-    				return;
-    			};
+    				return false;
+    			}
+                return true;
     		});
     		return index;
     	};
@@ -69,8 +70,7 @@ var DataMatrix = function() {
     		var total = 0;
     		for (var x = 0; x < width; x++) {
     			for (var y = 0; y < height; y++) {
-    				var value = this.getValue(x, y);
-    				total += value;
+    				total += this.getValue(x, y);
     			}
     		}
     		return total;

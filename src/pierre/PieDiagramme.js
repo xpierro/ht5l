@@ -20,7 +20,7 @@ var PieDiagramme = function(canvasRef, direction) {
 		 */
 		PieDiagramme.prototype.drawDiagram = function() {
 			var context = this.canvas.getContext('2d');
-			var width = this.getWidth();
+			//var width = this.getWidth();
 			var height = this.getHeight();
 			// Création des parts
 			var parts = new Array();

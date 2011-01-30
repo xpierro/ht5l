@@ -45,7 +45,13 @@ var IDiagramme = function(canvasRef) {
 		 * Charge un fichier de style pour le diagramme.
 		 * @param css Url d'un fichier css.
 		 */
-		IDiagramme.prototype.setStyle = function(css) {};
+		IDiagramme.prototype.setStyle = function(css) {
+            var link = document.createElement('link');
+            link.setAttribute('rel', 'stylesheet');
+            link.setAttribute('type', 'text/css');
+            link.setAttribute('href', css);
+            document.getElementsByTagName('head')[0].appendChild(link);
+        };
 	
 		/**
 		 * Charge les données du diagramme.
