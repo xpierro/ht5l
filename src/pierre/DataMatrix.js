@@ -81,7 +81,7 @@ var DataMatrix = function() {
     	 */
     	DataMatrix.prototype.setXAxisLabels = function(labels) {
     		$.each(labels, function(index, value) {
-    			xLabels.unshift(value);
+    			xLabels.push(value);
     		});
     		width = xLabels.length;
     	};
@@ -91,7 +91,7 @@ var DataMatrix = function() {
     	 */	
     	DataMatrix.prototype.setYAxisLabels = function(labels) {
     		$.each(labels, function(index, value) {
-    			yLabels.unshift(value);
+    			yLabels.push(value);
     		});
     		height = yLabels.length;
     	};

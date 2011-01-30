@@ -5,6 +5,20 @@
  */
 var PieDiagramme = function(canvasRef, direction) {
 	IDiagramme.call(this, canvasRef);
+
+    this.getWidestText = function(texts) {
+        var context = this.canvas.getContext('2d');
+        var widest = {text: texts[0], length: context.measureText(texts[0]).width};
+        $.each(texts, function(i, text) {
+            var length = context.measureText(text).width;
+            if (widest.length < length) {
+                widest.length = length;
+                widest.text = text;
+            }
+        });
+        return widest;
+    };
+
 	if (direction != 'x' && direction != 'y') {
 		throw "Direction de lecture invalide";
 	}
@@ -14,7 +28,11 @@ var PieDiagramme = function(canvasRef, direction) {
 		PieDiagramme.prototype.drawAxis = function() {
 			// Vide
 		};
-		
+
+		PieDiagramme.prototype.drawAxis = function() {
+			// Vide
+		};
+
 		/**
 		 * Dessin du diagramme en camembert.
 		 */
@@ -36,10 +54,10 @@ var PieDiagramme = function(canvasRef, direction) {
 				});
 			}
 			//TODO: gérer les couleurs
-			var colors = new Array("blue", "red", "black", "green");
+			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
 			var startArc = -Math.PI / 2;
 			var endArc;
-			var radius = this.getHeight() / 2 - 10;
+			var radius = this.getHeight() / 2.5 - 10;
             radius = radius > 0 ? radius : 0;
 			var center = {x: this.getWidth() / 2, y: this.getHeight() / 2};
 			var textConfig = { // TODO: faire mieux
@@ -50,9 +68,8 @@ var PieDiagramme = function(canvasRef, direction) {
 				endArc = startArc - (2 * Math.PI) * part;
 				context.fillStyle = colors[i < colors.length ? i : i % colors.length];
 				context.beginPath();
-					// /!\ Indispensable pour avoir une part complete.
-					context.moveTo(center.x, center.y);
 					context.arc(center.x, center.y, radius, startArc, endArc, true);
+                    // /!\ Indispensable pour avoir une part complete.
 					context.lineTo(center.x, center.y);
 				context.closePath();
 				context.fill();
