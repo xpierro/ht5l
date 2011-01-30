@@ -7,3 +7,10 @@ Cette page wiki décrit la première vision, en attente d'un DAL précis, de l'a
 
 
 = Le modèle =
+== Entrées/Sorties ==
+== Le type DataMatrix ==
+
+= La vue =
+== L'interface des diagrammes ==
+
+= Le contrôleur =
