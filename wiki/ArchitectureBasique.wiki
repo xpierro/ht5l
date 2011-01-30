@@ -1,0 +1,9 @@
+#summary Architecture basique de la librairie.
+#labels DAL,architecture,basique
+
+= Introduction =
+
+Cette page wiki décrit la première vision, en attente d'un DAL précis, de l'architecture statique et du fonctionnement dynamique de la librairie.
+
+
+= Le modèle =
