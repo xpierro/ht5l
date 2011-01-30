@@ -2,7 +2,6 @@
  * Constructeur du diagramme camembert.
  * @param canvasRef Reference vers le canvas
  * @param direction Direction de lecture 2D de la matrice
- * @returns
  */
 var PieDiagramme = function(canvasRef, direction) {
 	IDiagramme.call(this, canvasRef);
@@ -27,28 +26,47 @@ var PieDiagramme = function(canvasRef, direction) {
 			var parts = new Array();
 			var total = this.data.getTotal();
 			var that = this;
-			if (this.dir = 'x') { // Pourcentage de chaque ligne
+			if (this.dir == 'x') { // Pourcentage de chaque ligne
 				$.each(this.data.getYLabels(), function(i, yLabel) {
 					parts.push(that.data.getLineTotal(yLabel) / total);
 				});
+			} else {
+				$.each(this.data.getXLabels(), function(i, xLabel) {
+					parts.push(that.data.getColumnTotal(xLabel) / total);
+				});
 			}
-			var colors = new Array("blue", "red", "black");
-			var startArc = - Math.PI / 2;
+			//TODO: gérer les couleurs
+			var colors = new Array("blue", "red", "black", "green");
+			var startArc = -Math.PI / 2;
 			var endArc;
+			var radius = this.getHeight() / 2 - 10;
 			var center = {x: this.getWidth() / 2, y: this.getHeight() / 2};
+			var textConfig = { // TODO: faire mieux
+				positionOnRadius: 0.75,
+				distanceFromStart: 2
+			};
 			$.each(parts, function(i, part) {
+				endArc = startArc - (2 * Math.PI) * part;
 				context.fillStyle = colors[i < colors.length ? i : i % colors.length];
 				context.beginPath();
-					alert(part);
-					endArc = startArc - (2 * Math.PI) * part;
 					// /!\ Indispensable pour avoir une part complete.
 					context.moveTo(center.x, center.y);
-					context.arc(center.x, center.y, that.getHeight() / 2 - 10,
-								startArc, endArc, true);
+					context.arc(center.x, center.y, radius, startArc, endArc, true);
 					context.lineTo(center.x, center.y);
-					startArc = endArc;
 				context.closePath();
 				context.fill();
+
+				// On utilise comme angle d'écriture du texte le milieu d'une part
+				var textArc = startArc - (2 * Math.PI) * part / textConfig.distanceFromStart;
+				// La position est celle du cercle trigo multipliée par le zoom (rayon plus grand que 1) puis translatée par le centre (> 0,0)
+				var xPos = Math.cos(textArc) * radius * textConfig.positionOnRadius + center.x;
+				// L'axe y est inversé par rapport au cercle trigo classique et l'angle est aussi inversé 
+				//TODO: trouver la bonne combinaison pour avoir l'angle orienté avec cohérence
+				var yPos = height - (Math.sin(-textArc) * radius * textConfig.positionOnRadius + center.y);
+				context.fillStyle = "white"; // TODO: a fixer quelque part
+				context.fillText(parseFloat(part * 100).toFixed(2) + "%", xPos, yPos);
+				startArc = endArc;
+		        
 			});
 		};
 	}
