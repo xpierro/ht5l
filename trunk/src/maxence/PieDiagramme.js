@@ -18,7 +18,7 @@ var PieDiagramme = function(canvasRef, direction) {
 			var height = this.getHeight();
 			var labels = new Array();
 			
-			if(this.dir == 'x') {
+			if(this.dir == 'y') {
 				labels = this.data.getXLabels();
 			} else {
 				labels = this.data.getYLabels();
@@ -26,14 +26,12 @@ var PieDiagramme = function(canvasRef, direction) {
 			
 			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
 			
-			var pos = {x: width/1.7, y: height/1.2};	// valeurs non finales
+			var pos = {x: (width*4)/5, y: height};	// valeurs non finales
 			$.each(labels, function(i, label) {
 				context.fillStyle = colors[i < colors.length ? i : i % colors.length];
 				context.beginPath();
-					context.moveTo(pos.x, pos.y);
-					context.fillRect(0, 0, 10, 10);
-					context.moveTo(15, 0);
-					context.strokeText(label, 0, 0);
+					context.fillRect(pos.x, pos.y, 10, 10);
+					context.strokeText(label, pos.x+15, pos.y);
 				context.closePath();
 				pos = {x: pos.x, y: pos.y-10};
 			});	
