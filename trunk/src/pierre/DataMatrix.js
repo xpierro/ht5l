@@ -167,7 +167,7 @@ var DataMatrix = function() {
     	 * Retourne la somme des valeurs d'une ligne, indéxée par un label en y.
     	 */
     	DataMatrix.prototype.getLineTotal = function(yLabel) {
-    		if (this.findValueInArray(yLabels, yLabel) == -1) {
+    		if (this.findValueInArray(yLabels, yLabel) < 0) {
     			throw "Label inexistant : " + yLabel;
     		}
     		var sum = 0;
@@ -182,7 +182,7 @@ var DataMatrix = function() {
     	 * Retourne la somme des valeurs d'une colonne indéxée par un  label en x.
     	 */
     	DataMatrix.prototype.getColumnTotal = function(xLabel) {
-    		if (this.findValueInArray(xLabels, xLabel) == -1) {
+    		if (this.findValueInArray(xLabels, xLabel) < 0) {
     			throw "Label inexistant : " + xLabel;
     		}
     		var sum = 0;
