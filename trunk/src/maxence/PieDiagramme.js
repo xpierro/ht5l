@@ -13,6 +13,7 @@ var PieDiagramme = function(canvasRef, direction) {
 		PieDiagramme.initialized = true;
 		
 		PieDiagramme.prototype.drawLegend = function() {
+			var context = this.canvas.getContext('2d');
 			var width = this.getWidth();
 			var height = this.getHeight();
 			var labels = new Array();
