@@ -103,7 +103,7 @@ var IDiagramme = function(canvasRef) {
 			context.stroke();
 			
 			// Dessin des intervalles en y
-			var top = data.getTopValue();
+			var top = this.data.getTopValue();
 			var nbIntervals = 10; // TODO: a fixer plus tard
 			var lengthInterval = (this.getHeight() - 50 - 20) / nbIntervals;
 			var dataInterval = Math.round(top / nbIntervals);

@@ -9,7 +9,7 @@ var PieDiagramme = function(canvasRef, direction) {
 		throw "Direction de lecture invalide";
 	}
 	this.dir = direction;
-	if (typeof PieDiagrammeinitialized == "undefined") {
+	if (typeof PieDiagramme.initialized == "undefined") {
 		PieDiagramme.initialized = true;
 		PieDiagramme.prototype.drawAxis = function() {
 			// Vide
@@ -74,5 +74,5 @@ var PieDiagramme = function(canvasRef, direction) {
 };
 
 // Héritage: chainage des prototypes.
-PieDiagramme.prototype = new IDiagramme(); // TODO: on répète deux fois, trouver mieux
+PieDiagramme.prototype = new IDiagramme(null); // TODO: on répète deux fois, trouver mieux
 PieDiagramme.prototype.constructor = PieDiagramme;
