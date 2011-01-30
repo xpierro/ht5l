@@ -26,14 +26,14 @@ var PieDiagramme = function(canvasRef, direction) {
 			
 			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
 			
-			var pos = {x: (width*4)/5, y: height};	// valeurs non finales
+			var pos = {x: (width*4)/5, y: height-5};	// valeurs non finales
 			$.each(labels, function(i, label) {
 				context.fillStyle = colors[i < colors.length ? i : i % colors.length];
 				context.beginPath();
-					context.fillRect(pos.x, pos.y, 10, 10);
-					context.strokeText(label, pos.x+15, pos.y);
+					context.fillRect(pos.x, pos.y, 10, -10);
+					context.strokeText(label, pos.x+15, pos.y-1);
 				context.closePath();
-				pos = {x: pos.x, y: pos.y-10};
+				pos = {x: pos.x, y: pos.y-14};
 			});	
 		};
 		
@@ -65,8 +65,8 @@ var PieDiagramme = function(canvasRef, direction) {
 			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
 			var startArc = -Math.PI / 2;
 			var endArc;
-			var radius = this.getHeight() / 2 - 10;
-			var center = {x: this.getWidth() / 2, y: this.getHeight() / 2};
+			var radius = (this.getWidth()*2) / 5 - 10;
+			var center = {x: (this.getWidth()*2) / 5, y: this.getHeight() / 2};
 			var textConfig = { // TODO: faire mieux
 				positionOnRadius: 0.75,
 				distanceFromStart: 2
