@@ -64,7 +64,51 @@ var IDiagramme = function(canvasRef) {
 		/**
 		 *	Dessine la légende du diagramme
 		 */
-		IDiagramme.prototype.drawLegend = function(){};
+		IDiagramme.prototype.drawLegend = function(){
+            var context = this.canvas.getContext('2d');
+			var width = this.getWidth();
+			var height = this.getHeight();
+            // Dessin du rectangle encadrant la légende TODO: spécifier ce rectangle autrement
+            var rectangle = {x: width * 4 / 5 - 80, y: height - 130, width: 180, height: 120 };
+            context.strokeStyle = 'black';
+            context.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+
+            // Choix des labels composant la légende
+			var labels = this.dir == 'y' ? this.data.getXLabels() : this.data.getYLabels();
+
+            // Récupération du plus long label
+            var widest = this.getWidestText(labels);
+
+            // TODO: gérer les couleurs
+			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
+
+            // Dessin des éléments de la légende. TODO: faire un objet de config
+			var pos = {x: rectangle.x, y: rectangle.y}; // Position du pinceau
+            var squareSide = 10; // Taille du carré coloré
+            var shift = 5; // Décalage du texte en x par rapport au rectangle coloré
+            var xStep = widest.length + squareSide + 2 * shift; // Pas de déplacement en x
+            var yStep = rectangle.height / labels.length; // Pas de déplacement en y
+
+            $.each(labels, function(i, label) {
+                // Dessin du carré
+				context.fillStyle = colors[i < colors.length ? i : i % colors.length];
+                context.strokeStyle = 'black';
+                context.strokeRect(pos.x, pos.y, squareSide, squareSide);
+				context.fillRect(pos.x, pos.y, squareSide, squareSide);
+
+                // Dessin du texte
+				context.fillStyle = 'black';
+				context.fillText(label, pos.x + squareSide + shift, pos.y + squareSide);
+
+                // Translation du pinceau
+                if (pos.x + 2 * widest.length + squareSide + shift < rectangle.x + rectangle.width) {
+                    pos.x += xStep;
+                } else {
+				    pos.x = rectangle.x;
+				    pos.y += yStep;
+                }
+			});
+        };
 		
 		/**
 		 * Dessine les abscisses et ordonnées du diagramme
@@ -134,8 +178,8 @@ var IDiagramme = function(canvasRef) {
 		IDiagramme.prototype.redraw = function() {
 			this.drawAxis();
 			this.drawYLines();
-			this.drawLegend();
 			this.drawDiagram();
+            this.drawLegend();
 		};
     }
 };
