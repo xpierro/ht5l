@@ -31,7 +31,8 @@ var PieDiagramme = function(canvasRef, direction) {
 				context.fillStyle = colors[i < colors.length ? i : i % colors.length];
 				context.beginPath();
 					context.fillRect(pos.x, pos.y, 10, -10);
-					context.strokeText(label, pos.x+15, pos.y-1);
+					context.fillStyle = "black"
+					context.fillText(label, pos.x+15, pos.y-1);
 				context.closePath();
 				pos = {x: pos.x, y: pos.y-14};
 			});	
