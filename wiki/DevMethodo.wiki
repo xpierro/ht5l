@@ -1,5 +1,5 @@
 #summary Description des méthodologies de développement.
-#labels Developpement,Méthodologie,Conseils
+#labels Méthodologie,Conseils
 
 = Introduction =
 
@@ -23,3 +23,9 @@ On utilisera intensivement le paradigme objet en Javascript, se référer aux do
 
 = Séances de codages =
 Afin de motiver (et de forcer à travailler) les membres de l'équipe, des séances collectives de codages seront organisées chaque semaine, en théorie le vendredi après-midi, à la demande d'au moins deux membres du groupe. Elles feront aussi office de réunion, avec compte rendu sur canvas minutes, ou page wiki d'explication à la clef.
+
+= Utilisation des divers moyens de partage =
+Rappelons que:
+  * Dropbox ne sert qu'à la mise en commun de document
+  * SVN ne sert qu'à la mise en commun de codes
+  * Le repo de download google code ne sert qu'à la mise en commun soit de versions du programme, soit de modules de tests précis. Ne pas faire 5 versions du même module corrigé (on peut déclarer les downloads deprecated pour éviter leur accumulation malheureuse).
