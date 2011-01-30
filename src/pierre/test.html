@@ -1,10 +1,7 @@
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-		<script type "text/javascript" src="jquery.js"></script>
-		<script type="text/javascript" src="DataMatrix.js"></script>
-		<script type="text/javascript" src="IDiagramme.js"></script>
-		<script type="text/javascript" src="PieDiagramme.js"></script>
+		<script type "text/javascript" src="ScriptLoader.js"></script>
 		
 		<script type="text/javascript">
 			var m = new DataMatrix();
@@ -46,7 +43,7 @@
 	<body>
 		<canvas id="diagramme"> Vous n'avez pas canvas </canvas>
 		<script language="JavaScript">
-			var idiag = new PieDiagramme(document.getElementsByTagName('canvas')[0], 'x');
+			var idiag = new PieDiagramme(document.getElementsByTagName('canvas')[0], 'y');
 			idiag.setData(m);
 			idiag.setWidth(500);
 			idiag.setHeight(500);
