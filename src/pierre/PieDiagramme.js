@@ -40,6 +40,7 @@ var PieDiagramme = function(canvasRef, direction) {
 			var startArc = -Math.PI / 2;
 			var endArc;
 			var radius = this.getHeight() / 2 - 10;
+            radius = radius > 0 ? radius : 0;
 			var center = {x: this.getWidth() / 2, y: this.getHeight() / 2};
 			var textConfig = { // TODO: faire mieux
 				positionOnRadius: 0.75,
