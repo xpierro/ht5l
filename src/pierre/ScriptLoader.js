@@ -3,7 +3,7 @@
  */
 
 // On définit les fichier:
-var jsFiles = new Array("DataMatrix.js", "IDiagramme.js", "PieDiagramme.js", "test.js");
+var jsFiles = new Array("DataMatrix.js", "IDiagramme.js", "../maxence/PieDiagramme.js", "test.js");
 
 /**
  * Charge un script
