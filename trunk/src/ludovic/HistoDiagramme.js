@@ -56,16 +56,16 @@ var HistoDiagramme = function(canvasRef, direction) {
 			
 			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
 
+			var maxTableau = maxTab(tableau);
+			var nbBar = 0;
 			while(tableau.length > 0) {
 				var element = tableau[i];
-				var name = tabN[tabN.length - 1];
 				context.fillStyle = "green";
-				pinceau.fillRect(70 + 20 * nbBar * 2, 270 - element/maxTableau * 250, 20, element/maxTableau * 250);
+				context.fillRect(70 + 20 * nbBar * 2, 270 - element/maxTableau * 250, 20, element/maxTableau * 250);
 				context.fillStyle = "black";
-				pinceau.fillText(name, 50 + 45 * nbBar, 290);
+				context.fillText(name, 50 + 45 * nbBar, 290);
 				nbBar++;
 				tableau.pop();
-				tabN.pop();
 			}
 		};
 	}

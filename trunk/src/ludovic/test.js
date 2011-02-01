@@ -44,7 +44,7 @@
 
 var m = new DataMatrix();
 m.setXAxisLabels(new Array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"));
-m.setYAxisLabels(new Array("CatsWhoCode.com", "WpRecipes.com", "CatsWhoBlog.com"));
+m.setYAxisLabels(new Array("CatsWhoCode.com"));
 m.setValue("Monday", "CatsWhoCode.com", 12541);
 m.setValue("Tuesday", "CatsWhoCode.com", 11204);
 m.setValue("Wednesday", "CatsWhoCode.com", 11354);
