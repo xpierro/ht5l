@@ -57,7 +57,9 @@ var HistoDiagramme = function(canvasRef, direction) {
 			$.each(that.data.getXLabels(), function(i, xlabel) { 
 				$.each(that.data.getYLabels(), function(j, ylabel) { 
 					var val = that.data.getValueByLabel(xlabel, ylabel);
-					tableau.push(val);
+					if (val != "undefined") {
+						tableau.push(val);	
+					}
 				});
 			});
 
@@ -68,16 +70,12 @@ var HistoDiagramme = function(canvasRef, direction) {
 			var nbBar = 0;
 			var i = 0;
 			while(tableau.length > 0) {
-				var element = tableau[i];
+				var element = tableau.pop();
 				context.fillStyle = "green";
-				alert(nbBar + ";" + maxTableau + ";" + element);
-				if (element != "undefined") { 
-					context.fillRect(70 + 20 * nbBar * 2, 270 - element/maxTableau * 250, 20, element/maxTableau * 250);
-				}
+				context.fillRect(70 + 20 * nbBar * 2, 270 - element/maxTableau * 250, 20, element/maxTableau * 250);
 				context.fillStyle = "black";
 				nbBar++;
 				i++;
-				tableau.pop();
 			}
 		};
 	}
