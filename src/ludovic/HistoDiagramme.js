@@ -25,13 +25,6 @@ var HistoDiagramme = function(canvasRef, direction) {
 	this.dir = direction;
 	if (typeof HistoDiagramme.initialized == "undefined") {
 		HistoDiagramme.initialized = true;
-		HistoDiagramme.prototype.drawAxis = function() {
-			// Vide
-		};
-
-		HistoDiagramme.prototype.drawAxis = function() {
-			// Vide
-		};
 
 		/**
 		 * Dessin de l'histogramme.
@@ -71,8 +64,8 @@ var HistoDiagramme = function(canvasRef, direction) {
 			var i = 0;
 			while(tableau.length > 0) {
 				var element = tableau.pop();
-				context.fillStyle = "green";
-				context.fillRect(70 + 20 * nbBar * 2, 270 - element/maxTableau * 250, 20, element/maxTableau * 250);
+				context.fillStyle = colors[i];
+				context.fillRect(70 + 20 * nbBar * 2, 450 - element/maxTableau * 450, 20, element/maxTableau * 450);
 				context.fillStyle = "black";
 				nbBar++;
 				i++;
