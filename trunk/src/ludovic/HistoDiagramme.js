@@ -46,25 +46,37 @@ var HistoDiagramme = function(canvasRef, direction) {
 			var that = this;
 			if (this.dir == 'x') { 
 				$.each(this.data.getYLabels(), function(i, yLabel) {
-					tableau.push(that.data.getLineTotal(yLabel) / total);
+					//tableau.push(that.data.getLineTotal(yLabel) / total);
 				});
 			} else {
 				$.each(this.data.getXLabels(), function(i, xLabel) {
-					tableau.push(that.data.getColumnTotal(xLabel) / total);
+					//tableau.push(that.data.getColumnTotal(xLabel) / total);
 				});
 			}
 			
+			$.each(that.data.getXLabels(), function(i, xlabel) { 
+				$.each(that.data.getYLabels(), function(j, ylabel) { 
+					var val = that.data.getValueByLabel(xlabel, ylabel);
+					tableau.push(val);
+				});
+			});
+
+			
 			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
 
-			var maxTableau = maxTab(tableau);
+			var maxTableau = that.data.getTopValue();
 			var nbBar = 0;
+			var i = 0;
 			while(tableau.length > 0) {
 				var element = tableau[i];
 				context.fillStyle = "green";
-				context.fillRect(70 + 20 * nbBar * 2, 270 - element/maxTableau * 250, 20, element/maxTableau * 250);
+				alert(nbBar + ";" + maxTableau + ";" + element);
+				if (element != "undefined") { 
+					context.fillRect(70 + 20 * nbBar * 2, 270 - element/maxTableau * 250, 20, element/maxTableau * 250);
+				}
 				context.fillStyle = "black";
-				context.fillText(name, 50 + 45 * nbBar, 290);
 				nbBar++;
+				i++;
 				tableau.pop();
 			}
 		};
