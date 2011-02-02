@@ -7,10 +7,10 @@ var DataMatrix = function() {
 	var width = 0;
 	var height = 0;
 	
-	var xLabels = new Array();
-	var yLabels = new Array();
+	this.xLabels = new Array();
+	this.yLabels = new Array();
 	
-	var rows = new Array();
+	this.rows = new Array();
 	
 	/**
 	 * Prototypage, toutes les methodes définies ici ne seront pas dupliquées
@@ -53,14 +53,14 @@ var DataMatrix = function() {
     	 * Retourne les labels en x.
     	 */
     	DataMatrix.prototype.getXLabels = function() {
-    		return xLabels;
+    		return this.xLabels;
     	};
     	
     	/**
     	 * Retourne les labels en y.
     	 */
     	DataMatrix.prototype.getYLabels = function() {
-    		return yLabels;
+    		return this.yLabels;
     	};
     	
     	/**
@@ -80,27 +80,29 @@ var DataMatrix = function() {
     	 * Spécifie le nom de chaque abscisse
     	 */
     	DataMatrix.prototype.setXAxisLabels = function(labels) {
+    		var that = this;
     		$.each(labels, function(index, value) {
-    			xLabels.push(value);
+    			that.xLabels.push(value);
     		});
-    		width = xLabels.length;
+    		width = this.xLabels.length;
     	};
     	
     	/**
     	 * Spécifie le nom de chaque ordonnée
     	 */	
     	DataMatrix.prototype.setYAxisLabels = function(labels) {
+    		var that = this;
     		$.each(labels, function(index, value) {
-    			yLabels.push(value);
+    			that.yLabels.push(value);
     		});
-    		height = yLabels.length;
+    		height = this.yLabels.length;
     	};
     	
     	/**
     	 * Ajoute un label d'abscisse.
     	 */
     	DataMatrix.prototype.addXAxisLabel = function(label) {
-    		xLabels.push(label);
+    		this.xLabels.push(label);
     		width += 1;
     	};
     	
@@ -108,7 +110,8 @@ var DataMatrix = function() {
     	 * Ajoute un label d'ordonnée.
     	 */
     	DataMatrix.prototype.addYAxisLabel = function(label) {
-    		yLabels.push(label);
+    		alert("ylabels = " + this.yLabels);
+    		this.yLabels.push(label);
     		height += 1;
     	};
     	
@@ -117,13 +120,14 @@ var DataMatrix = function() {
     	 * fournies.
     	 */
     	DataMatrix.prototype.setValue = function(xLabel, yLabel, value) {
-    		var i = this.findValueInArray(xLabels, xLabel);
-    		var j = this.findValueInArray(yLabels, yLabel);
+    		var i = this.findValueInArray(this.xLabels, xLabel);
+    		var j = this.findValueInArray(this.yLabels, yLabel);
     		if (i != -1 && j != -1) {
-    			if (!rows[yLabel]) {
-    				rows[yLabel] = new Array();
+    			if (!this.rows[yLabel]) {
+    				this.rows[yLabel] = new Array();
     			}
-    			rows[yLabel][xLabel] = value;
+    			this.rows[yLabel][xLabel] = value;
+    			alert(yLabel + "'" + xLabel + "'" + value);
     		} else {
     			throw "Label indéfini";
     		}
@@ -133,10 +137,8 @@ var DataMatrix = function() {
     	 * Retoune la valeur entrée dans la matrice selon les labels en x et y.
     	 */
     	DataMatrix.prototype.getValueByLabel = function(xLabel, yLabel) {
-    		if (!rows[yLabel] || !rows[yLabel][xLabel]) {
-    			throw "Label/Valeur indéfinis : [" + xLabel + ";" + yLabel + "]";
-    		}
-    		return rows[yLabel][xLabel];
+    		alert(xLabel + "#" + yLabel);
+    		return this.rows[yLabel][xLabel];
     	};
     	
     	/**
@@ -144,7 +146,7 @@ var DataMatrix = function() {
     	 * numériques.
     	 */
     	DataMatrix.prototype.getValue = function(x, y) {
-    		return this.getValueByLabel(xLabels[x], yLabels[y]);
+    		return this.getValueByLabel(this.xLabels[x], this.yLabels[y]);
     	};
     	
     	/**
@@ -167,12 +169,12 @@ var DataMatrix = function() {
     	 * Retourne la somme des valeurs d'une ligne, indéxée par un label en y.
     	 */
     	DataMatrix.prototype.getLineTotal = function(yLabel) {
-    		if (this.findValueInArray(yLabels, yLabel) < 0) {
+    		if (this.findValueInArray(this.yLabels, yLabel) < 0) {
     			throw "Label inexistant : " + yLabel;
     		}
     		var sum = 0;
     		var ref = this;
-    		$.each(xLabels, function(i, xLabel) {
+    		$.each(this.xLabels, function(i, xLabel) {
     			sum += ref.getValueByLabel(xLabel, yLabel);
     		});
     		return sum;
@@ -182,12 +184,12 @@ var DataMatrix = function() {
     	 * Retourne la somme des valeurs d'une colonne indéxée par un  label en x.
     	 */
     	DataMatrix.prototype.getColumnTotal = function(xLabel) {
-    		if (this.findValueInArray(xLabels, xLabel) < 0) {
+    		if (this.findValueInArray(this.xLabels, xLabel) < 0) {
     			throw "Label inexistant : " + xLabel;
     		}
     		var sum = 0;
     		var ref = this;
-    		$.each(yLabels, function(i, yLabel) {
+    		$.each(this.yLabels, function(i, yLabel) {
     			sum += ref.getValueByLabel(xLabel, yLabel);
     		});
     		return sum;

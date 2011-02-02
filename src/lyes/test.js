@@ -27,7 +27,19 @@ var xml2DataMatrix = function(xml) {
 	for (i = 0; i < y.length; i++) {
 		dataMatrix.addYAxisLabel(y[i].childNodes[0].nodeValue);
 	}
-	//alert(dataMatrix.getYLabels());
+	
+	var rows = xml.getElementsByTagName("row");
+	$.each(rows, function(i, row) {
+		var values = row.children;
+		$.each(values, function(j, value) {
+			dataMatrix.setValue(dataMatrix.getXLabels()[i], dataMatrix.getYLabels()[j], value.firstChild.wholeText);
+		});
+	});
+	$.each(dataMatrix.getXLabels(), function(i, xlabel) {
+		$.each(dataMatrix.getYLabels(), function(j, ylabel) {
+			alert("x = " + xlabel + " y = " + ylabel + " value = " + dataMatrix.getValueByLabel(xlabel, ylabel));
+		});
+	});
 	return dataMatrix;
 };
 
