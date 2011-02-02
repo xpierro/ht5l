@@ -1,10 +1,14 @@
 
 var IDataSource = function() {
 	if (typeof IDiagramme.initialized == "undefined" ) {
-        IDiagramme.initialized = true;		
+        IDiagramme.initialized = true;	
+        
         IDataSource.prototype.loadXML = function(arg){ };
+        
         IDataSource.prototype.parseXML = function(){
+        	
         	var dataMatrix = new DataMatrix();
+        	
         	var x = xml.getElementsByTagName("x");
         	for (i = 0; i < x.length; i++) {
         		dataMatrix.addXAxisLabel(x[i].childNodes[0].nodeValue);
@@ -20,11 +24,6 @@ var IDataSource = function() {
         		var values = row.children;
         		$.each(values, function(j, value) {
         			dataMatrix.setValue(dataMatrix.getXLabels()[i], dataMatrix.getYLabels()[j], value.firstChild.wholeText);
-        		});
-        	});
-        	$.each(dataMatrix.getXLabels(), function(i, xlabel) {
-        		$.each(dataMatrix.getYLabels(), function(j, ylabel) {
-        			alert("x = " + xlabel + " y = " + ylabel + " value = " + dataMatrix.getValueByLabel(xlabel, ylabel));
         		});
         	});
         	
