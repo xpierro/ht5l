@@ -53,8 +53,15 @@ m.setValue("Friday", "CatsWhoCode.com", 9871);
 m.setValue("Saturday", "CatsWhoCode.com", 8254);
 m.setValue("Sunday", "CatsWhoCode.com", 5477);
 
+//m.setValue("Monday", "WpRecipes.com", 9855);
+//m.setValue("Tuesday", "WpRecipes.com", 8870);
+//m.setValue("Wednesday", "WpRecipes.com", 8731);
+//m.setValue("Thursday", "WpRecipes.com", 7488);
+//m.setValue("Friday", "WpRecipes.com", 8159);
+//m.setValue("Saturday", "WpRecipes.com", 6547);
+//m.setValue("Sunday", "WpRecipes.com", 4512);
 
-var idiag = new HistoDiagramme(document.getElementsByTagName('canvas')[0], 'y');
+var idiag = new HistoDiagramme(document.getElementsByTagName('canvas')[0], 'x');
 idiag.setData(m);
 idiag.setWidth(500);
 idiag.setHeight(500);
