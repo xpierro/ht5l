@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
 	<labels>
-		<x> CatsWHoBlog.com</x>
+		<x>CatsWhoBlog.com</x>
 		<x>CatsWhoCode.com</x>
-		<y> Monday </y>
-		<y> Tuesday </y>
+		<y>Monday</y>
+		<y>Tuesday</y>
 	</labels>
 	
 	<rows>
-		<row>1254, 1325</row>
-		<row>5454, 4578</row>
+		<row>
+			<value>1254</value>
+			<value>1325</value>
+		</row>
+		<row>
+			<value>1288</value>
+			<value>2015</value>
+		</row>
 	</rows>
 </root>
