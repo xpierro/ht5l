@@ -16,8 +16,6 @@ var loadXml = function(file) {
 
 var xml = loadXml("test.xml");
 
-
-
 var xml2DataMatrix = function(xml) {
 	var dataMatrix = new DataMatrix();
 	var x = xml.getElementsByTagName("x");
@@ -29,7 +27,7 @@ var xml2DataMatrix = function(xml) {
 	for (i = 0; i < y.length; i++) {
 		dataMatrix.addYAxisLabel(y[i].childNodes[0].nodeValue);
 	}
-	alert(dataMatrix.getYLabels());
+	//alert(dataMatrix.getYLabels());
 	return dataMatrix;
 };
 
