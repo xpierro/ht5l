@@ -54,10 +54,11 @@ var PieDiagramme = function(canvasRef, direction) {
 				});
 			}
 			//TODO: gérer les couleurs
-			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
+			var colors = this.getColors();
 			var startArc = -Math.PI / 2;
 			var endArc;
-			var radius = this.getHeight() / 2.5 - 10;
+            // TODO: faire un test de tous les cas possible + légende a tailler selon width/height pas que rect
+			var radius = (this.getHeight() > this.getWidth() ? this.getWidth() : this.getHeight()) / 2.5 - 10;
             radius = radius > 0 ? radius : 0;
 			var center = {x: this.getWidth() / 2, y: this.getHeight() / 2};
 			var textConfig = { // TODO: faire mieux

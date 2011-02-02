@@ -1,6 +1,7 @@
 var IDiagramme = function(canvasRef) {
 	this.canvas = canvasRef;
 	this.data = null;
+    this.colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
 	
 	/**
 	 * Prototypage, toutes les methodes définies ici ne seront pas dupliquées
@@ -40,17 +41,18 @@ var IDiagramme = function(canvasRef) {
 		IDiagramme.prototype.getHeight = function(){
 			return this.canvas.getAttribute('height');
 		};
+
+        IDiagramme.prototype.getColors = function() {
+             return this.colors;
+         };
+
 		
 		/**
 		 * Charge un fichier de style pour le diagramme.
-		 * @param css Url d'un fichier css.
+		 * @param styleConfig Objet de config de style {colors: ["blue", "red], background: "yellox"}
 		 */
-		IDiagramme.prototype.setStyle = function(css) {
-            var link = document.createElement('link');
-            link.setAttribute('rel', 'stylesheet');
-            link.setAttribute('type', 'text/css');
-            link.setAttribute('href', css);
-            document.getElementsByTagName('head')[0].appendChild(link);
+		IDiagramme.prototype.setStyle = function(styleConfig) {
+            // TODO: faire
         };
 	
 		/**
