@@ -79,6 +79,18 @@ var HistoDiagramme = function(canvasRef, direction) {
 	if (typeof HistoDiagramme.initialized == "undefined") {
 		HistoDiagramme.initialized = true;
 
+        function array_search(what, where){
+            var index_du_tableau=-1
+            for(elt in where){
+                index_du_tableau++;
+			    if (where[elt]==what){
+                    return index_du_tableau
+                }
+	    	 }
+	        index_du_tableau=-1;
+	        return index_du_tableau
+        }
+
 		/**
 		 * Dessin de l'histogramme.
 		 */
@@ -90,37 +102,65 @@ var HistoDiagramme = function(canvasRef, direction) {
 			var height = this.getHeight();
 
 			var total = this.data.getTotal();
-			var tableau = new Array();
+			var tableauXLabels = new Array();
+            var tableauYLabels = new Array();
+            var tableau = new Array();
 			var that = this;
-			if (this.dir == 'x') {
+                //Remplissage d'un tableau contenant les YLabels
 				$.each(this.data.getYLabels(), function(i, yLabel) {
-					//tableau = that.data.getYLabels();
+					var i = 0;
+                    for (i = 0; i < that.data.getYLabels().length; i++) {
+                        var val = that.data.getYLabels()[i];
+                        if (val != "undefined") {
+                            tableauXLabels.push(val);
+                        }
+                    }
+                    tableauXLabels.reverse();
 				});
-			} else {
+
+                var sumXLabels = 0;
+                for (var i = 0; i < tableauXLabels.length; i++) {
+                    sumYLabels++;
+                }
+                // alert("sumXLabels" + sumXLabels);
+
+                //Remplissage d'un tableau contenant les XLabels
 				$.each(this.data.getXLabels(), function(i, xLabel) {
-					//tableau = that.data.getXLabels();
+					var i = 0;
+                    for (i = 0; i < that.data.getXLabels().length; i++) {
+                        var val = that.data.getXLabels()[i];
+                        if (val != "undefined") {
+                            tableauYLabels.push(val);
+                        }
+                    }
+                    tableauYLabels.reverse();
 				});
-			}
 
-			$.each(that.data.getXLabels(), function(i, xlabel) {
-				$.each(that.data.getYLabels(), function(j, ylabel) {
-					var val = that.data.getValueByLabel(xlabel, ylabel);
-					if (val != "undefined") {
-						tableau.push(val);
-					}
-				});
-			});
+                var sumYLabels = 0;
+                for (var i = 0; i < tableauYLabels.length; i++) {
+                    sumYLabels++;
+                }
+               // alert("sumYLabels" + sumYLabels);
 
-
-			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
+            //Remplissage du tableau contenant les valeurs correspondants à chaque XLabels et YLabels
+            for (var i = 0; i < tableauXLabels.length; i++) {
+                for (var j = 0; j < tableauYLabels.length; j++) {
+                    tableau.push(that.data.getValueByLabel(tableauYLabels[j], tableauXLabels[i]));
+                }
+            }
 
 			tableau = tableau.reverse();
-			var maxTableau = that.data.getTopValue();
+
+            // Dessin du diagramme
+            var maxTableau = that.data.getTopValue();
 			var nbBar = 0;
 			var i = 0;
-			while(tableau.length > 0) {
+            var sqrtTableau = Math.sqrt(tableau.length);
+			while(i < sqrtTableau) {
+                alert(tableau.length + "   " + Math.sqrt(tableau.length));
 				var element = tableau.pop();
-				context.fillStyle = colors[0];
+				context.fillStyle = that.getColors()[0];
+               // alert(element);
 				context.fillRect(70 + 20 * nbBar * 2, 450 - element/maxTableau * 450, 20, element/maxTableau * 450);
 				nbBar++;
 				i++;
