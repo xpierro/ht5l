@@ -64,7 +64,7 @@ var HistoDiagramme = function(canvasRef, direction) {
 			var i = 0;
 			while(tableau.length > 0) {
 				var element = tableau.pop();
-				context.fillStyle = colors[i];
+				context.fillStyle = colors[0];
 				context.fillRect(70 + 20 * nbBar * 2, 450 - element/maxTableau * 450, 20, element/maxTableau * 450);
 				context.fillStyle = "black";
 				nbBar++;
