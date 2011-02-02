@@ -105,17 +105,11 @@ var HistoDiagramme = function(canvasRef, direction) {
 			var tableauXLabels = new Array();
             var tableauYLabels = new Array();
             var tableau = new Array();
-			var that = this;
+
                 //Remplissage d'un tableau contenant les YLabels
 				$.each(this.data.getYLabels(), function(i, yLabel) {
-					var i = 0;
-                    for (i = 0; i < that.data.getYLabels().length; i++) {
-                        var val = that.data.getYLabels()[i];
-                        if (val != "undefined") {
-                            tableauXLabels.push(val);
-                        }
-                    }
-                    tableauXLabels.reverse();
+                    //alert("YLabels " +yLabel);
+                    tableauYLabels.push(yLabel);
 				});
 
                 var sumXLabels = 0;
@@ -126,14 +120,8 @@ var HistoDiagramme = function(canvasRef, direction) {
 
                 //Remplissage d'un tableau contenant les XLabels
 				$.each(this.data.getXLabels(), function(i, xLabel) {
-					var i = 0;
-                    for (i = 0; i < that.data.getXLabels().length; i++) {
-                        var val = that.data.getXLabels()[i];
-                        if (val != "undefined") {
-                            tableauYLabels.push(val);
-                        }
-                    }
-                    tableauYLabels.reverse();
+                    //alert("XLabels " +xLabel);
+					tableauXLabels.push(xLabel);
 				});
 
                 var sumYLabels = 0;
@@ -145,24 +133,25 @@ var HistoDiagramme = function(canvasRef, direction) {
             //Remplissage du tableau contenant les valeurs correspondants à chaque XLabels et YLabels
             for (var i = 0; i < tableauXLabels.length; i++) {
                 for (var j = 0; j < tableauYLabels.length; j++) {
-                    tableau.push(that.data.getValueByLabel(tableauYLabels[j], tableauXLabels[i]));
+                    tableau.push(this.data.getValueByLabel(tableauXLabels[i], tableauYLabels[j]));
                 }
             }
 
-			tableau = tableau.reverse();
-
             // Dessin du diagramme
-            var maxTableau = that.data.getTopValue();
+            var maxTableau = this.data.getTopValue();
 			var nbBar = 0;
 			var i = 0;
-            var sqrtTableau = Math.sqrt(tableau.length);
-			while(i < sqrtTableau) {
-                alert(tableau.length + "   " + Math.sqrt(tableau.length));
-				var element = tableau.pop();
-				context.fillStyle = that.getColors()[0];
+            var tabYLength = tableauYLabels.length;
+			while(tableau.length > 0) {
+				var element = tableau.shift();
+				context.fillStyle = this.getColors()[i%tabYLength];
                // alert(element);
-				context.fillRect(70 + 20 * nbBar * 2, 450 - element/maxTableau * 450, 20, element/maxTableau * 450);
-				nbBar++;
+                if (nbBar % tabYLength != 0) {
+				    context.fillRect(70 + 12 * nbBar * 2, 450 - element/maxTableau * 450, 20, element/maxTableau * 450);
+                } else {
+                    context.fillRect(70 + 12 * nbBar * 3, 450 - element/maxTableau * 450, 20, element/maxTableau * 450);
+                }
+                nbBar++;
 				i++;
 			}
 		};
