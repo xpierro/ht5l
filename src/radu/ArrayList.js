@@ -18,7 +18,7 @@ ArrayList.prototype.getLength = function() {
 /**
  * 
  * @param element
- * @returns
+ * @returns {ArrayList}
  */
 ArrayList.prototype.addElement = function(element) {
 	return this.array.push(element);
