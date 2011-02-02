@@ -3,7 +3,7 @@
  */
 
 function ArrayList() {
-	// on initialise avec un tableau vide
+
 	this.array = [];
 }
 
