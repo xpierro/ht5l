@@ -141,19 +141,28 @@ var HistoDiagramme = function(canvasRef, direction) {
             var maxTableau = this.data.getTopValue();
 			var nbBar = 0;
 			var i = 0;
+            var j = 0;
             var tabYLength = tableauYLabels.length;
 			while(tableau.length > 0) {
 				var element = tableau.shift();
 				context.fillStyle = this.getColors()[i%tabYLength];
                // alert(element);
-                if (nbBar % tabYLength != 0) {
-				    context.fillRect(70 + 12 * nbBar * 2, 450 - element/maxTableau * 450, 20, element/maxTableau * 450);
+                if (nbBar % tabYLength == 0) {
+			        context.fillRect(70 + 24 * nbBar, 450 - element/maxTableau * 450, 20, element/maxTableau * 450);
                 } else {
-                    context.fillRect(70 + 12 * nbBar * 3, 450 - element/maxTableau * 450, 20, element/maxTableau * 450);
+                   context.fillRect(70 + 17* nbBar + j*5, 450 - element/maxTableau * 450, 20, element/maxTableau * 450);
+                   j++;
                 }
                 nbBar++;
-				i++;
+                i++;
+
 			}
+// Pour la rotation d'un texte
+// /!\ Modification du répère
+//            context.translate(200, 200);
+//            context.rotate(Math.PI/2);
+//            context.fillStyle = "black";
+//            context.fillText("Bonjour", -10, 10);
 		};
 	}
 };
