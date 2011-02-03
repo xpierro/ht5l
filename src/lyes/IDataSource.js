@@ -1,4 +1,3 @@
-
 var IDataSource = function() {
 	if (typeof IDiagramme.initialized == "undefined" ) {
         IDiagramme.initialized = true;	
