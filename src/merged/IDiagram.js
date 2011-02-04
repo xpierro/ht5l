@@ -108,7 +108,7 @@ var IDiagram = function(canvasRef) {
             // Dessin du rectangle encadrant la légende TODO: spécifier ce rectangle autrement
             var rectangle = {x: 0, y: 0, width: 500, height: 120 };
             context.strokeStyle = 'black';
-            context.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+            //context.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
             // Choix des labels composant la légende
 			var labels = this.dir == 'column' ? this.data.getColumnLabels() : this.data.getRowLabels();
@@ -228,6 +228,10 @@ var IDiagram = function(canvasRef) {
                 this.drawAxis();
                 this.drawDiagram();
                 this.drawLegend();
+                // TODO: juste pour le test: supprimer
+                var context = this.canvas.getContext('2d');
+                context.strokeStyle = 'black';
+                context.strokeRect(0, 0, this.getWidth(), this.getHeight());
             }
 		};
     }
