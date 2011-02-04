@@ -111,7 +111,7 @@ var IDiagram = function(canvasRef) {
             context.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
             // Choix des labels composant la légende
-			var labels = this.dir == 'y' ? this.data.getColumnLabels() : this.data.getRowLabels();
+			var labels = this.dir == 'column' ? this.data.getColumnLabels() : this.data.getRowLabels();
 
             // Récupération du plus long label
             var widest = this.getWidestText(labels);
