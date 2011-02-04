@@ -25,7 +25,7 @@ m.setValue("CatsWhoBlog.com", "Friday", 2114);
 m.setValue("CatsWhoBlog.com", "Saturday", 2045);
 m.setValue("CatsWhoBlog.com", "Sunday", 950);
 
-var diag = new PieDiagram(document.getElementsByTagName('canvas')[0], 'row');
+var diag = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'column');
 diag.setData(m);
 
 /*

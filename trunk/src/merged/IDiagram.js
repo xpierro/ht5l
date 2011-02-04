@@ -198,8 +198,13 @@ var IDiagram = function(canvasRef) {
 			}
 		};
 
+        // TODO: methode de récupération de parametre par nom
 		IDiagram.prototype.getBottomShift = function() {
 			return this.yAxisConfig.bottomShift;
+		};
+
+        IDiagram.prototype.getLeftShift = function() {
+			return this.yAxisConfig.leftShift;
 		};
 
 		IDiagram.prototype.getPixelPerUnit = function() {
