@@ -9,6 +9,9 @@
  * Le sens de parcour se fait "en ligne" ou en "colonne". Parcourir en ligne signifie qu'on considère une valeur
  * comme le resultat d'une fonction d'acces de [LabelLigne][LabelColonne] tandis que parcourir en colonne est inverse:
  * [LabelColonne][LabelLigne].
+ *
+ * Conception: Pierre Collignon
+ * Commentaires pour corrections: Abdourahmane Djigo et Lyes Kimouche
  */
 
 var DataMatrix = function() {
@@ -127,14 +130,14 @@ var DataMatrix = function() {
         /**
     	 * Retoune la valeur entrée dans la matrice selon les labels de ligne et colonne, selon
     	 * la direction.
-         * @param firstLabel Label de ligne si dir == 'line' | Label de colonne si dir == 'column'
-         * @param secondLabel Label de colonne si dir == 'line' | Label de ligne si dir == 'line'
+         * @param firstLabel Label de ligne si dir == 'row' | Label de colonne si dir == 'column'
+         * @param secondLabel Label de colonne si dir == 'row' | Label de ligne si dir == 'column'
     	 */
     	DataMatrix.prototype.getValueByLabelAndDirection = function(firstLabel, secondLabel, dir) {
     		if (!rows[firstLabel] && !rows[secondLabel]) {
     			throw "Label/Valeur indéfinis : " + firstLabel + ";" + secondLabel;
     		}
-    		if (dir == 'line') {
+    		if (dir == 'row') {
     			return rows[firstLabel][secondLabel];
     		} else {
     			return rows[secondLabel][firstLabel];
