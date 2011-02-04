@@ -16,10 +16,10 @@
 
 var DataMatrix = function() {
     // Attributs privés
-	var rowLabels = new Array();
-	var columnLabels = new Array();
+	this.rowLabels = new Array();
+	this.columnLabels = new Array();
 
-	var rows = new Array();
+	this.rows = new Array();
 
 	/**
 	 * Prototypage, toutes les methodes définies ici ne seront pas dupliquées
@@ -32,28 +32,28 @@ var DataMatrix = function() {
     	 * Retourne la largeur de la matrice.
     	 */
     	DataMatrix.prototype.getColumnNumber = function() {
-    		return columnLabels.length;
+    		return this.columnLabels.length;
     	};
 
     	/**
     	 * Retourne la hauteur de la matrice.
     	 */
     	DataMatrix.prototype.getRowNumber = function() {
-    		return rowLabels.length;
+    		return this.rowLabels.length;
     	};
 
     	/**
     	 * Retourne les labels de colonne.
     	 */
     	DataMatrix.prototype.getColumnLabels = function() {
-    		return columnLabels;
+    		return this.columnLabels;
     	};
 
     	/**
     	 * Retourne les labels en line.
     	 */
     	DataMatrix.prototype.getRowLabels = function() {
-    		return rowLabels;
+    		return this.rowLabels;
     	};
 
     	/**
@@ -62,8 +62,8 @@ var DataMatrix = function() {
         DataMatrix.prototype.getTotal = function() {
     		var total = 0;
             var that = this;
-    		$.each(rowLabels, function(rowIndex, rowLabel) {
-                $.each(columnLabels, function(columnIndex, columnLabel) {
+    		$.each(this.rowLabels, function(rowIndex, rowLabel) {
+                $.each(this.columnLabels, function(columnIndex, columnLabel) {
                     total += that.getValueByLabel(rowLabel, columnLabel);
                 });
             });
@@ -74,8 +74,9 @@ var DataMatrix = function() {
     	 * Spécifie le nom de chaque colonne
     	 */
     	DataMatrix.prototype.setColumnLabels = function(labels) {
+            var that = this;
     		$.each(labels, function(index, value) {
-    			columnLabels.push(value);
+    			that.columnLabels.push(value);
     		});
     	};
 
@@ -83,8 +84,9 @@ var DataMatrix = function() {
     	 * Spécifie le nom de chaque ligne
     	 */
     	DataMatrix.prototype.setRowLabels = function(labels) {
+            var that = this;
     		$.each(labels, function(index, value) {
-    			rowLabels.push(value);
+    			that.rowLabels.push(value);
     		});
     	};
 
@@ -92,14 +94,14 @@ var DataMatrix = function() {
     	 * Ajoute un label de colonne.
     	 */
     	DataMatrix.prototype.addColumnLabel = function(label) {
-    		columnLabels.push(label);
+    		this.columnLabels.push(label);
     	};
 
     	/**
     	 * Ajoute un label de ligne.
     	 */
     	DataMatrix.prototype.addRowLabel = function(label) {
-    		rowLabels.push(label);
+    		this.rowLabels.push(label);
     	};
 
     	/**
@@ -107,11 +109,11 @@ var DataMatrix = function() {
     	 * fournies.
     	 */
     	DataMatrix.prototype.setValue = function(rowLabel, columnLabel, value) {
-    		if (!rowLabels[rowLabels] || !columnLabels[columnLabel]) {
-    			if (!rows[rowLabel]) {
-    				rows[rowLabel] = new Array();
+    		if (!this.rowLabels[rowLabel] || !this.columnLabels[columnLabel]) {
+    			if (!this.rows[rowLabel]) {
+    				this.rows[rowLabel] = new Array();
     			}
-    			rows[rowLabel][columnLabel] = value;
+    			this.rows[rowLabel][columnLabel] = value;
     		} else {
     			throw "Labels indéfinis : " + rowLabel + "," + columnLabel;
     		}
@@ -121,10 +123,10 @@ var DataMatrix = function() {
     	 * Retoune la valeur entrée dans la matrice selon les labels.
     	 */
     	DataMatrix.prototype.getValueByLabel = function(rowLabel, columnLabel) {
-    		if (!rows[rowLabel] || !rows[rowLabel][columnLabel]) {
+    		if (!this.rows[rowLabel] || !this.rows[rowLabel][columnLabel]) {
     			throw "Label/Valeur indéfinis : " + rowLabel + "," + columnLabel;
     		}
-    		return rows[rowLabel][columnLabel];
+    		return this.rows[rowLabel][columnLabel];
     	};
 
         /**
@@ -134,13 +136,13 @@ var DataMatrix = function() {
          * @param secondLabel Label de colonne si dir == 'row' | Label de ligne si dir == 'column'
     	 */
     	DataMatrix.prototype.getValueByLabelAndDirection = function(firstLabel, secondLabel, dir) {
-    		if (!rows[firstLabel] && !rows[secondLabel]) {
+    		if (!this.rows[firstLabel] && !this.rows[secondLabel]) {
     			throw "Label/Valeur indéfinis : " + firstLabel + ";" + secondLabel;
     		}
     		if (dir == 'row') {
-    			return rows[firstLabel][secondLabel];
+    			return this.rows[firstLabel][secondLabel];
     		} else {
-    			return rows[secondLabel][firstLabel];
+    			return this.rows[secondLabel][firstLabel];
     		}
     	};
 
@@ -149,7 +151,7 @@ var DataMatrix = function() {
     	 * numériques.
     	 */
     	DataMatrix.prototype.getValue = function(x, y) {
-    		return this.getValueByLabel(rowLabels[x], columnLabels[y]);
+    		return this.getValueByLabel(this.rowLabels[x], this.columnLabels[y]);
     	};
 
     	/**
@@ -158,8 +160,8 @@ var DataMatrix = function() {
     	DataMatrix.prototype.getTopValue = function() {
     		var top = this.getValue(0, 0);
     		var that = this;
-            $.each(rowLabels, function(rowIndex, rowLabel) {
-                $.each(columnLabels, function(columnIndex, columnLabel) {
+            $.each(this.rowLabels, function(rowIndex, rowLabel) {
+                $.each(that.columnLabels, function(columnIndex, columnLabel) {
                     var currentValue = that.getValueByLabel(rowLabel, columnLabel);
                     if (currentValue > top) {
                         top = currentValue;
@@ -173,12 +175,12 @@ var DataMatrix = function() {
     	 * Retourne la somme des valeurs d'une ligne.
     	 */
     	DataMatrix.prototype.getRowTotal = function(rowLabel) {
-            if (!rows[rowLabel]) {
+            if (!this.rows[rowLabel]) {
                 throw "Label inexistant : " + rowLabel;
             }
     		var sum = 0;
     		var that = this;
-    		$.each(columnLabels, function(i, columnLabel) {
+    		$.each(this.columnLabels, function(i, columnLabel) {
     			sum += that.getValueByLabel(rowLabel, columnLabel);
     		});
     		return sum;
@@ -188,12 +190,12 @@ var DataMatrix = function() {
     	 * Retourne la somme des valeurs d'une colonne.
     	 */
     	DataMatrix.prototype.getColumnTotal = function(columnLabel) {
-    		if (!rows[rowLabels[0]][columnLabel]) {
+    		if (!this.rows[this.rowLabels[0]][columnLabel]) {
                 throw "Label inexistant : " + columnLabel;
             }
     		var sum = 0;
     		var that = this;
-    		$.each(rowLabels, function(i, rowLabel) {
+    		$.each(this.rowLabels, function(i, rowLabel) {
     			sum += that.getValueByLabel(rowLabel, columnLabel);
     		});
     		return sum;
