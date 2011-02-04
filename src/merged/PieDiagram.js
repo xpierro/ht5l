@@ -11,7 +11,7 @@ var PieDiagram = function(canvasRef, direction) {
 	IDiagram.call(this, canvasRef);
 
 	if (direction != 'row' && direction != 'column') {
-		throw "Direction de lecture invalide";
+		throw "Direction de lecture invalide : " + direction;
 	}
 	this.dir = direction;
 
