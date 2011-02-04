@@ -1,10 +1,12 @@
 var InternalDataSource = function() {
 
 	InternalDataSource.call(this);
-
-	InternalDataSource.prototype.loadXML = function(arg) {
-		var nameFile = arg;
-		var xmlhttp;
+/****
+ Chargement des données en interne à partir d'un fichier xml local vers un 
+  modèle DataMatrix
+ */
+	InternalDataSource.prototype.loadXML = function(nameFile) {
+		var xmlhttp = null;
 		if (window.XMLHttpRequest) {
 			xmlhttp = new XMLHttpRequest();
 		} else if (window.ActiveXObject) {
@@ -12,7 +14,7 @@ var InternalDataSource = function() {
 		}
 
 		xmlhttp.open("GET", nameFile, false);
-		xmlhttp.send();
+		xmlhttp.send(); 
 		return xmlhttp.responseXML;
 	};
 

@@ -43,4 +43,4 @@ var xml2DataMatrix = function(xml) {
 	return dataMatrix;
 };
 
-var xxx = xml2DataMatrix(xml);
+//var xxx = xml2DataMatrix(xml);
