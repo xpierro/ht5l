@@ -2,14 +2,17 @@ var ExternalDataSource = function() {
 	
 	ExternalDataSource.call(this);
 	
-	ExternalDataSource.prototype.loadXML = function(arg){
-
-		var url = arg;
+	/**
+	 * Chargement des données externe à partir d'un fichier xml externe vers un
+	 *  modèle DataMatrix
+	 * @param url
+	 * @return xmlhttp.responseXML
+	 */
+	ExternalDataSource.prototype.loadXML = function(url){
 		var xmlhttp = null;
-
 		if (window.XMLHttpRequest) { 
 			xmlhttp = new XMLHttpRequest();
-			if (xmlhttp.overrideMimeType) {
+			if (xmlhttp.overrideMimeType) {	
 				xmlhttp.overrideMimeType('text/xml');
 			}
 		} 
@@ -25,13 +28,13 @@ var ExternalDataSource = function() {
 			}
 		}
 		if (!xmlhttp) {
-			errStr = "Cannot create an XMLHTTP instance";
+			throw "Impossible de créer une requete XML";
 			return null;
 		}
 		xmlhttp.onreadystatechange = waitForResponse;
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send(null);
-		return xmlhttp.responseXML;
+		return xmlhttp.responseXML;//reponse du serveur transmettant du xml
 	};
 };
 

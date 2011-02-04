@@ -1,6 +1,6 @@
 var IDataSource = function() {
-	if (typeof IDiagramme.initialized == "undefined" ) {
-        IDiagramme.initialized = true;	
+	if (typeof IDiataSource.initialized == "undefined" ) {
+        IDataSource.initialized = true;	
         
         IDataSource.prototype.loadXML = function(arg){ };
         
