@@ -64,7 +64,7 @@ m.setValue("Friday", "WebWhoCode.com", 1354);
 m.setValue("Saturday", "WebWhoCode.com", 10204);
 m.setValue("Sunday", "WebWhoCode.com", 5410);
 
-var idiag = new HistoDiagramme(document.getElementsByTagName('canvas')[0], 'y');
+var idiag = new HistoDiagramme(document.getElementsByTagName('canvas')[0], 'x');
 idiag.setData(m);
 idiag.setWidth(500);
 idiag.setHeight(500);

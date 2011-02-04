@@ -13,6 +13,7 @@ var HistoDiagramme = function(canvasRef, direction) {
             var length = context.measureText(text).width;
             if (widest.length < length) {
                 widest.length = length;
+                
                 widest.text = text;
             }
         });
@@ -25,52 +26,60 @@ var HistoDiagramme = function(canvasRef, direction) {
 	this.dir = direction;
 	if (typeof HistoDiagramme.initialized == "undefined") {
 		HistoDiagramme.initialized = true;
-
 		/**
 		 * Dessin de l'histogramme.
-		 */
+		 */		
 		HistoDiagramme.prototype.drawDiagram = function() {
 			var context = this.canvas.getContext('2d');
+			// Hauteur du canvas
 			var height = this.getHeight();
 			
-			var total = this.data.getTotal();
-			var tableau = new Array();
 			var that = this;
 			
-			var maxTableau = that.data.getTopValue();
+			// Valeur max du tableau des données
+			var topValue = that.data.getTopValue();
+			// Comptage du nombre de barres de l'histogramme
 			var nbBar = 0;
+			// Décalage entre deux ensembles en abscisse
 			var shift = 5;
 			
+			// Position en x sur le canvas du pinceau
 			var currentX = 70;
-			var currentXAxisX = 70;
+			// Contient le décalage lors du dessin de la légende en abscisse
+			var xLegendPosition;
 			
+			// Calcul des ensemble servant d'abscisse et de couleur selon la direction de parcours
+			// du tableau de données
 			if (this.dir == 'y') {
-				var absDir = this.data.getYLabels();
-				var ordDir = this.data.getXLabels();
+				var absLabels = this.data.getYLabels();
+				var colorLabels = this.data.getXLabels();
 			} else {
-				var absDir = this.data.getXLabels();
-				var ordDir = this.data.getYLabels();
+				var absLabels = this.data.getXLabels();
+				var colorLabels = this.data.getYLabels();
 			}
-			var globalShift = (absDir.length - 1) * shift;
-			var barWidth = ((this.getWidth() - 70 - globalShift) / (this.data.getWidth() * this.data.getHeight()));
+			// Somme des décalages entre deux ensembles en abscisse
+			var globalShift = (absLabels.length - 1) * shift;
+			// Largeur d'une barre
+			var barWidth = ((this.getWidth() - currentX   - globalShift) / (this.data.getWidth() * this.data.getHeight()));
 
-			$.each(absDir, function(i, ylabel){
-				$.each(ordDir, function(j, xlabel) {
-					var value = that.data.getValueByLabelAndDirection(xlabel, ylabel, that.dir);
+			$.each(absLabels, function(i, abslabel){
+				$.each(colorLabels, function(j, colorlabel) {
+					var value = that.data.getValueByLabelAndDirection(colorlabel, abslabel, that.dir);
 					var color = that.getColors()[j];
+					var barHeight = that.getPixelPerUnit() * value;
 					context.fillStyle = color;
-					context.fillRect(currentX, 450 - value/maxTableau * 450, barWidth, value/maxTableau * 450);
+					context.fillRect(currentX, that.getWidth() - that.getBottomShift() - barHeight, barWidth, barHeight);
 					currentX += barWidth;
 				});
-				currentXAxisX = 70 + (i * 5) + (i * barWidth * ordDir.length) + ((barWidth * ordDir.length) / 2) - context.measureText(ylabel).width / 2;
-				context.fillStyle = 'black';
-				context.fillText(ylabel, currentXAxisX , 470);
+				xLegendPosition = 70 + (i * 5) + (i * barWidth * colorLabels.length) + ((barWidth * colorLabels.length) / 2) - context.measureText(abslabel).width / 2;
+				context.fillStyle = 'black'; 
+				context.fillText(abslabel, xLegendPosition , 470);
 				currentX += shift;
 			});
 		};
 	}
 };
 
-// HÃ©ritage: chainage des prototypes.
+// Héritage: chainage des prototypes.
 HistoDiagramme.prototype = new IDiagramme(null); // TODO: on rÃ©pÃ¨te deux fois, trouver mieux
 HistoDiagramme.prototype.constructor = HistoDiagramme;
