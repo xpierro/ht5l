@@ -73,9 +73,12 @@ function ArrayList() {
      * @returns {Number}
      */
     ArrayList.prototype.insertEltAt = function(element, index) {
+        var left = new Array();
+        var right = new Array();
         var eltCount = this.array.length;
         var result = -1;
-        if (index > -1 && index <= eltCount) {
+        if (!(index > -1 && index <= eltCount)) {
+        } else {
             switch (index) {
                 case 0:
                     this.array.unshift(element);
@@ -86,9 +89,10 @@ function ArrayList() {
                     result = eltCount;
                     break;
                 default:
-                    var left = this.array.slice(0, index - 1);
-                    var right = this.array.slice(index);
-                    this.array = this.array.concat(right.unshift(element));
+                    left = this.array.slice(0, index);
+                    right = this.array.slice(index);
+                    left.push(element);
+                    this.array = left.concat(right);
                     result = index;
                     break;
             }
@@ -140,8 +144,4 @@ function ArrayList() {
         }
         return result;
     };
-}
-// Let's test this function
-function isEven(val) {
-    return val % 2 === 0;
 }

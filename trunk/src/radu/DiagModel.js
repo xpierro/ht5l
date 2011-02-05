@@ -1,38 +1,28 @@
-/**
- * version 1.0 du modele de la diagramme
- * 
- * @author Radu POPICA
- */
+function extend(subClass, superClass) {
+    var F = function() {
+    };
+    F.prototype = superClass.prototype;
+    subClass.prototype = new F();
+    subClass.prototype.constructor = subClass;
+    subClass.superclass = superClass.prototype;
+    if (superClass.prototype.constructor == Object.prototype.constructor) {
+        superClass.prototype.constructor = superClass;
+    }
+}
 
 function DiagModel() {
-	
-	this.observers = new ArrayList();
+    Observable.call(this);
+    /*
+     * ici les methodes liés au stockage des parametres de style
+     *  - on utlise une structure de données du type "Map" afin d'enregistrer
+     * des associations du type : "element - style"
+     */
 
-	/*
-	 * On implemente les methodes necessaires afin de rendre le modele
-	 * Observable
-	 */
 
-	DiagModel.prototype.notifyObservers = function(context) {
-		var m_count = this.observers.getLength();
-		for ( var i = 0; i < m_count; i++)
-			this.observers.getElement(i).update(context);
-	};
+    /*
+     *  ici les methodes liées à
+     */
 
-	DiagModel.prototype.attach = function(observer) {
-		if (!observer.update)
-			throw 'invalid parameter : observer';
-
-		this.observers.addElement(observer);
-	};
-
-	DiagModel.prototype.dettachObserver = function(observer) {
-		if (!observer.update)
-			throw 'invalid parameter : observer';
-		this.observers.removeElement(this.observers.getIndex(observer, 0));
-	};
-	
-	/*
-	 * On implemente les methodes liés à la 
-	 */
 }
+extend(DiagModel, Observable);
+
