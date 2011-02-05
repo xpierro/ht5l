@@ -4,6 +4,11 @@
  */
 
 var DataMatrix = function() {
+	
+	var title = "";
+	var xAxisTitle = "";
+	var yAxisTitle = "";
+	
 	var width = 0;
 	var height = 0;
 	
@@ -36,17 +41,59 @@ var DataMatrix = function() {
     	};
     	
     	/**
+    	 * spécifie le titre du chart.
+    	 */
+    	DataMatrix.prototype.setTitle = function(titre) {
+    		this.title = titre;
+    	};
+    	
+    	/**
+    	 * Retourne le titre du chart.
+    	 */
+    	DataMatrix.prototype.getTitle = function() {
+    		return this.title;
+    	};
+    	
+    	/**
+    	 * spécifie le titre des absices du chart.
+    	 */
+    	DataMatrix.prototype.setXAxisTitle = function(xTitre) {
+    		this.xAxisTitle = xTitre;
+    	};
+    	
+    	/**
+    	 * Retourne le titre des ordonners du chart.
+    	 */
+    	DataMatrix.prototype.getXAxisTitle = function() {
+    		return this.xAxisTitle;
+    	};
+    	
+    	/**
+    	 * spécifie le titre des absices du chart.
+    	 */
+    	DataMatrix.prototype.setYAxisTitle = function(yTitre) {
+    		this.yAxisTitle = yTitre;
+    	};
+    	
+    	/**
+    	 * Retourne le titre des ordonners du chart.
+    	 */
+    	DataMatrix.prototype.getYAxisTitle = function() {
+    		return this.yAxisTitle;
+    	};
+    	
+    	/**
     	 * Retourne la largeur de la matrice.
     	 */
     	DataMatrix.prototype.getWidth = function() {
-    		return width;
+    		return this.width;
     	};
     	
     	/**
     	 * Retourne la hauteur de la matrice.
     	 */
     	DataMatrix.prototype.getHeight = function() {
-    		return height;
+    		return this.height;
     	};
     	
     	/**

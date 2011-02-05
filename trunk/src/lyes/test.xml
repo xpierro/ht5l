@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root>
-	<labels>
-		<x>CatsWhoBlog.com</x>
-		<x>CatsWhoCode.com</x>
-		<y>Monday</y>
-		<y>Tuesday</y>
-	</labels>
-	
-	<rows>
+<chart>
+	<params>
+		<title>Le titre du chart</title>
+        <xAxisTitle>Le titre des X</xAxisTitle>
+        <yAxisTitle>Le titre des Y</yAxisTitle>
+	</params>
+	<axis>
+		<xAxis>CatsWhoBlog.com</xAxis>
+		<xAxis>CatsWhoCode.com</xAxis>
+		<yAxis>Monday</yAxis>
+		<yAxis>Tuesday</yAxis>
+	</axis>
+	<values>
 		<row>
 			<value>1254</value>
 			<value>1325</value>
@@ -16,5 +20,5 @@
 			<value>1288</value>
 			<value>2015</value>
 		</row>
-	</rows>
-</root>
+	</values>
+</chart>
