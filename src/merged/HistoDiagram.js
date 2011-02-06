@@ -19,7 +19,6 @@ var HistoDiagram = function(canvasRef, direction) {
 		 */
 		HistoDiagram.prototype.drawDiagram = function() {
 			var context = this.canvas.getContext('2d');
-			var that = this;
 
 			var shift = 5; // Décalage entre deux ensembles en abscisse
             var firstShift = 20; // Premier décalage
@@ -43,24 +42,24 @@ var HistoDiagram = function(canvasRef, direction) {
 			var barWidth = ((this.getWidth() - currentX   - globalShift)
                             / (this.data.getColumnNumber() * this.data.getRowNumber()));
 
-			$.each(absLabels, function(i, abslabel){
-				$.each(colorLabels, function(j, colorlabel) {
-					var value = that.data.getValueByLabelAndDirection(colorlabel, abslabel, that.dir);
-					var color = that.getColors()[j];
-					var barHeight = that.getPixelPerUnit() * value;
+			$.each(absLabels, $.proxy(function(i, abslabel){
+				$.each(colorLabels, $.proxy(function(j, colorlabel) {
+					var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
+					var color = this.getColors()[j];
+					var barHeight = this.getPixelPerUnit() * value;
 					context.fillStyle = color;
 					context.fillRect(currentX,
-                                     that.getHeight() - that.getBottomShift() - barHeight,
+                                     this.getHeight() - this.getBottomShift() - barHeight,
                                      barWidth,
                                      barHeight);
 					currentX += barWidth;
-				});
-				var xLegendPosition = firstShift + that.getLeftShift() + (i * 5) + (i * barWidth * colorLabels.length)
+				}, this));
+				var xLegendPosition = firstShift + this.getLeftShift() + (i * 5) + (i * barWidth * colorLabels.length)
                                   + ((barWidth * colorLabels.length) / 2) - context.measureText(abslabel).width / 2;
 				context.fillStyle = 'black'; // TODO: a fixer ailleurs
-				context.fillText(abslabel, xLegendPosition , that.getHeight() - that.getBottomShift() + 10);
+				context.fillText(abslabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
 				currentX += shift;
-			});
+			}, this));
 		};
 	}
 };

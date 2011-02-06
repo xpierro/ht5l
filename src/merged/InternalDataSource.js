@@ -1,3 +1,12 @@
+/**
+ * Classe représentant la source de donnée interne à la page.
+ * Conception: Pierre Collignon
+ */
+
+/**
+ * Constructeur de la source de donnée interne
+ * @param preId Identifiant de la balise pre contenant le flux xml.
+ */
 var InternalDataSource = function(preId) {
 	IDataSource.call(this);
     this.pre = preId;
@@ -7,6 +16,7 @@ var InternalDataSource = function(preId) {
         InternalDataSource.initialized = true;
         /**
          * Charge à partir d'une balise <pre> d'id this.pre un flux xml.
+         * @param callback Fonction appelée à la fin de la transformation.
          */
         InternalDataSource.prototype.loadData = function(callback) {
             if (window.DOMParser) {
@@ -22,6 +32,9 @@ var InternalDataSource = function(preId) {
             }
         };
 
+        /**
+         * Renvoie la matrice représentant les données lues.
+         */
         InternalDataSource.prototype.getDataMatrix = function() {
             var dataMatrix = new DataMatrix();
 

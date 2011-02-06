@@ -34,15 +34,15 @@ var PieDiagram = function(canvasRef, direction) {
 			// Création des parts
 			var parts = new Array();
 			var total = this.data.getTotal();
-			var that = this;
+
 			if (this.dir == 'row') { // Pourcentage de chaque ligne
-				$.each(this.data.getRowLabels(), function(i, rowLabel) {
-					parts.push(that.data.getRowTotal(rowLabel) / total);
-				});
+				$.each(this.data.getRowLabels(), $.proxy(function(i, rowLabel) {
+					parts.push(this.data.getRowTotal(rowLabel) / total);
+				}, this));
 			} else {
-				$.each(this.data.getColumnLabels(), function(i, columnLabel) {
-					parts.push(that.data.getColumnTotal(columnLabel) / total);
-				});
+				$.each(this.data.getColumnLabels(), $.proxy(function(i, columnLabel) {
+					parts.push(this.data.getColumnTotal(columnLabel) / total);
+				},this));
 			}
 			//TODO: gérer les couleurs
 			var colors = this.getColors();

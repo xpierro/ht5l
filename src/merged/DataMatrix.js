@@ -61,12 +61,11 @@ var DataMatrix = function() {
     	 */
         DataMatrix.prototype.getTotal = function() {
     		var total = 0;
-            var that = this;
-    		$.each(this.rowLabels, function(rowIndex, rowLabel) {
-                $.each(this.columnLabels, function(columnIndex, columnLabel) {
-                    total += that.getValueByLabel(rowLabel, columnLabel);
-                });
-            });
+    		$.each(this.rowLabels, $.proxy(function(rowIndex, rowLabel) {
+                $.each(this.columnLabels, $.proxy(function(columnIndex, columnLabel) {
+                    total += this.getValueByLabel(rowLabel, columnLabel);
+                }, this));
+            }, this));
     		return total;
     	};
 
@@ -74,20 +73,18 @@ var DataMatrix = function() {
     	 * Spécifie le nom de chaque colonne
     	 */
     	DataMatrix.prototype.setColumnLabels = function(labels) {
-            var that = this;
-    		$.each(labels, function(index, value) {
-    			that.columnLabels.push(value);
-    		});
+    		$.each(labels, $.proxy(function(index, value) {
+    			this.columnLabels.push(value);
+    		}, this));
     	};
 
     	/**
     	 * Spécifie le nom de chaque ligne
     	 */
     	DataMatrix.prototype.setRowLabels = function(labels) {
-            var that = this;
-    		$.each(labels, function(index, value) {
-    			that.rowLabels.push(value);
-    		});
+    		$.each(labels, $.proxy(function(index, value) {
+    			this.rowLabels.push(value);
+    		}, this));
     	};
 
     	/**
@@ -159,15 +156,14 @@ var DataMatrix = function() {
     	 */
     	DataMatrix.prototype.getTopValue = function() {
     		var top = this.getValue(0, 0);
-    		var that = this;
-            $.each(this.rowLabels, function(rowIndex, rowLabel) {
-                $.each(that.columnLabels, function(columnIndex, columnLabel) {
-                    var currentValue = that.getValueByLabel(rowLabel, columnLabel);
+            $.each(this.rowLabels, $.proxy(function(rowIndex, rowLabel) {
+                $.each(this.columnLabels, $.proxy(function(columnIndex, columnLabel) {
+                    var currentValue = this.getValueByLabel(rowLabel, columnLabel);
                     if (currentValue > top) {
                         top = currentValue;
                     }
-                });
-            });
+                }, this));
+            }, this));
     		return top;
     	};
 
@@ -179,10 +175,9 @@ var DataMatrix = function() {
                 throw "Label inexistant : " + rowLabel;
             }
     		var sum = 0;
-    		var that = this;
-    		$.each(this.columnLabels, function(i, columnLabel) {
-    			sum += that.getValueByLabel(rowLabel, columnLabel);
-    		});
+    		$.each(this.columnLabels, $.proxy(function(i, columnLabel) {
+    			sum += this.getValueByLabel(rowLabel, columnLabel);
+    		}), this);
     		return sum;
     	};
 
@@ -194,10 +189,9 @@ var DataMatrix = function() {
                 throw "Label inexistant : " + columnLabel;
             }
     		var sum = 0;
-    		var that = this;
-    		$.each(this.rowLabels, function(i, rowLabel) {
-    			sum += that.getValueByLabel(rowLabel, columnLabel);
-    		});
+    		$.each(this.rowLabels, $.proxy(function(i, rowLabel) {
+    			sum += this.getValueByLabel(rowLabel, columnLabel);
+    		}, this));
     		return sum;
     	};
     }
