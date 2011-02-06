@@ -5,7 +5,7 @@
         <![CDATA[
             <APPLET
                 CODE = "org.fantasme.chatirc.view.IRCApplet.class"
-                ARCHIVE = "http://ht5l.googlecode.com/files/chatIrc.jar"
+                ARCHIVE = "NchatIrc.jar"
                 WIDTH = 600
                 HEIGHT = 600
             >

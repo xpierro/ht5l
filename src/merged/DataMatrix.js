@@ -106,7 +106,7 @@ var DataMatrix = function() {
     	 * fournies.
     	 */
     	DataMatrix.prototype.setValue = function(rowLabel, columnLabel, value) {
-    		if (!this.rowLabels[rowLabel] || !this.columnLabels[columnLabel]) {
+    		if ($.inArray(rowLabel, this.rowLabels) != -1 && $.inArray(columnLabel, this.columnLabels) != -1) {
     			if (!this.rows[rowLabel]) {
     				this.rows[rowLabel] = new Array();
     			}
@@ -155,7 +155,12 @@ var DataMatrix = function() {
     	 * Retourne la valeur maximale contenu dans la matrice
     	 */
     	DataMatrix.prototype.getTopValue = function() {
-    		var top = this.getValue(0, 0);
+    		var top;
+            try {
+                top = this.getValue(0, 0);
+            } catch(e) {
+                top = 0;
+            }
             $.each(this.rowLabels, $.proxy(function(rowIndex, rowLabel) {
                 $.each(this.columnLabels, $.proxy(function(columnIndex, columnLabel) {
                     var currentValue = this.getValueByLabel(rowLabel, columnLabel);
@@ -177,7 +182,7 @@ var DataMatrix = function() {
     		var sum = 0;
     		$.each(this.columnLabels, $.proxy(function(i, columnLabel) {
     			sum += this.getValueByLabel(rowLabel, columnLabel);
-    		}), this);
+    		}, this));
     		return sum;
     	};
 

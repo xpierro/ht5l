@@ -3,7 +3,8 @@
  */
 
 // On définit les fichier:
-var jsFiles = new Array("DataMatrix.js", "IDiagramme.js", "PieDiagramme.js", "test.js");
+var jsFiles = new Array("DataMatrix.js", "IDataSource.js", "InternalDataSource.js",
+                        "IDiagram.js", "PieDiagramme.js", "test.js");
 
 /**
  * Charge un script

@@ -4,7 +4,7 @@
  * @param direction Direction de lecture 2D de la matrice
  */
 var PieDiagramme = function(canvasRef, direction) {
-	IDiagramme.call(this, canvasRef);
+	IDiagram.call(this, canvasRef);
 
     this.getWidestText = function(texts) {
         var context = this.canvas.getContext('2d');
@@ -19,7 +19,7 @@ var PieDiagramme = function(canvasRef, direction) {
         return widest;
     };
 
-	if (direction != 'x' && direction != 'y') {
+	if (direction != 'row' && direction != 'column') {
 		throw "Direction de lecture invalide";
 	}
 	this.dir = direction;
