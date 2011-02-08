@@ -41,10 +41,10 @@
 //	var context = canva.getContext('2d');
 //	drawHisto2d(context, tabValeurs, tabNoms);
 //}
-
+//Premier site
 var m = new DataMatrix();
 m.setXAxisLabels(new Array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"));
-m.setYAxisLabels(new Array("CatsWhoCode.com", "WpRecipes.com", "Recipes.com", "Rec.com"));
+m.setYAxisLabels(new Array("CatsWhoCode.com", "WebWhoCode.com"));
 m.setValue("Monday", "CatsWhoCode.com", 12541);
 m.setValue("Tuesday", "CatsWhoCode.com", 11204);
 m.setValue("Wednesday", "CatsWhoCode.com", 11354);
@@ -53,29 +53,16 @@ m.setValue("Friday", "CatsWhoCode.com", 9871);
 m.setValue("Saturday", "CatsWhoCode.com", 8254);
 m.setValue("Sunday", "CatsWhoCode.com", 5477);
 
-m.setValue("Monday", "WpRecipes.com", 855);
-m.setValue("Tuesday", "WpRecipes.com", 870);
-m.setValue("Wednesday", "WpRecipes.com", 731);
-m.setValue("Thursday", "WpRecipes.com", 488);
-m.setValue("Friday", "WpRecipes.com", 159);
-m.setValue("Saturday", "WpRecipes.com", 547);
-m.setValue("Sunday", "WpRecipes.com", 512);
 
-m.setValue("Monday", "Recipes.com", 855);
-m.setValue("Tuesday", "Recipes.com", 870);
-m.setValue("Wednesday", "Recipes.com", 731);
-m.setValue("Thursday", "Recipes.com", 488);
-m.setValue("Friday", "Recipes.com", 159);
-m.setValue("Saturday", "Recipes.com", 547);
-m.setValue("Sunday", "Recipes.com", 512);
-
-m.setValue("Monday", "Rec.com", 855);
-m.setValue("Tuesday", "Rec.com", 870);
-m.setValue("Wednesday", "Rec.com", 731);
-m.setValue("Thursday", "Rec.com", 488);
-m.setValue("Friday", "Rec.com", 159);
-m.setValue("Saturday", "Rec.com", 547);
-m.setValue("Sunday", "Rec.com", 512);
+//Deuxieme site
+//var m = new DataMatrix();
+m.setValue("Monday", "WebWhoCode.com", 477);
+m.setValue("Tuesday", "WebWhoCode.com", 1254);
+m.setValue("Wednesday", "WebWhoCode.com", 871);
+m.setValue("Thursday", "WebWhoCode.com", 1058);
+m.setValue("Friday", "WebWhoCode.com", 1354);
+m.setValue("Saturday", "WebWhoCode.com", 10204);
+m.setValue("Sunday", "WebWhoCode.com", 5410);
 
 var idiag = new HistoDiagramme(document.getElementsByTagName('canvas')[0], 'x');
 idiag.setData(m);
