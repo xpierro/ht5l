@@ -140,6 +140,21 @@ var DataMatrix = function() {
     	};
     	
     	/**
+    	 * Retoune la valeur entrée dans la matrice selon les labels en x et y selon
+    	 * la direction.
+    	 */
+    	DataMatrix.prototype.getValueByLabelAndDirection = function(xLabel, yLabel, dir) {
+    		if (!rows[yLabel] && !rows[xLabel]) {
+    			throw "Label/Valeur indéfinis : [" + xLabel + ";" + yLabel + "]";
+    		}
+    		if (dir == 'y') {
+    			return rows[yLabel][xLabel];
+    		} else {
+    			return rows[xLabel][yLabel];
+    		}
+    	};
+    	
+    	/**
     	 * Retourne la valeur entrée dans la matrice selon ses coordonnées
     	 * numériques.
     	 */

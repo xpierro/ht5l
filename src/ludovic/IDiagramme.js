@@ -1,15 +1,22 @@
 var IDiagramme = function(canvasRef) {
 	this.canvas = canvasRef;
 	this.data = null;
-    this.colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
+    this.colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen", "yellow");
 	
+    this.yAxisConfig = {
+		leftShift: 50,
+		topShift: 20,
+		bottomShift: 50,
+		nbIntervals: 10,
+		stepWidth: 6
+	};
+        
 	/**
 	 * Prototypage, toutes les methodes définies ici ne seront pas dupliquées
 	 * à l'instanciation.
 	 */
     if (typeof IDiagramme.initialized == "undefined" ) {
         IDiagramme.initialized = true;
-        
 		/**
 		 *	Définit la largeur de la fenêtre du diagramme.
 		 *	@param width Largeur de la fenêtre
@@ -71,7 +78,7 @@ var IDiagramme = function(canvasRef) {
 			var width = this.getWidth();
 			var height = this.getHeight();
             // Dessin du rectangle encadrant la légende TODO: spécifier ce rectangle autrement
-            var rectangle = {x: width * 4 / 5 - 80, y: height - 130, width: 180, height: 120 };
+            var rectangle = {x: 0, y: 0, width: 500, height: 120 };
             context.strokeStyle = 'black';
             context.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
@@ -83,10 +90,9 @@ var IDiagramme = function(canvasRef) {
 
             // TODO: gérer les couleurs
 			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
-
-            // Dessin des éléments de la légende. TODO: faire un objet de config
+            //Dessin des éléments de la légende. TODO: faire un objet de config
 			var pos = {x: rectangle.x, y: rectangle.y}; // Position du pinceau
-            var squareSide = 10; // Taille du carré coloré
+            var squareSide = 10; //Taille du carré coloré
             var shift = 5; // Décalage du texte en x par rapport au rectangle coloré
             var xStep = widest.length + squareSide + 2 * shift; // Pas de déplacement en x
             var yStep = rectangle.height / labels.length; // Pas de déplacement en y
@@ -112,57 +118,14 @@ var IDiagramme = function(canvasRef) {
 			});
         };
 		
-		/**
-		 * Dessine les abscisses et ordonnées du diagramme
-		 */
-		IDiagramme.prototype.drawAxis = function() {
-			this.drawXAxis();
-			this.drawYAxis();
+		IDiagramme.prototype.getBottomShift = function() {
+			return this.yAxisConfig.bottomShift;
 		};
 		
-		/**
-		 * Dessine les abscisses du diagramme
-		 */
-		IDiagramme.prototype.drawXAxis = function() {
-			var context = this.canvas.getContext('2d');
-			context.strokeStyle = "black";
-			context.beginPath();
-				// Ligne des abscisses
-				context.moveTo(50, this.getHeight() - 50);
-				context.lineTo(this.getWidth() - 50, this.getHeight() - 50);
-			context.closePath();
-			context.stroke();
-		};
-		
-		/**
-		 *	Dessine les ordonnées du diagramme
-		 */
-		IDiagramme.prototype.drawYAxis = function(){
-			// TODO: Récupérer la couleur dynamiquement à partir du css.
-			var context = this.canvas.getContext('2d');
-			context.strokeStyle = "black";
-			context.beginPath();
-				// Ligne des ordonnées
-				context.moveTo(50, 20);
-				context.lineTo(50, this.getHeight() - 50);
-			context.closePath();
-			context.stroke();
-			
-			// Dessin des intervalles en y
-			var top = this.data.getTopValue();
-			var nbIntervals = 10; // TODO: a fixer plus tard
-			var lengthInterval = (this.getHeight() - 50 - 20) / nbIntervals;
-			var dataInterval = Math.round(top / nbIntervals);
-			context.beginPath();
-				for (var y = 20; y < this.getHeight() - 2 * lengthInterval; y += lengthInterval) {
-					context.moveTo(50 - 3, y);
-					context.lineTo(50 + 3, y);
-					var textWidth = context.measureText(top).width;
-					context.fillText(top, 50 - textWidth - 5, y + 3, textWidth);
-					top -= dataInterval;
-				}
-			context.closePath();
-			context.stroke();
+		IDiagramme.prototype.getPixelPerUnit = function() {
+			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
+			var dataInterval = Math.round(this.data.getTopValue() / this.yAxisConfig.nbIntervals);
+			return lengthInterval / dataInterval;
 		};
 		
 		/**
