@@ -13,7 +13,7 @@ var HistoDiagramme = function(canvasRef, direction) {
         1 pour une ligne simple
         2 pour une ligne en pointillés
      */
-	var ligneDeVisee = 2;
+	var ligneDeVisee = 3;
 	
 			/**
 		 * Dessine les abscisses et ordonnées du diagramme
@@ -69,10 +69,18 @@ var HistoDiagramme = function(canvasRef, direction) {
 							while (i < 500) {
 								context.moveTo(i, y);
 									context.lineTo(i+10, y);
-									trace = 0;
 								i+= 20;
 							}
-						}
+						} else {
+                            if (ligneDeVisee == 3) {
+                               var i = this.yAxisConfig.leftShift;
+							while (i < 500) {
+								context.moveTo(i, y);
+									context.lineTo(i+1, y);
+								i+= 3;
+							}
+                            }
+                        }
 					}
 				}
 				context.stroke();
