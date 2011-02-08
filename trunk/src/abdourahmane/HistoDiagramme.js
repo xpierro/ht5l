@@ -1,7 +1,7 @@
 /**
  * Constructeur du diagramme camembert.
  * @param canvasRef Reference vers le canvas
- * @param direction Direction de lecture 2D de la matrice
+ * @param direction Direction de lecture 2D de la matrice 
  */
 var HistoDiagramme = function(canvasRef, direction) {
 	IDiagramme.call(this, canvasRef);
