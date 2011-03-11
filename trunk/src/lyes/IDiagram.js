@@ -10,6 +10,7 @@
 var IDiagram = function(canvasRef) {
 	this.canvas = canvasRef;
 	this.data = null;
+	this.style = null;
     this.colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
 
     // Objet de configuration du dessin TODO: rendre modifiable aisément.
@@ -85,6 +86,15 @@ var IDiagram = function(canvasRef) {
             this.redraw();
 		};
 
+		/**
+		 * Charge le style du diagramme.
+		 * @param styleMatrix Matrice de style
+		 */
+		IDiagram.prototype.setStyle = function(styleMatrix) {
+			this.style = styleMatrix;
+            this.redraw();
+		};
+		
         IDiagram.prototype.getWidestText = function(texts) {
             var context = this.canvas.getContext('2d');
             var widest = {text: texts[0], length: context.measureText(texts[0]).width};
