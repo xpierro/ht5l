@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style>
+	<colors>
+		<color>Aqua</color>
+		<color>Black</color>
+		<color>Blue</color>
+		<color>BlueViolet</color>
+		<color>Brown</color>
+		<color>Chartreuse</color>
+		<color>Cyan</color>
+		<color>DarkBlue</color>
+		<color>DarkGray</color>
+		<color>DarkGreen</color>
+		<color>DarkMagenta</color>
+		<color>DeepPink</color>
+		<color>Gold</color>
+		<color>Green</color>
+		<color>GreenYellow</color>
+		<color>Lime</color>
+		<color>Orange</color>
+		<color>Pink</color>
+		<color>Red</color>
+		<color>Violet</color>
+		<color>Yellow</color>
+		<color>White</color>
+	</colors>
+	<legend>
+		<x>10</x>
+		<y>10</y>
+		<w>15</w>
+		<h>15</h>
+	</legend>
+</style>
