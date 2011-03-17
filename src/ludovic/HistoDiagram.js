@@ -14,7 +14,6 @@ var HistoDiagram = function(canvasRef, direction) {
 	this.dir = direction;
 	if (typeof HistoDiagram.initialized == "undefined") {
 		HistoDiagram.initialized = true;
-
 		/**
 		 * Dessin de l'histogramme.
 		 */
