@@ -1,10 +1,10 @@
 /**
- * Charge tous les scripts nécessaire au fonctionnement de la biblioth?que
+ * Charge tous les scripts nï¿½cessaire au fonctionnement de la biblioth?que
  * Conception: Pierre Collignon.
  */
 
-// On définit les fichier:
-var jsFiles = new Array("DataMatrix.js", "IDiagram.js", "PieDiagram.js", "HistoDiagram.js",
+// On dï¿½finit les fichier:
+var jsFiles = new Array("DataMatrix.js", "IDiagram.js", "PieDiagram.js", "HistoDiagram.js", "LineDiagram.js",
                         "IDataSource.js", "InternalDataSource.js", "testMerge.js");
 
 /**

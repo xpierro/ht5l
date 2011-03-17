@@ -182,6 +182,20 @@ var IDiagram = function(canvasRef) {
 				context.lineTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
 			context.closePath();
 			context.stroke();
+
+			// Dessin des intervalles en y
+			var currentValue = this.data.getTopValue();
+			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
+			var dataInterval = Math.round(currentValue / this.yAxisConfig.nbIntervals);
+			var stepWidth = this.yAxisConfig.stepWidth; // Longueur de la graduation
+			for (var y = this.yAxisConfig.topShift; y < this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
+				context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+				context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+				context.stroke();
+				var textWidth = context.measureText(currentValue).width;
+				context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+				currentValue -= dataInterval;
+			}
 		};
 
         // TODO: methode de récupération de parametre par nom
@@ -207,33 +221,7 @@ var IDiagram = function(canvasRef) {
 		/**
 		 * Dessine les lignes de visée
 		 */
-		IDiagram.prototype.drawYLines = function() {
-         var context = this.canvas.getContext('2d');
-            context.strokeStyle = 'black';
-            var whiteLength = 3
-            var lineLength = 1;
-            // Dessin des intervalles en y
-			var currentValue = this.data.getTopValue();
-			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
-			var dataInterval = Math.round(currentValue / this.yAxisConfig.nbIntervals);
-			var stepWidth = this.yAxisConfig.stepWidth; // Longueur de la graduation
-			for (var y = this.yAxisConfig.topShift; y < this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
-				context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
-				context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
-                var i = this.getLeftShift();
-                 while (i < this.getWidth()) {
-                    context.moveTo(i, y);
-                    context.lineTo(i+lineLength, y);
-                    i+= whiteLength;
-                }
-				context.stroke();
-				var textWidth = context.measureText(currentValue).width;
-				context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
-				currentValue -= dataInterval;
-
-
-            }
-        };
+		IDiagram.prototype.drawYLines = function() { };
 		
 		IDiagram.prototype.redraw = function() {
             if (this.data) {
