@@ -6,106 +6,61 @@
  */
 
 var LineDiagram = function(canvasRef, direction) {
-	
 	IDiagram.call(this, canvasRef);
 	
 	if (direction != 'row' && direction != 'column') {
 		throw "Direction de lecture invalide : " + direction;
 	}
 	this.dir = direction;
+	
 	if (typeof LineDiagram.initialized == "undefined") {
-		LineDiagram.initialized =true;
+		LineDiagram.initialized = true;
 		//Dessin des lignes.
 		LineDiagram.prototype.drawDiagram = function() {
 			var context = this.canvas.getContext('2d');
-			var shift = 5;
-			
-			var firstShift = 20; // Premier décalage là ou commence le dessin
-			
 			var absLabels = null;
             var columnLabels = null;
+            var shift = 5;
 			if (this.dir == 'column') {
 				absLabels = this.data.getRowLabels();
-				//alert(absLabels);
-				columnLabels = this.data.getColumnLabels();
+				lineLabels = this.data.getColumnLabels();
 			} else {
 				absLabels = this.data.getColumnLabels();
-				//alert(absLabels);
-				columnLabels = this.data.getRowLabels();
+				lineLabels = this.data.getRowLabels();
 			}
-
-            var globalShift = (absLabels.length - 1) * shift; // Somme des décalages entre deux ensembles en abscisse
-            var currentX = this.getLeftShift()+firstShift;
-            //alert(currentX);
-
-            var longueurSegment = ((this.getWidth() - currentX   - globalShift)
-                            / (this.data.getColumnNumber() * this.data.getRowNumber()));
-           // alert(largeurSegment);
+			
+	
+            var currentX = this.getLeftShift();
+            var deltaX = (this.getWidth() - this.getLeftShift()) / absLabels.length;
             var lineHeight = 0;
-            var lineHeightG = 0;
-            var lineHeightY = 0;
-            var i = 0;
-            var oldValue = 0;
-            var oldValueG = 0;
-            var oldValueY = 0;
-            var value = 0;
-			$.each(absLabels, $.proxy(function(i, abslabel){
+            context.strokeStyle = 'blue';
+            $.each(lineLabels, $.proxy(function(i, lineLabel){
+				$.each(absLabels, $.proxy(function(j, absLabel) {
+					var currentHeight = this.getPixelPerUnit() * this.data.getValueByLabelAndDirection(lineLabel, absLabel, this.dir);
+					var currentY = this.getHeight() - this.getBottomShift() - currentHeight;
+					if (j == 0) {
+						context.beginPath();
+						context.moveTo(currentX, currentY);
+					} else {
+						context.lineTo(currentX, currentY);
+						context.stroke();
+					}
+					
+					var xLegendPosition = currentX - context.measureText(absLabel).width / 2;
+		            context.fillStyle = 'black'; // TODO: a fixer ailleurs
+		            context.fillText(absLabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
+		            currentX += deltaX;
+				}, this)
+								
+				);
+				currentX = this.getLeftShift();
+				context.strokeStyle = 'red';
+				currentX = this.getLeftShift();
+				context.strokeStyle = 'black';
 				
-				$.each(columnLabels, $.proxy(function(j, colorlabel) {
-					//alert(colorlabel);
-                    if (i == 0) {
-                    	
-                        oldValue = 12000;
-                        oldValueG = 9000;
-                        oldValueY = 3000;
-                        i=1;
-                        
-                        
-                    } else {
-                        if (i != 1) {
-                            oldValue = value;
-                            oldValueG = value;
-                            oldValueY = value;
-                            //alert(oldValue);
-                        }
-                        value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
-                        //alert(value);
-                        var color = this.getColors()[j];
-					//alert(this.getPixelPerUnit() * value);
-                        //clubi
-                        context.strokeStyle = color;
-                        currentX += longueurSegment;
-                        lineHeight = 340 - this.getPixelPerUnit() * value;     // TODO: Chercher à quoi correspond ce "magic number" 340 ?!
-                        //lineHeightG = 340 - this.getPixelPerUnit() * value;
-                        context.moveTo(currentX, 340 - this.getPixelPerUnit() * oldValue);
-                        context.lineTo(currentX + longueurSegment, lineHeight);
-                        context.stroke();
-                        //google
-                        context.strokeStyle = color;
-                        currentX += longueurSegment;
-                        lineHeight = 340 - this.getPixelPerUnit() * value;     // TODO: Chercher à quoi correspond ce "magic number" 340 ?!
-                        context.moveTo(currentX, 340 - this.getPixelPerUnit() * oldValueG);
-                        context.lineTo(currentX + longueurSegment, lineHeight);
-                        context.stroke();
-                        //yahoo
-                        context.strokeStyle = color;
-                        currentX += longueurSegment;
-                        lineHeight = 340 - this.getPixelPerUnit() * value;     // TODO: Chercher à quoi correspond ce "magic number" 340 ?!
-                        context.moveTo(currentX, 340 - this.getPixelPerUnit() * oldValueY);
-                        context.lineTo(currentX + longueurSegment, lineHeight);
-                        context.stroke();
-                        //fi
-                        
-                        j++;
-                    }
-                    i++;
-				}, this));
-				var xLegendPosition = firstShift + this.getLeftShift() + (i*shift) + (i * longueurSegment * columnLabels.length)
-                + ((longueurSegment * columnLabels.length) / 2) - context.measureText(abslabel).width / 2;
-				context.fillStyle = 'black'; // TODO: a fixer ailleurs
-				context.fillText(abslabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
-				currentX += shift;	
 			}, this));
+            
+            
 			
 		};
 			
