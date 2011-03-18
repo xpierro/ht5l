@@ -7,7 +7,7 @@ m.setValue("Clubic.fr", "Mercredi", 11354);
 m.setValue("Clubic.fr", "Jeudi", 10058);
 m.setValue("Clubic.fr", "Vendredi", 9871);
 m.setValue("Clubic.fr", "Samedi", 8254);
-m.setValue("Clubic.fr", "Dimanche", 5477);
+m.setValue("Clubic.fr", "Dimanche", 1);
 
 m.setValue("Google.fr", "Lundi", 9855);
 m.setValue("Google.fr", "Mardi", 8870);
@@ -24,6 +24,7 @@ m.setValue("Yahoo.fr", "Jeudi", 3108);
 m.setValue("Yahoo.fr", "Vendredi", 2114);
 m.setValue("Yahoo.fr", "Samedi", 2045);
 m.setValue("Yahoo.fr", "Dimanche", 950);
+
 /*
 var diag1 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'column');
 diag1.setData(m);
