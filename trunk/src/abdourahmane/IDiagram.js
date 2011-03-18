@@ -1,8 +1,18 @@
-var IDiagramme = function(canvasRef) {
+/**
+ *  Classe abstraite représentant la vue d'un diagramme générique.
+ *  Au moins drawDiagram doit être implémentée par les clients.
+ *
+ *  Conception: Pierre Collignon
+ *  Corrections: Ludovic Thueux et Abdourahmane Djigo
+ *  Commentaires: Maxence Luce
+ */
+
+var IDiagram = function(canvasRef) {
 	this.canvas = canvasRef;
 	this.data = null;
-    this.colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen", "yellow");
-	
+    this.colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
+
+    // Objet de configuration du dessin TODO: rendre modifiable aisément.
     this.yAxisConfig = {
 		leftShift: 50,
 		topShift: 20,
@@ -10,18 +20,19 @@ var IDiagramme = function(canvasRef) {
 		nbIntervals: 10,
 		stepWidth: 6
 	};
-        
+	
 	/**
 	 * Prototypage, toutes les methodes définies ici ne seront pas dupliquées
 	 * à l'instanciation.
 	 */
-    if (typeof IDiagramme.initialized == "undefined" ) {
-        IDiagramme.initialized = true;
+    if (typeof IDiagram.initialized == "undefined" ) {
+        IDiagram.initialized = true;
+        
 		/**
 		 *	Définit la largeur de la fenêtre du diagramme.
 		 *	@param width Largeur de la fenêtre
 		 */
-		IDiagramme.prototype.setWidth = function(width){
+		IDiagram.prototype.setWidth = function(width){
 			this.canvas.setAttribute('width', width);
 			this.redraw();
 		};
@@ -29,7 +40,7 @@ var IDiagramme = function(canvasRef) {
 		/**
 		 *	Retourne la largeur de la fenêtre du diagramme.
 		 */
-		IDiagramme.prototype.getWidth = function(){
+		IDiagram.prototype.getWidth = function(){
 			return this.canvas.getAttribute('width');
 		};
 	
@@ -37,7 +48,7 @@ var IDiagramme = function(canvasRef) {
 		 *	Définit la hauteur de la fenêtre du diagramme
 		 *	@param height Hauteur de la fenêtre.
 		 */
-		IDiagramme.prototype.setHeight = function(height){
+		IDiagram.prototype.setHeight = function(height){
 			this.canvas.setAttribute('height', height);
 			this.redraw();
 		};
@@ -45,11 +56,14 @@ var IDiagramme = function(canvasRef) {
 		/**
 		 *	Retourne la hauteur de la fenêtre du diagramme
 		 */
-		IDiagramme.prototype.getHeight = function(){
+		IDiagram.prototype.getHeight = function(){
 			return this.canvas.getAttribute('height');
 		};
 
-        IDiagramme.prototype.getColors = function() {
+        /**
+         * Retourne l'ensemble du tableau de couleurs sur lequel "cycler".
+         */
+        IDiagram.prototype.getColors = function() {
              return this.colors;
          };
 
@@ -58,7 +72,7 @@ var IDiagramme = function(canvasRef) {
 		 * Charge un fichier de style pour le diagramme.
 		 * @param styleConfig Objet de config de style {colors: ["blue", "red], background: "yellox"}
 		 */
-		IDiagramme.prototype.setStyle = function(styleConfig) {
+		IDiagram.prototype.setStyle = function(styleConfig) {
             // TODO: faire
         };
 	
@@ -66,24 +80,38 @@ var IDiagramme = function(canvasRef) {
 		 * Charge les données du diagramme.
 		 * @param dataMatrix Matrice des données
 		 */
-		IDiagramme.prototype.setData = function(dataMatrix) {
+		IDiagram.prototype.setData = function(dataMatrix) {
 			this.data = dataMatrix;
+            this.redraw();
 		};
+
+        IDiagram.prototype.getWidestText = function(texts) {
+            var context = this.canvas.getContext('2d');
+            var widest = {text: texts[0], length: context.measureText(texts[0]).width};
+            $.each(texts, function(i, text) {
+                var length = context.measureText(text).width;
+                if (widest.length < length) {
+                    widest.length = length;
+                    widest.text = text;
+                }
+            });
+            return widest;
+        };
 		
 		/**
-		 *	Dessine la légende du diagramme
+		 *	Dessine la légende du diagramme.
+         *  TODO: ne plus dessiner le contour du rectangle et le rendre modifiable.
 		 */
-		IDiagramme.prototype.drawLegend = function(){
+		IDiagram.prototype.drawLegend = function(){
             var context = this.canvas.getContext('2d');
-			var width = this.getWidth();
 			var height = this.getHeight();
             // Dessin du rectangle encadrant la légende TODO: spécifier ce rectangle autrement
             var rectangle = {x: 0, y: 0, width: 500, height: 120 };
             context.strokeStyle = 'black';
-            context.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+            //context.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
             // Choix des labels composant la légende
-			var labels = this.dir == 'y' ? this.data.getXLabels() : this.data.getYLabels();
+			var labels = this.dir == 'column' ? this.data.getColumnLabels() : this.data.getRowLabels();
 
             // Récupération du plus long label
             var widest = this.getWidestText(labels);
@@ -119,17 +147,18 @@ var IDiagramme = function(canvasRef) {
         };
 		
 		/**
-		 * Dessine les abscisses et ordonnées du diagramme
+		 * Dessine l'axe du diagramme
 		 */
-		IDiagramme.prototype.drawAxis = function() {
+		IDiagram.prototype.drawAxis = function() {
 			this.drawXAxis();
 			this.drawYAxis();
+            this.drawYLines();
 		};
-		
-		/**
+
+        /**
 		 * Dessine les abscisses du diagramme
 		 */
-		IDiagramme.prototype.drawXAxis = function() {
+		IDiagram.prototype.drawXAxis = function() {
 			var context = this.canvas.getContext('2d');
 			context.strokeStyle = "black";
 			context.beginPath();
@@ -143,7 +172,7 @@ var IDiagramme = function(canvasRef) {
 		/**
 		 *	Dessine les ordonnées du diagramme
 		 */
-		IDiagramme.prototype.drawYAxis = function(){
+		IDiagram.prototype.drawYAxis = function(){
 			// TODO: Récupérer la couleur dynamiquement à partir du css.
 			var context = this.canvas.getContext('2d');
 			context.strokeStyle = "black";
@@ -153,7 +182,7 @@ var IDiagramme = function(canvasRef) {
 				context.lineTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
 			context.closePath();
 			context.stroke();
-			
+
 			// Dessin des intervalles en y
 			var currentValue = this.data.getTopValue();
 			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
@@ -168,12 +197,17 @@ var IDiagramme = function(canvasRef) {
 				currentValue -= dataInterval;
 			}
 		};
-		
-		IDiagramme.prototype.getBottomShift = function() {
+
+        // TODO: methode de récupération de parametre par nom
+		IDiagram.prototype.getBottomShift = function() {
 			return this.yAxisConfig.bottomShift;
 		};
-		
-		IDiagramme.prototype.getPixelPerUnit = function() {
+
+        IDiagram.prototype.getLeftShift = function() {
+			return this.yAxisConfig.leftShift;
+		};
+
+		IDiagram.prototype.getPixelPerUnit = function() {
 			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
 			var dataInterval = Math.round(this.data.getTopValue() / this.yAxisConfig.nbIntervals);
 			return lengthInterval / dataInterval;
@@ -182,20 +216,23 @@ var IDiagramme = function(canvasRef) {
 		/**
 		 *	Dessine le diagramme. 
 		 */
-		IDiagramme.prototype.drawDiagram = function(){};
+		IDiagram.prototype.drawDiagram = function(){};
 		
 		/**
 		 * Dessine les lignes de visée
 		 */
-		IDiagramme.prototype.drawYLines = function() {
-			
-		};
+		IDiagram.prototype.drawYLines = function() { };
 		
-		IDiagramme.prototype.redraw = function() {
-			this.drawAxis();
-			this.drawYLines();
-			this.drawDiagram();
-            this.drawLegend();
+		IDiagram.prototype.redraw = function() {
+            if (this.data) {
+                this.drawAxis();
+                this.drawDiagram();
+                this.drawLegend();
+                // TODO: juste pour le test: supprimer
+                var context = this.canvas.getContext('2d');
+                context.strokeStyle = 'black';
+                context.strokeRect(0, 0, this.getWidth(), this.getHeight());
+            }
 		};
     }
 };
