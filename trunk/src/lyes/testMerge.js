@@ -34,10 +34,23 @@ diag3.setData(m);
 var diag4 = new PieDiagram(document.getElementsByTagName('canvas')[3], 'row');
 diag4.setData(m);
 */
-var ids = new InternalDataSource('testpre');
-ids.loadData(function() {
+//var ids = new InternalDataSource('testpre');
+var eds = new ExternalDataSource('test.xml');
+var iss = new InternalStyleSource('testpre');
+/*ids.loadData(function() {
     var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
     diag5.setData(ids.getDataMatrix());
+    iss.loadData(function() {
+    	diag5.setStyle(iss);
+    });
+});*/
+
+eds.loadData(function(xml) {
+    var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
+    diag5.setData(eds.getDataMatrix(xml));
+    iss.loadData(function() {
+    	diag5.setStyle(iss);
+    });
 });
 
 /*

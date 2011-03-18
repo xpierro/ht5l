@@ -1,4 +1,4 @@
-var styleMatrix = function() {
+var StyleMatrix = function() {
     // Attributs privés
 	this.colors = new Array();
 	this.xLegend;
@@ -10,65 +10,71 @@ var styleMatrix = function() {
 	 * Prototypage, toutes les methodes définies ici ne seront pas dupliquées
 	 * à l'instanciation.
 	 */
-    if (typeof styleMatrix.initialized == "undefined" ) {
-    	styleMatrix.initialized = true;
+    if (typeof StyleMatrix.initialized == "undefined" ) {
+    	StyleMatrix.initialized = true;
 
     	/**
     	 * Retourne le tableau de couleurs.
     	 */
-    	styleMatrix.prototype.getColors = function() {
+    	StyleMatrix.prototype.getColors = function() {
     		return this.colors;
     	};
 
     	/**
     	 * Ajoute une couleur.
     	 */
-    	styleMatrix.prototype.addColor = function(color) {
+    	StyleMatrix.prototype.addColor = function(color) {
     		this.colors.push(color);
     	};
     	
     	/**
     	 * Retourne le x de la legend.
     	 */
-    	styleMatrix.prototype.getXLegend = function() {
+    	StyleMatrix.prototype.getLegendX = function() {
     		return this.xLegend;
     	};
     	
     	/**
     	 * Retourne le y de la legend.
     	 */
-    	styleMatrix.prototype.getYLegend = function() {
+    	StyleMatrix.prototype.getLegendY = function() {
     		return this.yLegend;
     	};
     	
     	/**
     	 * Retourne le w de la legend.
     	 */
-    	styleMatrix.prototype.getWLegend = function() {
+    	StyleMatrix.prototype.getLegendW = function() {
     		return this.wLegend;
     	};
     	
     	/**
     	 * Retourne le h de la legend.
     	 */
-    	styleMatrix.prototype.getHLegend = function() {
+    	StyleMatrix.prototype.getLegendH = function() {
     		return this.hLegend;
     	};
 
-    	styleMatrix.prototype.setXLegend = function(xlegend) {
+    	StyleMatrix.prototype.setLegendX = function(xlegend) {
     		this.xLegend = xlegend;
     	};
     	
-    	styleMatrix.prototype.setYLegend = function(ylegend) {
+    	StyleMatrix.prototype.setLegendY = function(ylegend) {
     		this.yLegend = ylegend;
     	};
     	
-    	styleMatrix.prototype.setWLegend = function(wlegend) {
+    	StyleMatrix.prototype.setLegendW = function(wlegend) {
     		this.wLegend = wlegend;
     	};
     	
-    	styleMatrix.prototype.setHLegend = function(hlegend) {
+    	StyleMatrix.prototype.setLegendH = function(hlegend) {
     		this.hLegend = hlegend;
     	};
+    	
+    	/*retourne le rectangle de la legende*/
+    	StyleMatrix.prototype.getLegendRectangle = function() {
+    		return {x: this.xLegend, y: this.yLegend, width: this.wLegend, height: this.hLegend};
+    	};
+    	
     }
 };
