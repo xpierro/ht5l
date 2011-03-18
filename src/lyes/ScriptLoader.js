@@ -3,7 +3,7 @@
  */
 
 // On définit les fichier:
-var jsFiles = new Array("DataMatrix.js", "test.js");
+var jsFiles = new Array("DataMatrix.js", "StyleMatrix.js", "test.js");
 
 /**
  * Charge un script

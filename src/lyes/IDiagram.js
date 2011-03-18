@@ -10,8 +10,7 @@
 var IDiagram = function(canvasRef) {
 	this.canvas = canvasRef;
 	this.data = null;
-	this.style = null;
-    this.colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
+    this.style = null;
 
     // Objet de configuration du dessin TODO: rendre modifiable aisément.
     this.yAxisConfig = {
@@ -28,6 +27,7 @@ var IDiagram = function(canvasRef) {
 	 */
     if (typeof IDiagram.initialized == "undefined" ) {
         IDiagram.initialized = true;
+        
         
 		/**
 		 *	Définit la largeur de la fenêtre du diagramme.
@@ -65,7 +65,11 @@ var IDiagram = function(canvasRef) {
          * Retourne l'ensemble du tableau de couleurs sur lequel "cycler".
          */
         IDiagram.prototype.getColors = function() {
-             return this.colors;
+        	if (this.styleMatrix) {
+        		return this.styleMatrix.getColors();
+        	} else {
+        		return new Array('blue', 'white', 'red', 'green', 'yellow');
+        	}
          };
 
 		
@@ -73,8 +77,9 @@ var IDiagram = function(canvasRef) {
 		 * Charge un fichier de style pour le diagramme.
 		 * @param styleConfig Objet de config de style {colors: ["blue", "red], background: "yellox"}
 		 */
-		IDiagram.prototype.setStyle = function(styleConfig) {
-            // TODO: faire
+		IDiagram.prototype.setStyle = function(styleSource) {
+            this.styleMatrix = styleSource.getStyleMatrix();
+            this.redraw();
         };
 	
 		/**
@@ -86,15 +91,6 @@ var IDiagram = function(canvasRef) {
             this.redraw();
 		};
 
-		/**
-		 * Charge le style du diagramme.
-		 * @param styleMatrix Matrice de style
-		 */
-		IDiagram.prototype.setStyle = function(styleMatrix) {
-			this.style = styleMatrix;
-            this.redraw();
-		};
-		
         IDiagram.prototype.getWidestText = function(texts) {
             var context = this.canvas.getContext('2d');
             var widest = {text: texts[0], length: context.measureText(texts[0]).width};
@@ -108,6 +104,14 @@ var IDiagram = function(canvasRef) {
             return widest;
         };
 		
+        IDiagram.prototype.getLegendRectangle = function() {
+        	if (this.styleMatrix) {
+        		return this.styleMatrix.getLegendRectangle();
+        	} else {
+        		return {x: 10, y: 10, width: 500, height: 120 };
+        	}
+        };
+        
 		/**
 		 *	Dessine la légende du diagramme.
          *  TODO: ne plus dessiner le contour du rectangle et le rendre modifiable.
@@ -116,8 +120,8 @@ var IDiagram = function(canvasRef) {
             var context = this.canvas.getContext('2d');
 			var height = this.getHeight();
             // Dessin du rectangle encadrant la légende TODO: spécifier ce rectangle autrement
-            var rectangle = {x: 0, y: 0, width: 500, height: 120 };
-            context.strokeStyle = 'black';
+            var rectangle = this.getLegendRectangle();
+			context.strokeStyle = 'black';
             //context.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
             // Choix des labels composant la légende
@@ -126,8 +130,7 @@ var IDiagram = function(canvasRef) {
             // Récupération du plus long label
             var widest = this.getWidestText(labels);
 
-            // TODO: gérer les couleurs
-			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
+            var colors = this.getColors();
             //Dessin des éléments de la légende. TODO: faire un objet de config
 			var pos = {x: rectangle.x, y: rectangle.y}; // Position du pinceau
             var squareSide = 10; //Taille du carré coloré
@@ -147,12 +150,12 @@ var IDiagram = function(canvasRef) {
 				context.fillText(label, pos.x + squareSide + shift, pos.y + squareSide);
 
                 // Translation du pinceau
-                if (pos.x + 2 * widest.length + squareSide + shift < rectangle.x + rectangle.width) {
+				if (pos.x + 2 * widest.length + squareSide + shift < rectangle.x + rectangle.width) {
                     pos.x += xStep;
                 } else {
 				    pos.x = rectangle.x;
 				    pos.y += yStep;
-                }
+				}
 			});
         };
 		
@@ -234,12 +237,14 @@ var IDiagram = function(canvasRef) {
 		IDiagram.prototype.drawYLines = function() { };
 		
 		IDiagram.prototype.redraw = function() {
+			var context = this.canvas.getContext('2d');
+			context.fillStyle = 'white';
+			context.fillRect(0, 0, this.getWidth(), this.getHeight());
             if (this.data) {
                 this.drawAxis();
                 this.drawDiagram();
                 this.drawLegend();
                 // TODO: juste pour le test: supprimer
-                var context = this.canvas.getContext('2d');
                 context.strokeStyle = 'black';
                 context.strokeRect(0, 0, this.getWidth(), this.getHeight());
             }

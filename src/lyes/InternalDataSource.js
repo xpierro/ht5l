@@ -7,6 +7,7 @@
  * Constructeur de la source de donnée interne
  * @param preId Identifiant de la balise pre contenant le flux xml.
  */
+
 var InternalDataSource = function(preId) {
 	IDataSource.call(this);
     this.pre = preId;
