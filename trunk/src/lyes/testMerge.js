@@ -36,7 +36,8 @@ diag4.setData(m);
 */
 //var ids = new InternalDataSource('testpre');
 var eds = new ExternalDataSource('test.xml');
-var iss = new InternalStyleSource('testpre');
+//var iss = new InternalStyleSource('testpre');
+var ess = new ExternalStyleSource('styleSource.xml');
 /*ids.loadData(function() {
     var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
     diag5.setData(ids.getDataMatrix());
@@ -48,8 +49,11 @@ var iss = new InternalStyleSource('testpre');
 eds.loadData(function(xml) {
     var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
     diag5.setData(eds.getDataMatrix(xml));
-    iss.loadData(function() {
-    	diag5.setStyle(iss);
+    //iss.loadData(function() {
+    //	diag5.setStyle(iss);
+    //});
+    ess.loadData(function(xml)){
+    	diag5.setStyle(ess.getStyleMatrix(xml));
     });
 });
 
