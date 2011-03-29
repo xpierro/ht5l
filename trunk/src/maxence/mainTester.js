@@ -33,3 +33,8 @@ ids.loadData(function() {
     var diag1 = new HistoDiagram(document.getElementsByTagName('canvas')[6], 'row');
     diag1.setData(ids.getDataMatrix());
 });
+var ids = new InternalDataSource('test08h');
+ids.loadData(function() {
+    var diag1 = new HistoDiagram(document.getElementsByTagName('canvas')[7], 'row');
+    diag1.setData(ids.getDataMatrix());
+});
