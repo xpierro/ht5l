@@ -38,23 +38,27 @@ var InternalDataSource = function(preId) {
          */
         InternalDataSource.prototype.getDataMatrix = function() {
             var dataMatrix = new DataMatrix();
-
-        	var labels = this.xml.getElementsByTagName('labels')[0];
+            
+        	var labels = this.xml.getElementsByTagName('series')[0];
+        	alert(labels);
             $.each(labels.childNodes, function(index, childNode) {
-                if (childNode.tagName == 'column') {
-                    dataMatrix.addColumnLabel(childNode.textContent);
-                } else if (childNode.tagName == 'row') {
+                if (childNode.tagName == 'serie') {
+                    dataMatrix.addColumnLabel(childNode.nodeName);
+                    alert(''+childNode.nodeName);
+                }  
+               /* else if (childNode.tagName == 'row') {
                     dataMatrix.addRowLabel(childNode.textContent);;
-                }
+                }*/
             });
 
-            var rows = this.xml.getElementsByTagName('rows')[0];
+          /* var rows = this.xml.getElementsByTagName('rows')[0];
+           alert(rows);
             $.each(rows.childNodes, function(i, childNode) {
                 $.each(childNode.childNodes, function(j, grandChildNode) {
                     dataMatrix.setValue(dataMatrix.getRowLabels()[i], dataMatrix.getColumnLabels()[j],
                                         grandChildNode.textContent);
                 });
-            });
+            });*/
             return dataMatrix;
         }
     }
