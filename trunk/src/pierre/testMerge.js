@@ -25,14 +25,25 @@ m.setValue("Yahoo.fr", "Vendredi", 4568);
 m.setValue("Yahoo.fr", "Samedi", 3214);
 m.setValue("Yahoo.fr", "Dimanche", 874);
 
-var diag1 = new Histo3DDiagram(document.getElementsByTagName('canvas')[0], 'column');
-diag1.setData(m);
+var diag3DInt = new Histo3DDiagram(document.getElementsByTagName('canvas')[0], 'row');
+//var diag3DExt = new Histo3DDiagram(document.getElementById('test3DExt'), 'column');
+var diagPieInt = new PieDiagram(document.getElementsByTagName('canvas')[2], 'row');
+//var diagPieExt = new PieDiagram(document.getElementById('testPieExt'), 'column');
+var diagHistInt = new HistoDiagram(document.getElementsByTagName('canvas')[4], 'row');
+//var diagHistExt = new HistoDiagram(document.getElementById('testHistExt'), 'column');
+var diagLineInt = new LineDiagram(document.getElementsByTagName('canvas')[6], 'column');
+//var diagLineExt = new LineDiagram(document.getElementById('testLineExt'), 'column');
 
-/*
-$.each(m.getRowLabels(), function(i, r) {
-    $.each(m.getColumnLabels(), function(j, c) {
-        alert(r + " | " + c + " | " + m.getValueByLabel(r, c));
+var internalDiagrams = new Array(diag3DInt, diagPieInt, diagHistInt, diagLineInt);
+
+var ids = new InternalDataSource('testpre');
+var iss = new InternalStyleSource('testpre');
+
+ids.loadData(function() {
+    iss.loadData(function() {
+        $.each(internalDiagrams, function(i, diag) {
+            diag.setData(ids.getDataMatrix());
+            diag.setStyle(iss);
+        });
     });
 });
-alert(m.getTopValue());
-*/

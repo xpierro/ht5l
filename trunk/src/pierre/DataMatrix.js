@@ -6,7 +6,7 @@
  * ____________|_____________|______________
  * LabelLigne2 |Valeur3......|Valeur4......|
  *
- * Le sens de parcour se fait "en ligne" ou en "colonne". Parcourir en ligne signifie qu'on considère une valeur
+ * Le sens de parcourt se fait "en ligne" ou en "colonne". Parcourir en ligne signifie qu'on considère une valeur
  * comme le resultat d'une fonction d'acces de [LabelLigne][LabelColonne] tandis que parcourir en colonne est inverse:
  * [LabelColonne][LabelLigne].
  *

@@ -4,8 +4,9 @@
  */
 
 // On définit les fichier:
-var jsFiles = new Array("DataMatrix.js", "IDiagram.js", "PieDiagram.js", "HistoDiagram.js", "Histo3DDiagram.js",
-                        "IDataSource.js", "InternalDataSource.js", "testMerge.js");
+var jsFiles = new Array("StyleMatrix.js", "DataMatrix.js", "IDiagram.js", "PieDiagram.js", "HistoDiagram.js",
+                        "LineDiagram.js","Histo3DDiagram.js", "IDataSource.js", "InternalDataSource.js",
+                        "IStyleSource.js", "InternalStyleSource.js", "testMerge.js");
 
 /**
  * Charge un script

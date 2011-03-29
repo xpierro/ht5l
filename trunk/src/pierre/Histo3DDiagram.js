@@ -35,6 +35,7 @@ var Histo3DDiagram = function(canvasRef, direction) {
         Histo3DDiagram.prototype.drawYAxis = function() {
             var context = this.canvas.getContext('2d');
 			context.strokeStyle = "black";
+            context.fillStyle = "black";
 			context.beginPath();
 				// Lignes des ordonnées
 				context.moveTo(this.yAxisConfig.leftShift, this.yAxisConfig.topShift);
@@ -69,7 +70,7 @@ var Histo3DDiagram = function(canvasRef, direction) {
             var context = this.canvas.getContext('2d');
 
 			var shift = 5; // Décalage entre deux ensembles en abscisse
-            var firstShift = 20; // Premier décalage
+            var firstShift = 5; // Premier décalage
 			var currentX = this.getLeftShift() + firstShift; // Position en x sur le canvas du pinceau
 
 			// Calcul des ensemble servant d'abscisse et de couleur selon la direction de parcours
@@ -87,10 +88,9 @@ var Histo3DDiagram = function(canvasRef, direction) {
 			var globalShift = (absLabels.length - 1) * shift; // Somme des décalages entre deux ensembles en abscisse
 
 			// Largeur d'une barre
-			var barWidth = ((this.getWidth() - currentX   - globalShift)
+			var barWidth = ((this.getWidth() - currentX - globalShift - this.config3D.x)
                             / (this.data.getColumnNumber() * this.data.getRowNumber()));
 
-            alert(barWidth);
 			$.each(absLabels, $.proxy(function(i, abslabel){
 				$.each(colorLabels, $.proxy(function(j, colorlabel) {
 					var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
