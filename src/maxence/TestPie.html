@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <script type="text/javascript" src="jquery.js"></script>
+    </head>
+    <body>
+    	<p>Ces tests sont uniquement faits avec le pr&eacute;supos&eacute; que le xml fourni est valide (donc les bonnes donn&eacute;es au bon endroit, genre, pas de lettres<br/>
+    	dans des balises devant prendre un nombre en compte).</p>
+    	<br/>
+    	<p><b>Probl&egrave;me majeur: Impossible d'ins&eacute;rer des donn&eacute;es via un xml.</b>
+    	<br/>
+    	<p>Test1 : Test avec des valeurs egales.</p>
+    	
+        <canvas id="test1" width="800" height="500">Pas de canvas?</canvas>
+
+
+		<p>Test2 : Ne pas oublier de virer les valeurs n&eacute;gatives (de plus, crash si le total des valeurs=0 vu qu'on divise par ce total)</p>
+		
+		<canvas id="test2" width="800" height="500">Pas de canvas?</canvas>
+		
+		
+		<p>Test3 : Test avec beaucoup d'entr&eacute;es, penser &agrave; limiter le nombre max (de plus on peut voir que certains pourcentages &eacute;crits se <br/>
+		font "rogner" par la tranche suivante et le cercle servant &agrave; &eacute;crire les poucentages est d&eacute;sax&eacute; par rapport au cercle du Pie)</p>
+		
+		<canvas id="test3" width="800" height="500">Pas de canvas?</canvas>
+		
+		
+		<p>Test4 : Test avec que des valeurs n&eacute;gatives.</p>
+		
+		<canvas id="test4" width="800" height="500">Pas de canvas?</canvas>
+		
+
+		<p>Test5 : Voici ce qu'il se passe quand on ins&egrave;re des donn&eacute;es via un xml.</p>
+		
+		<canvas id="test5" width="800" height="500">Pas de canvas?</canvas>	
+
+        <pre id="test05p" style="visibility:hidden;">
+            <?xml version="1.0" encoding="UTF-8"?>
+                <root>
+                    <labels>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <row>Lundi</row>
+                        <row>Mardi</row>
+                    </labels>
+
+                    <rows>
+                        <row>
+                            <value>25</value>
+                            <value>25</value>
+                        </row>
+                        <row>
+                            <value>25</value>
+                            <value>25</value>
+                        </row>
+                    </rows>
+                </root>
+        </pre>
+ 
+        <script type="text/javascript" src="HTML5ChartsPie.js"></script>
+    </body>
+</html>

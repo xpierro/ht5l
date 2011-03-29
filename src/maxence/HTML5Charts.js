@@ -4,8 +4,8 @@
  */
 
 // On d�finit les fichier:
-var jsFiles = new Array("DataMatrix.js", "IDiagram.js", "PieDiagram.js", "HistoDiagram.js",
-                        "IDataSource.js", "InternalDataSource.js", "mainTester.js");
+var jsFiles = new Array("DataMatrix.js", "IDiagram.js", "PieDiagram.js", "HistoDiagram.js", "Histo3DDiagram.js",
+                        "IDataSource.js", "InternalDataSource.js", "mainTester.js", "mainTester3D.js");
 
 /**
  * Charge un script
