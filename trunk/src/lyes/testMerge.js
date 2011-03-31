@@ -52,12 +52,12 @@ ids.loadData(function() {
 /*eds.loadData(function(xml) {
     var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
     diag5.setData(eds.getDataMatrix(xml));
-    iss.loadData(function() {
-    	diag5.setStyle(iss.getStyleMatrix());
-    });
-    //ess.loadData(function(xml){
-    	//diag5.setStyle(ess.getStyleMatrix(xml));
+    //iss.loadData(function() {
+    	//diag5.setStyle(iss.getStyleMatrix());
     //});
+    ess.loadData(function(xml){
+    	diag5.setStyle(ess.getStyleMatrix(xml));
+    });
 });*/
 
 /*

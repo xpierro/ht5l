@@ -98,7 +98,16 @@ var DataMatrix = function() {
     	 * Ajoute un label de ligne.
     	 */
     	DataMatrix.prototype.addRowLabel = function(label) {
-    		this.rowLabels.push(label);
+    		existe = false;
+    		for (var i=0; i<this.rowLabels.length; i++) {
+    			if(this.rowLabels[i] == label){
+    				i = this.rowLabels.length;
+    				existe = true;
+    			}
+    		}
+    		if(existe == false){
+    			this.rowLabels.push(label);
+    		}
     	};
 
     	/**
