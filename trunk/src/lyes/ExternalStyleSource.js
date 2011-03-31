@@ -48,23 +48,26 @@ var ExternalStyleSource = function(url) {
          */
 	ExternalStyleSource.prototype.getStyleMatrix = function(xmlResponse) {
             var styleMat = new StyleMatrix();
-        	var labels = xmlResponse.getElementsByTagName('labels')[0];
-            $.each(labels.childNodes, function(index, childNode) {
-                if (childNode.tagName == 'column') {
-                	styleMat.addColumnLabel(childNode.textContent);
-                } else if (childNode.tagName == 'row') {
-                	styleMat.addRowLabel(childNode.textContent);
-                }
-            });
+            
+        	var colors = xmlResponse.getElementsByTagName('colors')[0];
+        	 $.each(colors.childNodes, function(index, childNode) {
+             	if (childNode.tagName == 'color') {
+             		styleMat.addColor(childNode.textContent);
+             	}
+             });
 
-            var rows = xmlResponse.getElementsByTagName('rows')[0];
-            $.each(rows.children, function(i, childNode) {
-                $.each(childNode.children, function(j, grandChildNode) {
-                	styleMat.setValue(styleMat.getRowLabels()[i], styleMat.getColumnLabels()[j],
-                                        grandChildNode.textContent);
-                    alert(grandChildNode.textContent);
-                });
-            });
+        	 var legend =  xmlResponse.getElementsByTagName('legend')[0];
+             $.each(legend.childNodes, function(index, childNode) {
+             	if (childNode.tagName == 'x') {
+             		styleMat.setLegendX(parseInt(childNode.textContent));
+                 } else if (childNode.tagName == 'y') {
+                 	styleMat.setLegendY(childNode.textContent);
+                 } else if (childNode.tagName == 'w'){
+                 	styleMat.setLegendW(childNode.textContent);
+                 } else if (childNode.tagName == 'h'){
+                 	styleMat.setLegendH(childNode.textContent);
+                 }
+             });
             return styleMat;
         }
 };

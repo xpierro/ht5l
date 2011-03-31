@@ -24,9 +24,7 @@ var InternalDataSource = function(preId) {
                 var parser = new DOMParser();
                 // Utiliser /g remplace TOUTES les occurences.
                 this.xml = parser.parseFromString(
-                            document.getElementById(this.pre).innerHTML.trim().replace(/\n/g, '').replace(/ /g, ''),
-                            "text/xml"
-                        );
+                		document.getElementById(this.pre).innerHTML.trim().replace(/\n/g, ''),"text/xml");
                 callback(this.xml);
             } else {
                 throw "Impossible de transformer la chaine fournie";
@@ -39,26 +37,19 @@ var InternalDataSource = function(preId) {
         InternalDataSource.prototype.getDataMatrix = function() {
             var dataMatrix = new DataMatrix();
             
-        	var labels = this.xml.getElementsByTagName('series')[0];
-        	alert(labels);
-            $.each(labels.childNodes, function(index, childNode) {
+        	var series = this.xml.getElementsByTagName('series')[0];
+            $.each(series.childNodes, function(i, childNode) {
                 if (childNode.tagName == 'serie') {
-                    dataMatrix.addColumnLabel(childNode.nodeName);
-                    alert(''+childNode.nodeName);
-                }  
-               /* else if (childNode.tagName == 'row') {
-                    dataMatrix.addRowLabel(childNode.textContent);;
-                }*/
+                    dataMatrix.addColumnLabel(childNode.attributes[0].value);
+                    $.each(childNode.childNodes, function(j, grandChildNode) {                   
+                        if (grandChildNode.tagName == 'value') {
+                            dataMatrix.addRowLabel(grandChildNode.attributes[0].value);
+                            dataMatrix.setValue(dataMatrix.getRowLabels()[(j-1)/2], dataMatrix.getColumnLabels()[(i-1)/2],
+                                    grandChildNode.textContent);
+                        } 
+                    });  
+                }
             });
-
-          /* var rows = this.xml.getElementsByTagName('rows')[0];
-           alert(rows);
-            $.each(rows.childNodes, function(i, childNode) {
-                $.each(childNode.childNodes, function(j, grandChildNode) {
-                    dataMatrix.setValue(dataMatrix.getRowLabels()[i], dataMatrix.getColumnLabels()[j],
-                                        grandChildNode.textContent);
-                });
-            });*/
             return dataMatrix;
         }
     }
