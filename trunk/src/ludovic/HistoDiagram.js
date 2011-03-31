@@ -6,11 +6,30 @@
  * Corrections: Pierre Collignon et Abdourahmane Djigo
  */
 var HistoDiagram = function(canvasRef, direction) {
-	IDiagram.call(this, canvasRef);
+	try {
+        if (canvasRef == null) {
+            throw "refCanvas null"
+        }
+        if (direction == null)  {
+            throw "dir null"
+        }
+        if (direction != 'row' && direction != 'column') {
+            throw "unknown dir"
+        }
+    } catch(e) {
+        if (e == "refCanvas null") {
+            window_alert("Erreur de données", "La référence du canvas ne peut être nulle")
+        }
+        if (e == "dir null") {
+            window_alert("Erreur de données", "La direction du diagramme doit être précisée");
+        }
+        if (e == "unknown dir") {
+            window_alert("Erreur de lecture", "Direction de lecture invalide")
+        }
+    }
 
-	if (direction != 'row' && direction != 'column') {
-		throw "Direction de lecture invalide : " + direction;
-	}
+    IDiagram.call(this, canvasRef);
+
 	this.dir = direction;
 	if (typeof HistoDiagram.initialized == "undefined") {
 		HistoDiagram.initialized = true;

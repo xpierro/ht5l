@@ -1,66 +1,57 @@
 /**
  * Constructeur du diagramme camembert.
- * Raffine IDiagram
  * @param canvasRef Reference vers le canvas
  * @param direction Direction de lecture 2D de la matrice
- *
- * Conception: Pierre Collignon
- * Commentaires: Maxence Luce
  */
-var PieDiagram = function(canvasRef, direction) {
-	try {
-        if (canvasRef == null) {
-            throw "refCanvas null"
-        }
-        if (direction == null)  {
-            throw "dir null"
-        }
-        if (direction != 'row' && direction != 'column') {
-            throw "unknown dir"
-        }
-    } catch(e) {
-        if (e == "refCanvas null") {
-            window_alert("Erreur de données", "La référence du canvas ne peut être nulle")
-        }
-        if (e == "dir null") {
-            window_alert("Erreur de données", "La direction du diagramme doit être précisée");
-        }
-        if (e == "unknown dir") {
-            window_alert("Erreur de lecture", "Direction de lecture invalide")
-        }
-    }
+var PieDiagramme = function(canvasRef, direction) {
+	IDiagram.call(this, canvasRef);
 
-    IDiagram.call(this, canvasRef);
+    this.getWidestText = function(texts) {
+        var context = this.canvas.getContext('2d');
+        var widest = {text: texts[0], length: context.measureText(texts[0]).width};
+        $.each(texts, function(i, text) {
+            var length = context.measureText(text).width;
+            if (widest.length < length) {
+                widest.length = length;
+                widest.text = text;
+            }
+        });
+        return widest;
+    };
+
+	if (direction != 'row' && direction != 'column') {
+		throw "Direction de lecture invalide";
+	}
 	this.dir = direction;
-
-	if (typeof PieDiagram.initialized == "undefined") {
-		PieDiagram.initialized = true;
-		PieDiagram.prototype.drawAxis = function() {
+	if (typeof PieDiagramme.initialized == "undefined") {
+		PieDiagramme.initialized = true;
+		PieDiagramme.prototype.drawAxis = function() {
 			// Vide
 		};
 
-		PieDiagram.prototype.drawAxis = function() {
+		PieDiagramme.prototype.drawAxis = function() {
 			// Vide
 		};
 
 		/**
 		 * Dessin du diagramme en camembert.
 		 */
-		PieDiagram.prototype.drawDiagram = function() {
+		PieDiagramme.prototype.drawDiagram = function() {
 			var context = this.canvas.getContext('2d');
+			//var width = this.getWidth();
 			var height = this.getHeight();
 			// Création des parts
 			var parts = new Array();
 			var total = this.data.getTotal();
-
-			if (this.dir == 'row') { // Pourcentage de chaque ligne
-				$.each(this.data.getRowLabels(), $.proxy(function(i, rowLabel) {
-					parts.push(this.data.getRowTotal(rowLabel) / total);
-				}, this));
+			var that = this;
+			if (this.dir == 'x') { // Pourcentage de chaque ligne
+				$.each(this.data.getYLabels(), function(i, yLabel) {
+					parts.push(that.data.getLineTotal(yLabel) / total);
+				});
 			} else {
-				$.each(this.data.getColumnLabels(), $.proxy(function(i, columnLabel) {
-					parts.push(this.data.getColumnTotal(columnLabel) / total);
-				},this));
+				$.each(this.data.getXLabels(), function(i, xLabel) {
+					parts.push(that.data.getColumnTotal(xLabel) / total);
+				});
 			}
 			//TODO: gérer les couleurs
 			var colors = this.getColors();
@@ -88,18 +79,18 @@ var PieDiagram = function(canvasRef, direction) {
 				var textArc = startArc - (2 * Math.PI) * part / textConfig.distanceFromStart;
 				// La position est celle du cercle trigo multipliée par le zoom (rayon plus grand que 1) puis translatée par le centre (> 0,0)
 				var xPos = Math.cos(textArc) * radius * textConfig.positionOnRadius + center.x;
-				// L'axe y est inversé par rapport au cercle trigo classique et l'angle est aussi inversé
+				// L'axe y est inversé par rapport au cercle trigo classique et l'angle est aussi inversé 
 				//TODO: trouver la bonne combinaison pour avoir l'angle orienté avec cohérence
 				var yPos = height - (Math.sin(-textArc) * radius * textConfig.positionOnRadius + center.y);
 				context.fillStyle = "white"; // TODO: a fixer quelque part
 				context.fillText(parseFloat(part * 100).toFixed(2) + "%", xPos, yPos);
 				startArc = endArc;
-
+		        
 			});
 		};
 	}
 };
 
 // Héritage: chainage des prototypes.
-PieDiagram.prototype = new IDiagram(null); // TODO: on répète deux fois, trouver mieux
-PieDiagram.prototype.constructor = PieDiagram;
+PieDiagramme.prototype = new IDiagramme(null); // TODO: on répète deux fois, trouver mieux
+PieDiagramme.prototype.constructor = PieDiagramme;
