@@ -78,7 +78,7 @@ var IDiagram = function(canvasRef) {
 		 * @param styleConfig Objet de config de style {colors: ["blue", "red], background: "yellox"}
 		 */
 		IDiagram.prototype.setStyle = function(styleSource) {
-            this.styleMatrix = styleSource.getStyleMatrix();
+            this.styleMatrix = styleSource;
             this.redraw();
         };
 	

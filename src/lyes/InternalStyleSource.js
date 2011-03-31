@@ -14,7 +14,7 @@ var InternalStyleSource = function(preId) {
                 var parser = new DOMParser();
                 // Utiliser /g remplace TOUTES les occurences.
                 this.xml = parser.parseFromString(
-                            document.getElementById(this.pre).innerHTML.trim().replace(/\n/g, '').replace(/ /g, ''),
+                            document.getElementById(this.pre).innerHTML.trim().replace(/\n/g, ''),
                             "text/xml"
                         );
                 callback(this.xml);
@@ -33,6 +33,7 @@ var InternalStyleSource = function(preId) {
             $.each(colors.childNodes, function(index, childNode) {
             	if (childNode.tagName == 'color') {
             		styleMat.addColor(childNode.textContent);
+            		
             	}
             });
 

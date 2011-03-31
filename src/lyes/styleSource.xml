@@ -25,9 +25,9 @@
 		<color>White</color>
 	</colors>
 	<legend>
-		<x>10</x>
-		<y>10</y>
-		<w>15</w>
-		<h>15</h>
+		<x>0</x>
+		<y>0</y>
+		<w>500</w>
+		<h>120</h>
 	</legend>
 </style>
