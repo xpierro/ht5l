@@ -51,7 +51,7 @@ var InternalDataSource = function(preId) {
             $.each(rows.childNodes, function(i, childNode) {
                 $.each(childNode.childNodes, function(j, grandChildNode) {
                     dataMatrix.setValue(dataMatrix.getRowLabels()[i], dataMatrix.getColumnLabels()[j],
-                                        grandChildNode.textContent);
+                                        parseInt(grandChildNode.textContent));
                 });
             });
             return dataMatrix;
