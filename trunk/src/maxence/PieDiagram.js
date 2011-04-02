@@ -56,6 +56,8 @@ var PieDiagram = function(canvasRef, direction) {
 				positionOnRadius: 0.75,
 				distanceFromStart: 2
 			};
+			
+			// On dessine les parts
 			$.each(parts, function(i, part) {
 				endArc = startArc - (2 * Math.PI) * part;
 				context.fillStyle = colors[i < colors.length ? i : i % colors.length];
@@ -66,6 +68,17 @@ var PieDiagram = function(canvasRef, direction) {
 				context.closePath();
 				context.fill();
 
+				startArc = endArc;
+
+			});
+			
+			var startArc = -Math.PI / 2;
+			var endArc;
+            // TODO: faire un test de tous les cas possible + légende a tailler selon width/height pas que rect
+			
+			// Puis on dessine les pourcentages de chaque part 
+			$.each(parts, function(i, part) {
+				endArc = startArc - (2 * Math.PI) * part;
 				// On utilise comme angle d'écriture du texte le milieu d'une part
 				var textArc = startArc - (2 * Math.PI) * part / textConfig.distanceFromStart;
 				// La position est celle du cercle trigo multipliée par le zoom (rayon plus grand que 1) puis translatée par le centre (> 0,0)
@@ -74,10 +87,11 @@ var PieDiagram = function(canvasRef, direction) {
 				//TODO: trouver la bonne combinaison pour avoir l'angle orienté avec cohérence
 				var yPos = height - (Math.sin(-textArc) * radius * textConfig.positionOnRadius + center.y);
 				context.fillStyle = "white"; // TODO: a fixer quelque part
-				context.fillText(parseFloat(part * 100).toFixed(2) + "%", xPos, yPos);
+				context.fillText(parseFloat(part * 100).toFixed(2) + "%", xPos-(context.measureText(parseFloat(part * 100).toFixed(2)).width)/2, yPos);
 				startArc = endArc;
 
 			});
+			
 		};
 	}
 };
