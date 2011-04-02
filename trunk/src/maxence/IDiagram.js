@@ -186,7 +186,7 @@ var IDiagram = function(canvasRef) {
 			// Dessin des intervalles en y
 			var currentValue = this.data.getTopValue();
 			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
-			var dataInterval = Math.round(currentValue / this.yAxisConfig.nbIntervals);
+			var dataInterval = (currentValue / this.yAxisConfig.nbIntervals).toFixed(1);
 			var stepWidth = this.yAxisConfig.stepWidth; // Longueur de la graduation
 			for (var y = this.yAxisConfig.topShift; y < this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
 				context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
@@ -194,7 +194,7 @@ var IDiagram = function(canvasRef) {
 				context.stroke();
 				var textWidth = context.measureText(currentValue).width;
 				context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
-				currentValue -= dataInterval;
+				currentValue = (currentValue - dataInterval).toFixed(1);
 			}
 		};
 
@@ -209,7 +209,7 @@ var IDiagram = function(canvasRef) {
 
 		IDiagram.prototype.getPixelPerUnit = function() {
 			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
-			var dataInterval = Math.round(this.data.getTopValue() / this.yAxisConfig.nbIntervals);
+			var dataInterval = (this.data.getTopValue() / this.yAxisConfig.nbIntervals).toFixed(1);
 			return lengthInterval / dataInterval;
 		};
 		

@@ -49,7 +49,7 @@ var Histo3DDiagram = function(canvasRef, direction) {
 			// Dessin des intervalles en y
 			var currentValue = this.data.getTopValue();
 			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
-			var dataInterval = Math.round(currentValue / this.yAxisConfig.nbIntervals);
+			var dataInterval = (currentValue / this.yAxisConfig.nbIntervals).toFixed(1);
 			var stepWidth = this.yAxisConfig.stepWidth; // Longueur de la graduation
 			for (var y = this.yAxisConfig.topShift; y < this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
 				context.moveTo(this.yAxisConfig.leftShift, y);
@@ -57,7 +57,7 @@ var Histo3DDiagram = function(canvasRef, direction) {
 				context.stroke();
 				var textWidth = context.measureText(currentValue).width;
 				context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
-				currentValue -= dataInterval;
+				currentValue = (currentValue - dataInterval).toFixed(1);
 			}
             // Dessin de la dernière barre sans 0
             context.moveTo(this.yAxisConfig.leftShift, y);
