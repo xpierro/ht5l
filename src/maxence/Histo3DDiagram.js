@@ -115,12 +115,21 @@ var Histo3DDiagram = function(canvasRef, direction) {
                                      this.getHeight() - this.getBottomShift() - barHeight,
                                      barWidth,
                                      barHeight);
-                    context.beginPath();
-                        context.moveTo(currentX, this.getHeight() - this.getBottomShift() - barHeight);
-                        context.lineTo(currentX + this.config3D.x, this.getHeight() - this.getBottomShift() - barHeight - this.config3D.y);
-                        context.lineTo(currentX + barWidth + this.config3D.x, this.getHeight() - this.getBottomShift() - barHeight - this.config3D.y);
-                        context.lineTo(currentX + barWidth, this.getHeight() - this.getBottomShift() - barHeight);
-                    context.closePath();
+                    if (value>0) {               
+	                    context.beginPath();
+	                        context.moveTo(currentX, this.getHeight() - this.getBottomShift() - barHeight);
+	                        context.lineTo(currentX + this.config3D.x, this.getHeight() - this.getBottomShift() - barHeight - this.config3D.y);
+	                        context.lineTo(currentX + barWidth + this.config3D.x, this.getHeight() - this.getBottomShift() - barHeight - this.config3D.y);
+	                        context.lineTo(currentX + barWidth, this.getHeight() - this.getBottomShift() - barHeight);
+	                    context.closePath();
+	                } else {                                  
+	                    context.beginPath();
+	                        context.moveTo(currentX, this.getHeight() - this.getBottomShift());
+	                        context.lineTo(currentX + this.config3D.x, this.getHeight() - this.getBottomShift() - this.config3D.y);
+	                        context.lineTo(currentX + barWidth + this.config3D.x, this.getHeight() - this.getBottomShift() - this.config3D.y);
+	                        context.lineTo(currentX + barWidth, this.getHeight() - this.getBottomShift());
+	                    context.closePath();
+	                }
                     context.stroke();
                     context.fill();
 
