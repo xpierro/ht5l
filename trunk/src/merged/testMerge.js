@@ -36,7 +36,7 @@ diag4.setData(m);
 
 var ids = new InternalDataSource('testpre');
 ids.loadData(function() {
-    var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[4], 'row');
+    var diag5 = new PieDiagram(document.getElementsByTagName('canvas')[4], 'row');
     diag5.setData(ids.getDataMatrix());
 });
 

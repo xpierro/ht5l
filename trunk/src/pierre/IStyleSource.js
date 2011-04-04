@@ -1,3 +1,7 @@
+/**
+ * Interface décrivant les méthodes à implémenter par les sources de style.
+ * Conception: Lyes Kimouche
+ */
 var IStyleSource = function() {
 	if (typeof IStyleSource.initialized == "undefined" ) {
 		IStyleSource.initialized = true;

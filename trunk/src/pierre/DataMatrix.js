@@ -15,10 +15,13 @@
  */
 
 var DataMatrix = function() {
-    // Attributs privés
+    // Intitulés des lignes de la matrice
 	this.rowLabels = new Array();
+
+    // Intitulés des colonnes de la matrice
 	this.columnLabels = new Array();
 
+    // Lignes de la matrice
 	this.rows = new Array();
 
 	/**
