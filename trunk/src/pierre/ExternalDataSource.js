@@ -61,7 +61,9 @@ var ExternalDataSource = function(url) {
                 dataMatrix.addColumnLabel(childNode.attributes[0].value);
                 $.each(childNode.childNodes, function(j, grandChildNode) {
                     if (grandChildNode.tagName == 'value') {
-                        dataMatrix.addRowLabel(grandChildNode.attributes[0].value);
+                        if (!dataMatrix.hasRowLabel(grandChildNode.attributes[0].value)) {
+                            dataMatrix.addRowLabel(grandChildNode.attributes[0].value);
+                        }
                         dataMatrix.setValue(dataMatrix.getRowLabels()[(j - 1) / 2],
                                             dataMatrix.getColumnLabels()[(i - 1) / 2],
                                             parseInt(grandChildNode.textContent));

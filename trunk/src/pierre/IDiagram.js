@@ -68,7 +68,7 @@ var IDiagram = function(canvasRef) {
         	if (this.styleMatrix) {
         		return this.styleMatrix.getColors();
         	} else {
-        		return new Array('blue', 'white', 'red', 'green', 'yellow');
+        		return new Array('blue', 'gray', 'red', 'green', 'yellow');
         	}
          };
 
@@ -174,10 +174,14 @@ var IDiagram = function(canvasRef) {
 		IDiagram.prototype.drawXAxis = function() {
 			var context = this.canvas.getContext('2d');
 			context.strokeStyle = "black";
-			context.beginPath();
-				// Ligne des abscisses
-				context.moveTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
+            context.beginPath();
+            if (this.data.getBottomValue() < 0 || this.data.getTopValue() < 0) {
+                context.moveTo(this.yAxisConfig.leftShift, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
+				context.lineTo(this.getWidth(), (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
+            } else {
+                context.moveTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
 				context.lineTo(this.getWidth(), this.getHeight() - this.yAxisConfig.bottomShift);
+            }
 			context.closePath();
 			context.stroke();
 		};
@@ -199,18 +203,53 @@ var IDiagram = function(canvasRef) {
 
 			// Dessin des intervalles en y
 			var currentValue = this.data.getTopValue();
-			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
-			var dataInterval = Math.round(currentValue / this.yAxisConfig.nbIntervals);
+			var lengthInterval = null;
+			var dataInterval = null;
+            if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
+                var maxTop = this.data.getTopValue() < 0 ? -this.data.getTopValue() : this.data.getTopValue();
+                var maxBottom = this.data.getBottomValue() < 0 ? -this.data.getBottomValue() : this.data.getBottomValue();
+                var max = maxTop > maxBottom ? maxTop : maxBottom;
+                currentValue = max;
+                dataInterval = Math.round(2 * max / this.yAxisConfig.nbIntervals);
+                lengthInterval = Math.round(((this.getHeight() - this.yAxisConfig.bottomShift - this.yAxisConfig.topShift) / 2) / (this.yAxisConfig.nbIntervals / 2));
+            } else {
+                dataInterval = Math.round(currentValue / this.yAxisConfig.nbIntervals);
+                lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
+            }
 			var stepWidth = this.yAxisConfig.stepWidth; // Longueur de la graduation
-			for (var y = this.yAxisConfig.topShift; y < this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
-				context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
-				context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+            if (this.data.getTopValue() < 0|| this.data.getBottomValue() < 0) {
+                currentValue = 0;
+                for (var y = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2; y >= this.yAxisConfig.topShift; y -= lengthInterval) {
+                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
 
-				var textWidth = context.measureText(currentValue).width;
-				context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
-				context.stroke();
-                currentValue -= dataInterval;
-			}
+                    var textWidth = context.measureText(currentValue).width;
+                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    context.stroke();
+
+                    currentValue += dataInterval;
+                }
+                currentValue = -dataInterval;
+                for (var y = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 + lengthInterval; y <= this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
+                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+
+                    var textWidth = context.measureText(currentValue).width;
+                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    context.stroke();
+                    currentValue -= dataInterval;
+                }
+            }  else {
+                for (var y = this.yAxisConfig.topShift; y < this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
+                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+
+                    var textWidth = context.measureText(currentValue).width;
+                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    context.stroke();
+                    currentValue -= dataInterval;
+                }
+            }
 		};
 
         // TODO: methode de récupération de parametre par nom
@@ -222,10 +261,22 @@ var IDiagram = function(canvasRef) {
 			return this.yAxisConfig.leftShift;
 		};
 
+        /**
+         * Retourne le nombre de pixel par unité en y.
+         */
 		IDiagram.prototype.getPixelPerUnit = function() {
-			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
-			var dataInterval = Math.round(this.data.getTopValue() / this.yAxisConfig.nbIntervals);
-			return lengthInterval / dataInterval;
+            if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
+                var maxTop = this.data.getTopValue() < 0 ? -this.data.getTopValue() : this.data.getTopValue();
+                var maxBottom = this.data.getBottomValue() < 0 ? -this.data.getBottomValue() : this.data.getBottomValue();
+                var max = maxTop > maxBottom ? maxTop : maxBottom;
+                var dataInterval = Math.round(2 * max / this.yAxisConfig.nbIntervals);
+                var lengthInterval = Math.round(((this.getHeight() - this.yAxisConfig.bottomShift - this.yAxisConfig.topShift) / 2) / (this.yAxisConfig.nbIntervals / 2));
+                return lengthInterval / dataInterval;
+            } else {
+                var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
+                var dataInterval = Math.round(this.data.getTopValue() / this.yAxisConfig.nbIntervals);
+                return lengthInterval / dataInterval;
+            }
 		};
 		
 		/**
