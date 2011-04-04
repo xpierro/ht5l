@@ -1,3 +1,8 @@
+/**
+ * Type de données représentant les attributs de style d'un diagramme.
+ * Conception: Lyes Kimouche
+ */
+
 var StyleMatrix = function() {
     // Attributs privés
 	this.colors = new Array();

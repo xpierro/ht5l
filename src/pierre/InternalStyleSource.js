@@ -1,3 +1,7 @@
+/**
+ * Source de style interne
+ * Conception: Lyes Kimouche
+ */
 var InternalStyleSource = function(preId) {
 	IStyleSource.call(this);
     this.pre = preId;
@@ -5,16 +9,13 @@ var InternalStyleSource = function(preId) {
     this.xml = null;
     if (typeof InternalStyleSource.initialized == "undefined" ) {
     	InternalStyleSource.initialized = true;
-        /**
-         * Charge à partir d'une balise <pre> d'id this.pre un flux xml.
-         * @param callback Fonction appelée à la fin de la transformation.
-         */
+
     	InternalStyleSource.prototype.loadData = function(callback) {
             if (window.DOMParser) {
                 var parser = new DOMParser();
                 // Utiliser /g remplace TOUTES les occurences.
                 this.xml = parser.parseFromString(
-                            document.getElementById(this.pre).innerHTML.trim().replace(/\n/g, '').replace(/ /g, ''),
+                            document.getElementById(this.pre).innerHTML.trim().replace(/\n/g, ''),
                             "text/xml"
                         );
                 callback(this.xml);
@@ -23,9 +24,6 @@ var InternalStyleSource = function(preId) {
             }
         };
 
-        /**
-         * Renvoie la matrice représentant les données lues.
-         */
         InternalStyleSource.prototype.getStyleMatrix = function() {
             var styleMat = new StyleMatrix();
 
