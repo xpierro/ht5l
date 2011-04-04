@@ -31,6 +31,13 @@ var DataMatrix = function() {
     if (typeof DataMatrix.initialized == "undefined" ) {
         DataMatrix.initialized = true;
 
+        /**
+         * Retourne vrai si la ligne existe
+         */
+        DataMatrix.prototype.hasRowLabel = function(label) {
+            return this.rowLabels.indexOf(label) >= 0;
+        };
+
     	/**
     	 * Retourne la largeur de la matrice.
     	 */
@@ -168,6 +175,27 @@ var DataMatrix = function() {
                 $.each(this.columnLabels, $.proxy(function(columnIndex, columnLabel) {
                     var currentValue = this.getValueByLabel(rowLabel, columnLabel);
                     if (currentValue > top) {
+                        top = currentValue;
+                    }
+                }, this));
+            }, this));
+    		return top;
+    	};
+
+        /**
+    	 * Retourne la valeur minimale contenu dans la matrice
+    	 */
+    	DataMatrix.prototype.getBottomValue = function() {
+    		var top;
+            try {
+                top = this.getValue(0, 0);
+            } catch(e) {
+                top = 0;
+            }
+            $.each(this.rowLabels, $.proxy(function(rowIndex, rowLabel) {
+                $.each(this.columnLabels, $.proxy(function(columnIndex, columnLabel) {
+                    var currentValue = this.getValueByLabel(rowLabel, columnLabel);
+                    if (currentValue < top) {
                         top = currentValue;
                     }
                 }, this));

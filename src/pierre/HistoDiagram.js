@@ -42,6 +42,11 @@ var HistoDiagram = function(canvasRef, direction) {
 			var barWidth = ((this.getWidth() - currentX   - globalShift)
                             / (this.data.getColumnNumber() * this.data.getRowNumber()));
 
+            if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
+                var yZero = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2;
+            } else {
+                var yZero = this.getHeight() - this.getBottomShift();
+            }
 			$.each(absLabels, $.proxy(function(i, abslabel){
 				$.each(colorLabels, $.proxy(function(j, colorlabel) {
 					var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
@@ -49,7 +54,7 @@ var HistoDiagram = function(canvasRef, direction) {
 					var barHeight = this.getPixelPerUnit() * value;
 					context.fillStyle = color;
 					context.fillRect(currentX,
-                                     this.getHeight() - this.getBottomShift() - barHeight,
+                                     yZero - barHeight,
                                      barWidth,
                                      barHeight);
 					currentX += barWidth;

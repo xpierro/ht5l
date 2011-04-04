@@ -1,0 +1,553 @@
+<html>
+    <head>
+        <script type="text/javascript" src="jquery.js"></script>
+    </head>
+    <body>
+    	<p>Ces tests sont uniquement faits avec le pr&eacute;supos&eacute; que le xml fourni est valide (donc les bonnes donn&eacute;es au bon endroit, genre, pas de lettres<br/>
+    	dans des balises devant prendre un nombre en compte).</p>
+    	<br/>
+    	<p>Test1 : Probl&egrave;me: La graduation est bas&eacute;e sur la derni&egrave;re valeur (donc, si c'est la plus petite, on ne voit rien des autres) <br/>
+    	de plus, ici, Yahoo le mardi=34, or, ce n'est pas align&eacute; avec la graduation en ordonn&eacute;. On peut &eacute;galement voir que les &eacute;carts<br/>
+    	ne sont pas les m&ecirc;mes (0->7 puis ensuite tous les 3).</p>
+    	
+        <canvas id="test1" width="800" height="500">Pas de canvas?</canvas>
+
+
+		<p>Test2 : Ne pas oublier de prendre en compte les valeurs n&eacute;gatives</p>
+		
+		<canvas id="test2" width="800" height="500">Pas de canvas?</canvas>
+		
+		
+		<p>Test3 : &Eacute;trangement, quand la derni&egrave;re valeur est n&eacute;gative, la graduation est bien bas&eacute;e sur la plus grande valeur (voir test1)</p>
+		
+		<canvas id="test3" width="800" height="500">Pas de canvas?</canvas>
+		
+		
+		<p>Test4 : Bien prendre en compte la largeur de la l&eacute;gende des abscisses l&agrave;, ca se chevauche.</p>
+		
+		<canvas id="test4" width="800" height="500">Pas de canvas?</canvas>
+		
+
+		<p>Test5 : Idem pour les ordonn&eacute;es.</p>
+		
+		<canvas id="test5" width="800" height="500">Pas de canvas?</canvas>	
+		
+
+		<p>Test6 : Test avec beaucoup d'abscisses (penser a limiter le nombre max possible).</p>
+		
+		<canvas id="test6" width="800" height="500">Pas de canvas?</canvas>	
+		
+
+		<p>Test7 : Test avec uniquement des valeurs n&eacute;gatives. Encore le probl&egrave;me avec la valeur la plus haute (ici -21 le lundi chez Yahoo) <br/>
+		non-align&eacute; avec l'ordonn&eacute;</p>
+		
+		<canvas id="test7" width="800" height="500">Pas de canvas?</canvas>	
+		
+
+		<p>Test8 : Test avec de petites valeurs (de 1 a 4). Surement un probl&egrave;me au niveau de la division pour les graduations.</p>
+		
+		<canvas id="test8" width="800" height="500">Pas de canvas?</canvas>	
+		
+        <pre id="test01h" style="visibility:hidden;">
+            <?xml version="1.0" encoding="UTF-8"?>
+                <root>
+                    <labels>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <row>Lundi</row>
+                        <row>Mardi</row>
+                    </labels>
+
+                    <rows>
+                        <row>
+                            <value>1254</value>
+                            <value>1325</value>
+                        </row>
+                        <row>
+                            <value>1233</value>
+                            <value>34</value>
+                        </row>
+                    </rows>
+                </root>
+        </pre>
+        <pre id="test02h" style="visibility:hidden;">
+            <?xml version="1.0" encoding="UTF-8"?>
+                <root>
+                    <labels>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <row>Lundi</row>
+                        <row>Mardi</row>
+                    </labels>
+
+                    <rows>
+                        <row>
+                            <value>1254</value>
+                            <value>1325</value>
+                        </row>
+                        <row>
+                            <value>-1233</value>
+                            <value>3432</value>
+                        </row>
+                    </rows>
+                </root>
+        </pre>
+        <pre id="test03h" style="visibility:hidden;">
+            <?xml version="1.0" encoding="UTF-8"?>
+                <root>
+                    <labels>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <row>Lundi</row>
+                        <row>Mardi</row>
+                    </labels>
+
+                    <rows>
+                        <row>
+                            <value>1254</value>
+                            <value>1325</value>
+                        </row>
+                        <row>
+                            <value>1233</value>
+                            <value>-34</value>
+                        </row>
+                    </rows>
+                </root>
+        </pre>
+        <pre id="test04h" style="visibility:hidden;">
+            <?xml version="1.0" encoding="UTF-8"?>
+                <root>
+                    <labels>
+                        <column>1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</column>
+                        <column>2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</column>
+                        <row>Lundi</row>
+                        <row>Mardi</row>
+                    </labels>
+
+                    <rows>
+                        <row>
+                            <value>1254</value>
+                            <value>1325</value>
+                        </row>
+                        <row>
+                            <value>1233</value>
+                            <value>3432</value>
+                        </row>
+                    </rows>
+                </root>
+        </pre>
+        <pre id="test05h" style="visibility:hidden;">
+            <?xml version="1.0" encoding="UTF-8"?>
+                <root>
+                    <labels>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <row>Lundi</row>
+                        <row>Mardi</row>
+                    </labels>
+
+                    <rows>
+                        <row>
+                            <value>1254</value>
+                            <value>3432333333333333333333333333333333333333333333333333333333333333333333</value>
+                        </row>
+                        <row>
+                            <value>1233</value>
+                            <value>3432333333333333333333333333333333333333333333333333333333333333333333</value>
+                        </row>
+                    </rows>
+                </root>
+        </pre>
+        <pre id="test06h" style="visibility:hidden;">
+            <?xml version="1.0" encoding="UTF-8"?>
+                <root>
+                    <labels>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>     
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>   
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>     
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>              
+                        <row>Lundi</row>
+                        <row>Mardi</row>
+                    </labels>
+
+                    <rows>
+                        <row>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                        </row>
+                        <row>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                            <value>1254</value>
+                            <value>1325</value>
+                        </row>
+                    </rows>
+                </root>
+        </pre>
+        <pre id="test07h" style="visibility:hidden;">
+            <?xml version="1.0" encoding="UTF-8"?>
+                <root>
+                    <series>
+                        <serie name="Clubic.fr">
+                            <value label="Lundi">-11</value>
+                            <value label="Mardi">-21</value>
+                        </serie>
+                        <serie name="Yahoo.fr">
+                            <value label="Lundi">-13</value>
+                            <value label="Mardi">-14</value>
+                        </serie>
+                    </series>
+                </root>
+        </pre>
+        <pre id="test08h" style="visibility:hidden;">
+            <?xml version="1.0" encoding="UTF-8"?>
+                <root>
+                    <labels>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <row>Lundi</row>
+                        <row>Mardi</row>
+                    </labels>
+
+                    <rows>
+                        <row>
+                            <value>1</value>
+                            <value>2</value>
+                        </row>
+                        <row>
+                            <value>3</value>
+                            <value>4</value>
+                        </row>
+                    </rows>
+                </root>
+        </pre>
+
+        <script type="text/javascript" src="HTML5Charts.js"></script>
+    </body>
+</html>

@@ -43,7 +43,9 @@ var InternalDataSource = function(preId) {
                     dataMatrix.addColumnLabel(childNode.attributes.getNamedItem('name').value);
                     $.each(childNode.childNodes, function(j, grandChildNode) {                   
                         if (grandChildNode.tagName == 'value') {
-                            dataMatrix.addRowLabel(grandChildNode.attributes.getNamedItem('label').value);
+                            if (!dataMatrix.hasRowLabel(grandChildNode.attributes.getNamedItem('label').value)) {
+                                dataMatrix.addRowLabel(grandChildNode.attributes.getNamedItem('label').value);
+                            }
                             dataMatrix.setValue(dataMatrix.getRowLabels()[(j - 1) / 2],
                                                 dataMatrix.getColumnLabels()[(i - 1) / 2],
                                                 parseInt(grandChildNode.textContent));
