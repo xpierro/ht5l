@@ -17,7 +17,7 @@ var IDiagram = function(canvasRef) {
 		leftShift: 50,
 		topShift: 20,
 		bottomShift: 50,
-		nbIntervals: 10,
+		nbIntervals: 14,
 		stepWidth: 6
 	};
 	
@@ -211,7 +211,7 @@ var IDiagram = function(canvasRef) {
                 var max = maxTop > maxBottom ? maxTop : maxBottom;
                 currentValue = max;
                 dataInterval = Math.round(2 * max / this.yAxisConfig.nbIntervals);
-                lengthInterval = Math.round(((this.getHeight() - this.yAxisConfig.bottomShift - this.yAxisConfig.topShift) / 2) / (this.yAxisConfig.nbIntervals / 2));
+                lengthInterval = Math.floor(((this.getHeight() - this.yAxisConfig.bottomShift - this.yAxisConfig.topShift) / 2) / (this.yAxisConfig.nbIntervals / 2));
             } else {
                 dataInterval = Math.round(currentValue / this.yAxisConfig.nbIntervals);
                 lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
