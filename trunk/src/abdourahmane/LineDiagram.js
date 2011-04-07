@@ -30,20 +30,36 @@ var LineDiagram = function(canvasRef, direction) {
 			}
 			
 	
-            var currentX = this.getLeftShift();
+            var currentX = this.getLeftShift()+20;
             var deltaX = (this.getWidth() - this.getLeftShift()) / absLabels.length;
+           // alert(deltaX);
             var lineHeight = 0;
             context.strokeStyle = 'blue';
             $.each(lineLabels, $.proxy(function(i, lineLabel){
+            	//alert(lineLabel);
 				$.each(absLabels, $.proxy(function(j, absLabel) {
+					//alert(absLabel);
 					var currentHeight = this.getPixelPerUnit() * this.data.getValueByLabelAndDirection(lineLabel, absLabel, this.dir);
+					//alert(currentHeight);
 					var currentY = this.getHeight() - this.getBottomShift() - currentHeight;
 					if (j == 0) {
+						context.lineCap = 'round';
 						context.beginPath();
+						
 						context.moveTo(currentX, currentY);
+						//context.stroke();
+						//j++;
 					} else {
+						
+						context.lineWidth = 2;
+						context.lineCap = 'round';
 						context.lineTo(currentX, currentY);
+						//context.lineTo(currentX+deltaX, currentY);
+						
 						context.stroke();
+						//context.lineCap = 'square';
+						//j++;
+						
 					}
 					
 					var xLegendPosition = currentX - context.measureText(absLabel).width / 2;
@@ -53,10 +69,12 @@ var LineDiagram = function(canvasRef, direction) {
 				}, this)
 								
 				);
-				currentX = this.getLeftShift();
+				currentX = this.getLeftShift()+20;
 				context.strokeStyle = 'red';
-				currentX = this.getLeftShift();
-				context.strokeStyle = 'black';
+				//context.lineCap = 'square';
+				currentX = this.getLeftShift()+20;
+				//context.strokeStyle = 'black';
+				context.lineCap = 'round';
 				
 			}, this));
             
