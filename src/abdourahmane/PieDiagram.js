@@ -38,6 +38,7 @@ var PieDiagram = function(canvasRef, direction) {
 			if (this.dir == 'row') { // Pourcentage de chaque ligne
 				$.each(this.data.getRowLabels(), $.proxy(function(i, rowLabel) {
 					parts.push(this.data.getRowTotal(rowLabel) / total);
+					
 				}, this));
 			} else {
 				$.each(this.data.getColumnLabels(), $.proxy(function(i, columnLabel) {
