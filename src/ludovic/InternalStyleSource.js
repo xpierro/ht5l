@@ -14,7 +14,7 @@ var InternalStyleSource = function(preId) {
                 var parser = new DOMParser();
                 // Utiliser /g remplace TOUTES les occurences.
                 this.xml = parser.parseFromString(
-                            document.getElementById(this.pre).innerHTML.trim().replace(/\n/g, '').replace(/ /g, ''),
+                            document.getElementById(this.pre).innerHTML.trim().replace(/\n/g, ''),
                             "text/xml"
                         );
                 callback(this.xml);
@@ -33,8 +33,13 @@ var InternalStyleSource = function(preId) {
             $.each(colors.childNodes, function(index, childNode) {
             	if (childNode.tagName == 'color') {
             		styleMat.addColor(childNode.textContent);
+            		
             	}
             });
+
+            var yLegend = this.xml.getElementsByTagName('yLegend')[0];
+            //alert(yLegend);
+            styleMat.setYLabelLegend('Nombre de visites');
 
             var legend = this.xml.getElementsByTagName('legend')[0];
             $.each(legend.childNodes, function(index, childNode) {
