@@ -1,87 +1,51 @@
 <html>
     <head>
-        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="../ludovic/jquery.js"></script>
     </head>
     <body>
-        <canvas id="test3DInt" width="800" height="500">Pas de canvas?</canvas>
-        <canvas id="test3DExt" width="800" height="500">Pas de canvas?</canvas>
-        <canvas id="testLineInt" width="800" height="500">Pas de canvas?</canvas>
-        <canvas id="testLineExt" width="800" height="500">Pas de canvas?</canvas>
-        <canvas id="testHisInt" width="800" height="500">Pas de canvas?</canvas>
-        <canvas id="testHistExt" width="800" height="500">Pas de canvas?</canvas>
-        <canvas id="testPieInt" width="800" height="500">Pas de canvas?</canvas>
-        <canvas id="testPieExt" width="800" height="500">Pas de canvas?</canvas>
+        <canvas id="test1" width="800" height="500">Pas de canvas?</canvas>
+        <canvas id="test2" width="400" height="500">Pas de canvas?</canvas>
+        <canvas id="test3" width="500" height="700">Pas de canvas?</canvas>
+        <canvas id="test4" width="900" height="500">Pas de canvas?</canvas>
+        <canvas id="test5" width="100" height="100">Pas de canvas?</canvas>
         <pre id="testpre" style="visibility:hidden;">
             <?xml version="1.0" encoding="UTF-8"?>
                 <root>
-                    <labels>
-                        <column>Clubic.fr</column>
-                        <column>Yahoo.fr</column>
-                        <column>Facebook.com</column>
-                        <row>Lundi</row>
-                        <row>Mardi</row>
-                        <row>Mercredi</row>
-                        <row>Jeudi</row>
-                        <row>Vendredi</row>
-                        <row>Samedi</row>
-                        <row>Dimanche</row>
-                    </labels>
-
-                    <rows>
-                        <row>
-                            <value>1254</value>
-                            <value>1325</value>
-                            <value>1225</value>
-                        </row>
-                        <row>
-                            <value>1288</value>
-                            <value>2015</value>
-                            <value>1425</value>
-                        </row>
-                        <row>
-                            <value>1152</value>
-                            <value>1843</value>
-                            <value>1355</value>
-                        </row>
-                        <row>
-                            <value>1425</value>
-                            <value>1324</value>
-                            <value>2325</value>
-                        </row>
-                        <row>
-                            <value>1542</value>
-                            <value>2842</value>
-                            <value>1525</value>
-                        </row>
-                        <row>
-                            <value>1235</value>
-                            <value>1325</value>
-                            <value>1326</value>
-                        </row>
-                        <row>
-                            <value>1465</value>
-                            <value>1325</value>
-                            <value>2325</value>
-                        </row>
-                    </rows>
+                    <yLegend>Nombre de visites</yLegend>
+                	<series>
+						<serie name="Clubic.fr">
+							<value label="lundi" >1254</value>
+							<value label="Mardi" >1325</value>
+						</serie>
+						<serie name="Yahoo.fr">
+							<value label="lundi" >1288</value>
+							<value label="Mardi" >2015</value>
+						</serie>
+					</series>
                     <style>
 						<colors>
-							<color>Blue</color>
-							<color>Brown</color>
-							<color>DarkBlue</color>
-							<color>DarkGray</color>
-							<color>DarkGreen</color>
-							<color>DarkMagenta</color>
-							<color>Gold</color>
-							<color>Green</color>
-							<color>GreenYellow</color>
-							<color>Lime</color>
-							<color>Orange</color>
-							<color>Pink</color>
-							<color>Red</color>
-							<color>Violet</color>
-							<color>Yellow</color>
-							<color>White</color>
+								<color>Aqua</color>
+								<color>Black</color>
+								<color>Blue</color>
+								<color>BlueViolet</color>
+								<color>Brown</color>
+								<color>Chartreuse</color>
+								<color>Cyan</color>
+								<color>DarkBlue</color>
+								<color>DarkGray</color>
+								<color>DarkGreen</color>
+								<color>DarkMagenta</color>
+								<color>DeepPink</color>
+								<color>Gold</color>
+								<color>Green</color>
+								<color>GreenYellow</color>
+								<color>Lime</color>
+								<color>Orange</color>
+								<color>Pink</color>
+								<color>Red</color>
+								<color>Violet</color>
+								<color>Yellow</color>
+								<color>White</color>
 						</colors>
 						<legend>
 							<x>0</x>
@@ -92,7 +56,6 @@
 					</style>
                 </root>
         </pre>
-
-        <script type="text/javascript" src="HTML5Charts.js"></script>
+        <script type="text/javascript" src="../ludovic/HTML5Charts.js"></script>
     </body>
 </html>

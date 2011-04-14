@@ -1,49 +1,70 @@
 var m = new DataMatrix();
 m.setColumnLabels(new Array("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"));
 m.setRowLabels(new Array("Clubic.fr", "Google.fr", "Yahoo.fr"));
-m.setValue("Clubic.fr", "Lundi", 9855);
-m.setValue("Clubic.fr", "Mardi", 9455);
-m.setValue("Clubic.fr", "Mercredi", 11344);
-m.setValue("Clubic.fr", "Jeudi", 10105);
-m.setValue("Clubic.fr", "Vendredi", 7562);
-m.setValue("Clubic.fr", "Samedi", 7364);
-m.setValue("Clubic.fr", "Dimanche", 2477);
+m.setValue("Clubic.fr", "Lundi", 12541);
+m.setValue("Clubic.fr", "Mardi", 11204);
+m.setValue("Clubic.fr", "Mercredi", 11354);
+m.setValue("Clubic.fr", "Jeudi", 10058);
+m.setValue("Clubic.fr", "Vendredi", 9871);
+m.setValue("Clubic.fr", "Samedi", 8254);
+m.setValue("Clubic.fr", "Dimanche", 5477);
 
-m.setValue("Google.fr", "Lundi", 12542);
-m.setValue("Google.fr", "Mardi", 7745);
-m.setValue("Google.fr", "Mercredi", 5731);
-m.setValue("Google.fr", "Jeudi", 7591);
-m.setValue("Google.fr", "Vendredi", 8245);
-m.setValue("Google.fr", "Samedi", 5674);
-m.setValue("Google.fr", "Dimanche", 4413);
+m.setValue("Google.fr", "Lundi", 9855);
+m.setValue("Google.fr", "Mardi", 8870);
+m.setValue("Google.fr", "Mercredi", 8731);
+m.setValue("Google.fr", "Jeudi", 7488);
+m.setValue("Google.fr", "Vendredi", 8159);
+m.setValue("Google.fr", "Samedi", 6547);
+m.setValue("Google.fr", "Dimanche", 4512);
 
-m.setValue("Yahoo.fr", "Lundi", 2314);
-m.setValue("Yahoo.fr", "Mardi", 2555);
-m.setValue("Yahoo.fr", "Mercredi", 3684);
-m.setValue("Yahoo.fr", "Jeudi", 1235);
-m.setValue("Yahoo.fr", "Vendredi", 4568);
-m.setValue("Yahoo.fr", "Samedi", 3214);
-m.setValue("Yahoo.fr", "Dimanche", 874);
+m.setValue("Yahoo.fr", "Lundi", 3241);
+m.setValue("Yahoo.fr", "Mardi", 2544);
+m.setValue("Yahoo.fr", "Mercredi", 2597);
+m.setValue("Yahoo.fr", "Jeudi", 3108);
+m.setValue("Yahoo.fr", "Vendredi", 2114);
+m.setValue("Yahoo.fr", "Samedi", 2045);
+m.setValue("Yahoo.fr", "Dimanche", 950);
 
-var diag3DInt = new Histo3DDiagram(document.getElementsByTagName('canvas')[0], 'row');
-//var diag3DExt = new Histo3DDiagram(document.getElementById('test3DExt'), 'column');
-var diagPieInt = new PieDiagram(document.getElementsByTagName('canvas')[2], 'row');
-//var diagPieExt = new PieDiagram(document.getElementById('testPieExt'), 'column');
-var diagHistInt = new HistoDiagram(document.getElementsByTagName('canvas')[4], 'row');
-//var diagHistExt = new HistoDiagram(document.getElementById('testHistExt'), 'column');
-var diagLineInt = new LineDiagram(document.getElementsByTagName('canvas')[6], 'column');
-//var diagLineExt = new LineDiagram(document.getElementById('testLineExt'), 'column');
-
-var internalDiagrams = new Array(diag3DInt, diagPieInt, diagHistInt, diagLineInt);
-
+/*var diag1 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'column');
+diag1.setData(m);
+var diag2 = new HistoDiagram(document.getElementsByTagName('canvas')[1], 'row');
+diag2.setData(m);
+var diag3 = new PieDiagram(document.getElementsByTagName('canvas')[2], 'column');
+diag3.setData(m);
+var diag4 = new PieDiagram(document.getElementsByTagName('canvas')[3], 'row');
+diag4.setData(m);
+*/
 var ids = new InternalDataSource('testpre');
+//var eds = new ExternalDataSource('test.xml');
 var iss = new InternalStyleSource('testpre');
-
+//var ess = new ExternalStyleSource('styleSource.xml');
 ids.loadData(function() {
+    var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
+    diag5.setData(ids.getDataMatrix());
     iss.loadData(function() {
-        $.each(internalDiagrams, function(i, diag) {
-            diag.setData(ids.getDataMatrix());
-            diag.setStyle(iss);
-        });
+    	diag5.setStyle(iss.getStyleMatrix());
+    });
+    //ess.loadData(function(xml){
+    	//diag5.setStyle(ess.getStyleMatrix(xml));
+    //});
+});
+
+/*eds.loadData(function(xml) {
+    var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
+    diag5.setData(eds.getDataMatrix(xml));
+    iss.loadData(function() {
+    	diag5.setStyle(iss.getStyleMatrix());
+    });
+    //ess.loadData(function(xml){
+    	//diag5.setStyle(ess.getStyleMatrix(xml));
+    //});
+});*/
+
+/*
+$.each(m.getRowLabels(), function(i, r) {
+    $.each(m.getColumnLabels(), function(j, c) {
+        alert(r + " | " + c + " | " + m.getValueByLabel(r, c));
     });
 });
+alert(m.getTopValue());
+*/

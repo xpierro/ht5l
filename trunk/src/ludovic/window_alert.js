@@ -1,5 +1,3 @@
-alert('hello');
-
 function window_alert(title, msg) {
 	var tit = title;
 	var ms = msg;

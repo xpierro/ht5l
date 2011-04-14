@@ -48,23 +48,21 @@ var ExternalDataSource = function(url) {
          */
         ExternalDataSource.prototype.getDataMatrix = function(xmlResponse) {
             var dataMatrix = new DataMatrix();
-        	var labels = xmlResponse.getElementsByTagName('labels')[0];
-            $.each(labels.childNodes, function(index, childNode) {
-                if (childNode.tagName == 'column') {
-                    dataMatrix.addColumnLabel(childNode.textContent);
-                } else if (childNode.tagName == 'row') {
-                    dataMatrix.addRowLabel(childNode.textContent);
+        	
+            var series =  xmlResponse.getElementsByTagName('series')[0];
+            $.each(series.childNodes, function(i, childNode) {
+                if (childNode.tagName == 'serie') {
+                    dataMatrix.addColumnLabel(childNode.attributes[0].value);
+                    $.each(childNode.childNodes, function(j, grandChildNode) {                   
+                        if (grandChildNode.tagName == 'value') {
+                            dataMatrix.addRowLabel(grandChildNode.attributes[0].value);
+                            dataMatrix.setValue(dataMatrix.getRowLabels()[(j-1)/2], dataMatrix.getColumnLabels()[(i-1)/2],
+                                    grandChildNode.textContent);
+                        } 
+                    });  
                 }
             });
 
-            var rows = xmlResponse.getElementsByTagName('rows')[0];
-            $.each(rows.children, function(i, childNode) {
-                $.each(childNode.children, function(j, grandChildNode) {
-                    dataMatrix.setValue(dataMatrix.getRowLabels()[i], dataMatrix.getColumnLabels()[j],
-                                        grandChildNode.textContent);
-                    alert(grandChildNode.textContent);
-                });
-            });
             return dataMatrix;
         }
 };

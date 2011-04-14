@@ -209,7 +209,7 @@ var IDiagram = function(canvasRef) {
 		 */
 		IDiagram.prototype.drawXAxis = function() {
 			var context = this.canvas.getContext('2d');
-			context.strokeStyle = "black";
+			context.fillStyle = "black";
 			context.beginPath();
 				// Ligne des abscisses
 				context.moveTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
@@ -217,6 +217,16 @@ var IDiagram = function(canvasRef) {
 			context.closePath();
 			context.stroke();
 		};
+
+        /**
+         * Dessine le label de la légende en Y du diagramme courant
+         */
+        IDiagram.prototype.drawYLabelLegend = function() {
+            var context = this.canvas.getContext('2d');
+			context.fillStyle = "black";
+            alert(this.styleMatrix.getYLabelLegend());
+            context.fillText(this.styleMatrix.getYLabelLegend(), 50, 50)
+        };
 		
 		/**
 		 *	Dessine les ordonnées du diagramme
@@ -282,6 +292,7 @@ var IDiagram = function(canvasRef) {
                 this.drawAxis();
                 this.drawDiagram();
                 this.drawLegend();
+                this.drawYLabelLegend();
                 // TODO: juste pour le test: supprimer
                 context.strokeStyle = 'black';
                 context.strokeRect(0, 0, this.getWidth(), this.getHeight());
