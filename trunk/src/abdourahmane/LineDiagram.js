@@ -30,7 +30,8 @@ var LineDiagram = function(canvasRef, direction) {
 			}
 			
 	
-            var currentX = this.getLeftShift()+20;
+			// TODO: génériser
+            var currentX = this.getLeftShift() + 20;
             var deltaX = (this.getWidth() - this.getLeftShift()) / absLabels.length;
            // alert(deltaX);
             var lineHeight = 0;

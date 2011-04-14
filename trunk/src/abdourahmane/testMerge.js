@@ -28,9 +28,9 @@ m.setValue("Yahoo.fr", "Vendredi", 800);
 m.setValue("Yahoo.fr", "Samedi", 2045);
 m.setValue("Yahoo.fr", "Dimanche", 950);
 
-var diag1 = new LineDiagram(document.getElementsByTagName('canvas')[0], 'row');
+//var diag1 = new LineDiagram(document.getElementsByTagName('canvas')[0], 'row');
+var diag1 = new animPie(document.getElementsByTagName('canvas')[0], 'row');
 diag1.setData(m);
-
 
 /*
 var diag1 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'column');
