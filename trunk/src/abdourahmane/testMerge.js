@@ -29,7 +29,10 @@ m.setValue("Yahoo.fr", "Samedi", 2045);
 m.setValue("Yahoo.fr", "Dimanche", 950);
 
 //var diag1 = new LineDiagram(document.getElementsByTagName('canvas')[0], 'row');
-var diag1 = new animPie(document.getElementsByTagName('canvas')[0], 'row');
+var diag1 = new PieDiagram(document.getElementsByTagName('canvas')[0], 'row');
+document.getElementsByTagName('canvas')[0].onmousemove = function(event) {
+	diag1.handleClick(event, diag1);
+};
 diag1.setData(m);
 
 /*

@@ -4,7 +4,7 @@
  */
 
 // On d�finit les fichier:
-var jsFiles = new Array("DataMatrix.js", "IDiagram.js", "LineDiagram.js","animPie.js",
+var jsFiles = new Array("DataMatrix.js", "IDiagram.js", "LineDiagram.js","PieDiagram.js",
                         "IDataSource.js", "InternalDataSource.js", "testMerge.js");
 
 /**
