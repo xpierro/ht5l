@@ -45,6 +45,7 @@ var HistoDiagram = function(canvasRef, direction) {
 			$.each(absLabels, $.proxy(function(i, abslabel){
 				$.each(colorLabels, $.proxy(function(j, colorlabel) {
 					var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
+					
 					var color = this.getColors()[j];
 					var barHeight = this.getPixelPerUnit() * value;
 					context.fillStyle = color;
