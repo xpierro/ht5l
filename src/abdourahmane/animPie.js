@@ -47,7 +47,6 @@ var animPie = function(canvasRef, direction) {
 			}
 			var values = new Array();
 			var parts = new Array();
-			var tempTab = new Array(2);
 			var total = this.data.getTotal();
 			// alert(total);
 			var currentPos = 0;
@@ -60,11 +59,9 @@ var animPie = function(canvasRef, direction) {
 							/ total;
 					
 					 
-					tempTab['label'] = rowLabel;
 					totalValue += temp;
 					temp = temp.toFixed(2);
-					tempTab['value'] = temp;
-					parts.push(tempTab);
+					parts.push({value: temp, label: rowLabel});
 					
 					
 					
@@ -79,13 +76,10 @@ var animPie = function(canvasRef, direction) {
 				        //parts.push(columLabel);
 				        //parts.push(temp);
 					
-					tempTab['label'] = columnLabel;
 					totalValue += temp;
 					temp = temp.toFixed(2);
-					tempTab['value'] = temp;
-					parts.push(tempTab);
-					
-					
+					parts.push({value: temp, label: columnLabel});
+						
 				}, this));
 			}
 			
@@ -95,6 +89,7 @@ var animPie = function(canvasRef, direction) {
 				parts[slice]['endArc'] = 2 * Math.PI
 						* (currentPos + (parts[slice]['value'] / totalValue));
 				currentPos += parts[slice]['value'] / totalValue;
+				alert(currentPos);
 			}
 			
 			/*
