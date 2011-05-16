@@ -225,7 +225,9 @@ var IDiagram = function(canvasRef) {
 		
 		IDiagram.prototype.redraw = function() {
             if (this.data) {
-                this.drawAxis();
+            	var context = this.canvas.getContext('2d');
+            	context.clearRect(0, 0, this.getWidth(), this.getHeight());
+            	this.drawAxis();
                 this.drawDiagram();
                 this.drawLegend();
                 // TODO: juste pour le test: supprimer
