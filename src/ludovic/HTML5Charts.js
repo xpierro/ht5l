@@ -4,9 +4,13 @@
  */
 
 // On d�finit les fichier:
-var jsFiles = new Array("window_alert.js", "StyleMatrix.js", "DataMatrix.js", "IDiagram.js", "PieDiagram.js",
-                        "HistoDiagram.js", "LineDiagram.js","Histo3DDiagram.js", "IDataSource.js",
-                        "InternalDataSource.js", "IStyleSource.js", "InternalStyleSource.js", "testMerge.js");
+var jsFiles = new Array("DataMatrix.js", "IStyleSource.js", "InternalStyleSource.js",
+                        "ExternalStyleSource.js", "StyleMatrix.js",
+                        "IDataSource.js", "InternalDataSource.js", "ExternalDataSource.js",
+                        "IDiagram.js", "PieDiagram.js",
+                        "HistoDiagram.js", "LineDiagram.js","Histo3DDiagram.js",
+                         "testMerge.js", "window_alert.js"
+                        );
 
 /**
  * Charge un script

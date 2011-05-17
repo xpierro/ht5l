@@ -37,10 +37,6 @@ var InternalStyleSource = function(preId) {
             	}
             });
 
-            var yLegend = this.xml.getElementsByTagName('yLegend')[0];
-            //alert(yLegend);
-            styleMat.setYLabelLegend('Nombre de visites');
-
             var legend = this.xml.getElementsByTagName('legend')[0];
             $.each(legend.childNodes, function(index, childNode) {
             	if (childNode.tagName == 'x') {
