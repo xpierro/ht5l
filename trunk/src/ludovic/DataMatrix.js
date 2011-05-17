@@ -15,10 +15,16 @@
  */
 
 var DataMatrix = function() {
-    // Attributs privés
+    // Intitulés des lignes de la matrice
 	this.rowLabels = new Array();
+
+    // Intitulés des colonnes de la matrice
 	this.columnLabels = new Array();
 
+    // Légende en Y
+    this.yLegend = new String();
+
+    // Lignes de la matrice
 	this.rows = new Array();
 
 	/**
@@ -27,6 +33,13 @@ var DataMatrix = function() {
 	 */
     if (typeof DataMatrix.initialized == "undefined" ) {
         DataMatrix.initialized = true;
+
+        /**
+         * Retourne vrai si la ligne existe
+         */
+        DataMatrix.prototype.hasRowLabel = function(label) {
+            return this.rowLabels.indexOf(label) >= 0;
+        };
 
     	/**
     	 * Retourne la largeur de la matrice.
@@ -69,72 +82,52 @@ var DataMatrix = function() {
     		return total;
     	};
 
+        /**
+         * Retourne la légende en y
+         */
+        DataMatrix.prototype.getYLegend = function() {
+            return this.yLegend;
+        };
+
+        /**
+         * Spécifie la légende en y
+         * @param yLeg
+         */
+        DataMatrix.prototype.setYLegend = function(yLeg) {
+            this.yLegend = yLeg;
+            //alert(this.yLegend);
+        };
+
     	/**
     	 * Spécifie le nom de chaque colonne
     	 */
     	DataMatrix.prototype.setColumnLabels = function(labels) {
-            try {
-                if (labels == null) {
-                    throw "columnLabels null";
-                }
-                $.each(labels, $.proxy(function(index, value) {
-    			    this.columnLabels.push(value);
-    		    }, this));
-            } catch(wronganswer) {
-                if (wronganswer == "columnLabels null") {
-                    window_alert("Erreur de données", "Les données des colonnes doivent être déclarées et non nulles");
-                }
-            }
+    		$.each(labels, $.proxy(function(index, value) {
+    			this.columnLabels.push(value);
+    		}, this));
     	};
 
     	/**
     	 * Spécifie le nom de chaque ligne
     	 */
     	DataMatrix.prototype.setRowLabels = function(labels) {
-            try {
-                if (labels == null) {
-                    throw "rowLabels null";
-                }
-                $.each(labels, $.proxy(function(index, value) {
-    			    this.rowLabels.push(value);
-    		    }, this));
-            } catch(wronganswer) {
-                if (wronganswer == "rowLabels null") {
-                    window_alert("Erreur de données", "Les données des lignes doivent être déclarées et non nulles");
-                }
-            }
+    		$.each(labels, $.proxy(function(index, value) {
+    			this.rowLabels.push(value);
+    		}, this));
     	};
 
     	/**
     	 * Ajoute un label de colonne.
     	 */
     	DataMatrix.prototype.addColumnLabel = function(label) {
-            try {
-                if (label == null) {
-                    throw "colNameLabel null";
-                }
-                this.columnLabels.push(label);
-            } catch(wronganswer) {
-                if (wronganswer == "colNameLabel null") {
-                    window_alert("Erreur de données", "Les noms des colonnes ne peuvent être nuls");
-                }
-            }
+    		this.columnLabels.push(label);
     	};
 
     	/**
     	 * Ajoute un label de ligne.
     	 */
     	DataMatrix.prototype.addRowLabel = function(label) {
-    		try {
-                if (label == null) {
-                    throw "rowNameLabel null";
-                }
-                this.rowLabels.push(label);
-            } catch(wronganswer) {
-                if (wronganswer == "rowNameLabel null") {
-                    window_alert("Erreur de données", "Les noms des lignes ne peuvent être nuls");
-                }
-            }
+    		this.rowLabels.push(label);
     	};
 
     	/**
@@ -156,9 +149,6 @@ var DataMatrix = function() {
     	 * Retoune la valeur entrée dans la matrice selon les labels.
     	 */
     	DataMatrix.prototype.getValueByLabel = function(rowLabel, columnLabel) {
-    		if (!this.rows[rowLabel] || !this.rows[rowLabel][columnLabel]) {
-    			throw "Label/Valeur indéfinis : " + rowLabel + "," + columnLabel;
-    		}
     		return this.rows[rowLabel][columnLabel];
     	};
 
@@ -169,9 +159,6 @@ var DataMatrix = function() {
          * @param secondLabel Label de colonne si dir == 'row' | Label de ligne si dir == 'column'
     	 */
     	DataMatrix.prototype.getValueByLabelAndDirection = function(firstLabel, secondLabel, dir) {
-    		if (!this.rows[firstLabel] && !this.rows[secondLabel]) {
-    			throw "Label/Valeur indéfinis : " + firstLabel + ";" + secondLabel;
-    		}
     		if (dir == 'row') {
     			return this.rows[firstLabel][secondLabel];
     		} else {
@@ -184,22 +171,7 @@ var DataMatrix = function() {
     	 * numériques.
     	 */
     	DataMatrix.prototype.getValue = function(x, y) {
-            try {
-                if (x == null) {
-                    throw "x null";
-                }
-                if (y == null) {
-                    throw "y null";
-                }
-                return this.getValueByLabel(this.rowLabels[x], this.columnLabels[y]);
-            } catch(wronganswer) {
-                if (wronganswer == "x null") {
-                    window_alert("Erreur de données", "Le premier paramètre de getValue est nul");
-                }
-                if (wronganswer) {
-                    window_alert("Erreur de données", "Le deuxième paramètre de getValue est nul");
-                }
-            }
+    		return this.getValueByLabel(this.rowLabels[x], this.columnLabels[y]);
     	};
 
     	/**
@@ -216,6 +188,27 @@ var DataMatrix = function() {
                 $.each(this.columnLabels, $.proxy(function(columnIndex, columnLabel) {
                     var currentValue = this.getValueByLabel(rowLabel, columnLabel);
                     if (currentValue > top) {
+                        top = currentValue;
+                    }
+                }, this));
+            }, this));
+    		return top;
+    	};
+
+        /**
+    	 * Retourne la valeur minimale contenu dans la matrice
+    	 */
+    	DataMatrix.prototype.getBottomValue = function() {
+    		var top;
+            try {
+                top = this.getValue(0, 0);
+            } catch(e) {
+                top = 0;
+            }
+            $.each(this.rowLabels, $.proxy(function(rowIndex, rowLabel) {
+                $.each(this.columnLabels, $.proxy(function(columnIndex, columnLabel) {
+                    var currentValue = this.getValueByLabel(rowLabel, columnLabel);
+                    if (currentValue < top) {
                         top = currentValue;
                     }
                 }, this));

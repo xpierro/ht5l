@@ -224,8 +224,9 @@ var IDiagram = function(canvasRef) {
         IDiagram.prototype.drawYLabelLegend = function() {
             var context = this.canvas.getContext('2d');
 			context.fillStyle = "black";
-            alert(this.styleMatrix.getYLabelLegend());
-            context.fillText(this.styleMatrix.getYLabelLegend(), 50, 50)
+            context.translate(200,200);
+            context.rotate(-Math.PI/2);
+            context.fillText(this.data.getYLegend(), 50, 50);
         };
 		
 		/**

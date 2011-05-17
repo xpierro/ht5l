@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
+    <ylegend>Hello</ylegend>
 	<series>
 		<serie name= "Clubic.fr">
 			<value label= "lundi" >1254</value>

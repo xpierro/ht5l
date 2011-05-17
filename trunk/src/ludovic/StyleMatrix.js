@@ -15,20 +15,6 @@ var StyleMatrix = function() {
     if (typeof StyleMatrix.initialized == "undefined" ) {
     	StyleMatrix.initialized = true;
 
-        /**
-         * Retourne le nom de la légende en Y du diagramme courant
-         */
-        StyleMatrix.prototype.getYLabelLegend = function() {
-            return this.yLabelLegend;
-        };
-
-        /**
-         * Modifie le nom de la légende en Y du diagramme courant
-         */
-        StyleMatrix.prototype.setYLabelLegend = function(label) {
-            this.yLabelLegend = label;
-        };
-
     	/**
     	 * Retourne le tableau de couleurs.
     	 */

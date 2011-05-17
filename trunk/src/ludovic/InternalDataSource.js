@@ -36,6 +36,8 @@ var InternalDataSource = function(preId) {
          */
         InternalDataSource.prototype.getDataMatrix = function() {
             var dataMatrix = new DataMatrix();
+            var yLeg = this.xml.getElementsByTagName('ylegend')[0];
+            dataMatrix.setYLegend(yLeg.textContent);
         	var series = this.xml.getElementsByTagName('series')[0];
             $.each(series.childNodes, function(i, childNode) {
                 if (childNode.tagName == 'serie') {
