@@ -10,14 +10,14 @@
 var IDiagram = function(canvasRef) {
 	this.canvas = canvasRef;
 	this.data = null;
-    this.colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
+    this.style = null;
 
     // Objet de configuration du dessin TODO: rendre modifiable aisément.
     this.yAxisConfig = {
 		leftShift: 50,
 		topShift: 20,
 		bottomShift: 50,
-		nbIntervals: 10,
+		nbIntervals: 14,
 		stepWidth: 6
 	};
 	
@@ -27,6 +27,7 @@ var IDiagram = function(canvasRef) {
 	 */
     if (typeof IDiagram.initialized == "undefined" ) {
         IDiagram.initialized = true;
+        
         
 		/**
 		 *	Définit la largeur de la fenêtre du diagramme.
@@ -64,7 +65,11 @@ var IDiagram = function(canvasRef) {
          * Retourne l'ensemble du tableau de couleurs sur lequel "cycler".
          */
         IDiagram.prototype.getColors = function() {
-             return this.colors;
+        	if (this.styleMatrix) {
+        		return this.styleMatrix.getColors();
+        	} else {
+        		return new Array('blue', 'gray', 'red', 'green', 'yellow');
+        	}
          };
 
 		
@@ -72,8 +77,9 @@ var IDiagram = function(canvasRef) {
 		 * Charge un fichier de style pour le diagramme.
 		 * @param styleConfig Objet de config de style {colors: ["blue", "red], background: "yellox"}
 		 */
-		IDiagram.prototype.setStyle = function(styleConfig) {
-            // TODO: faire
+		IDiagram.prototype.setStyle = function(styleSource) {
+            this.styleMatrix = styleSource.getStyleMatrix();
+            this.redraw();
         };
 	
 		/**
@@ -98,6 +104,14 @@ var IDiagram = function(canvasRef) {
             return widest;
         };
 		
+        IDiagram.prototype.getLegendRectangle = function() {
+        	if (this.styleMatrix) {
+        		return this.styleMatrix.getLegendRectangle();
+        	} else {
+        		return {x: 10, y: 10, width: 500, height: 120 };
+        	}
+        };
+        
 		/**
 		 *	Dessine la légende du diagramme.
          *  TODO: ne plus dessiner le contour du rectangle et le rendre modifiable.
@@ -106,8 +120,8 @@ var IDiagram = function(canvasRef) {
             var context = this.canvas.getContext('2d');
 			var height = this.getHeight();
             // Dessin du rectangle encadrant la légende TODO: spécifier ce rectangle autrement
-            var rectangle = {x: 0, y: 0, width: 500, height: 120 };
-            context.strokeStyle = 'black';
+            var rectangle = this.getLegendRectangle();
+			context.strokeStyle = 'black';
             //context.strokeRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
             // Choix des labels composant la légende
@@ -116,8 +130,7 @@ var IDiagram = function(canvasRef) {
             // Récupération du plus long label
             var widest = this.getWidestText(labels);
 
-            // TODO: gérer les couleurs
-			var colors = new Array("blue", "red", "black", "green", "pink", "orange", "darkgreen");
+            var colors = this.getColors();
             //Dessin des éléments de la légende. TODO: faire un objet de config
 			var pos = {x: rectangle.x, y: rectangle.y}; // Position du pinceau
             var squareSide = 10; //Taille du carré coloré
@@ -137,12 +150,12 @@ var IDiagram = function(canvasRef) {
 				context.fillText(label, pos.x + squareSide + shift, pos.y + squareSide);
 
                 // Translation du pinceau
-                if (pos.x + 2 * widest.length + squareSide + shift < rectangle.x + rectangle.width) {
+				if (pos.x + 2 * widest.length + squareSide + shift < rectangle.x + rectangle.width) {
                     pos.x += xStep;
                 } else {
 				    pos.x = rectangle.x;
 				    pos.y += yStep;
-                }
+				}
 			});
         };
 		
@@ -161,10 +174,14 @@ var IDiagram = function(canvasRef) {
 		IDiagram.prototype.drawXAxis = function() {
 			var context = this.canvas.getContext('2d');
 			context.strokeStyle = "black";
-			context.beginPath();
-				// Ligne des abscisses
-				context.moveTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
+            context.beginPath();
+            if (this.data.getBottomValue() < 0 || this.data.getTopValue() < 0) {
+                context.moveTo(this.yAxisConfig.leftShift, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
+				context.lineTo(this.getWidth(), (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
+            } else {
+                context.moveTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
 				context.lineTo(this.getWidth(), this.getHeight() - this.yAxisConfig.bottomShift);
+            }
 			context.closePath();
 			context.stroke();
 		};
@@ -176,6 +193,7 @@ var IDiagram = function(canvasRef) {
 			// TODO: Récupérer la couleur dynamiquement à partir du css.
 			var context = this.canvas.getContext('2d');
 			context.strokeStyle = "black";
+            context.fillStyle = "black";
 			context.beginPath();
 				// Ligne des ordonnées
 				context.moveTo(this.yAxisConfig.leftShift, this.yAxisConfig.topShift);
@@ -185,17 +203,53 @@ var IDiagram = function(canvasRef) {
 
 			// Dessin des intervalles en y
 			var currentValue = this.data.getTopValue();
-			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
-			var dataInterval = Math.round(currentValue / this.yAxisConfig.nbIntervals);
+			var lengthInterval = null;
+			var dataInterval = null;
+            if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
+                var maxTop = this.data.getTopValue() < 0 ? -this.data.getTopValue() : this.data.getTopValue();
+                var maxBottom = this.data.getBottomValue() < 0 ? -this.data.getBottomValue() : this.data.getBottomValue();
+                var max = maxTop > maxBottom ? maxTop : maxBottom;
+                currentValue = max;
+                dataInterval = Math.round(2 * max / this.yAxisConfig.nbIntervals);
+                lengthInterval = Math.floor(((this.getHeight() - this.yAxisConfig.bottomShift - this.yAxisConfig.topShift) / 2) / (this.yAxisConfig.nbIntervals / 2));
+            } else {
+                dataInterval = Math.round(currentValue / this.yAxisConfig.nbIntervals);
+                lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
+            }
 			var stepWidth = this.yAxisConfig.stepWidth; // Longueur de la graduation
-			for (var y = this.yAxisConfig.topShift; y < this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
-				context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
-				context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
-				context.stroke();
-				var textWidth = context.measureText(currentValue).width;
-				context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
-				currentValue -= dataInterval;
-			}
+            if (this.data.getTopValue() < 0|| this.data.getBottomValue() < 0) {
+                currentValue = 0;
+                for (var y = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2; y >= this.yAxisConfig.topShift; y -= lengthInterval) {
+                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+
+                    var textWidth = context.measureText(currentValue).width;
+                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    context.stroke();
+
+                    currentValue += dataInterval;
+                }
+                currentValue = -dataInterval;
+                for (var y = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 + lengthInterval; y <= this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
+                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+
+                    var textWidth = context.measureText(currentValue).width;
+                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    context.stroke();
+                    currentValue -= dataInterval;
+                }
+            }  else {
+                for (var y = this.yAxisConfig.topShift; y < this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
+                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+
+                    var textWidth = context.measureText(currentValue).width;
+                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    context.stroke();
+                    currentValue -= dataInterval;
+                }
+            }
 		};
 
         // TODO: methode de récupération de parametre par nom
@@ -207,10 +261,22 @@ var IDiagram = function(canvasRef) {
 			return this.yAxisConfig.leftShift;
 		};
 
+        /**
+         * Retourne le nombre de pixel par unité en y.
+         */
 		IDiagram.prototype.getPixelPerUnit = function() {
-			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
-			var dataInterval = Math.round(this.data.getTopValue() / this.yAxisConfig.nbIntervals);
-			return lengthInterval / dataInterval;
+            if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
+                var maxTop = this.data.getTopValue() < 0 ? -this.data.getTopValue() : this.data.getTopValue();
+                var maxBottom = this.data.getBottomValue() < 0 ? -this.data.getBottomValue() : this.data.getBottomValue();
+                var max = maxTop > maxBottom ? maxTop : maxBottom;
+                var dataInterval = Math.round(2 * max / this.yAxisConfig.nbIntervals);
+                var lengthInterval = Math.round(((this.getHeight() - this.yAxisConfig.bottomShift - this.yAxisConfig.topShift) / 2) / (this.yAxisConfig.nbIntervals / 2));
+                return lengthInterval / dataInterval;
+            } else {
+                var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
+                var dataInterval = Math.round(this.data.getTopValue() / this.yAxisConfig.nbIntervals);
+                return lengthInterval / dataInterval;
+            }
 		};
 		
 		/**
@@ -224,14 +290,14 @@ var IDiagram = function(canvasRef) {
 		IDiagram.prototype.drawYLines = function() { };
 		
 		IDiagram.prototype.redraw = function() {
+			var context = this.canvas.getContext('2d');
+			context.fillStyle = 'white';
+			context.fillRect(0, 0, this.getWidth(), this.getHeight());
             if (this.data) {
-            	var context = this.canvas.getContext('2d');
-            	context.clearRect(0, 0, this.getWidth(), this.getHeight());
-            	this.drawAxis();
+                this.drawAxis();
                 this.drawDiagram();
                 this.drawLegend();
                 // TODO: juste pour le test: supprimer
-                var context = this.canvas.getContext('2d');
                 context.strokeStyle = 'black';
                 context.strokeRect(0, 0, this.getWidth(), this.getHeight());
             }
