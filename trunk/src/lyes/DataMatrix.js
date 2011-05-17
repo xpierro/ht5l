@@ -37,6 +37,13 @@ var DataMatrix = function() {
         DataMatrix.prototype.hasRowLabel = function(label) {
             return this.rowLabels.indexOf(label) >= 0;
         };
+        
+        /**
+         * Retourne vrai si la colonne existe
+         */
+        DataMatrix.prototype.hasColumnLabel = function(label) {
+            return this.columnLabels.indexOf(label) >= 0;
+        };
 
     	/**
     	 * Retourne la largeur de la matrice.
