@@ -1,70 +1,103 @@
-var m = new DataMatrix();
-m.setColumnLabels(new Array("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"));
-m.setRowLabels(new Array("Clubic.fr", "Google.fr", "Yahoo.fr"));
-m.setValue("Clubic.fr", "Lundi", 12541);
-m.setValue("Clubic.fr", "Mardi", 11204);
-m.setValue("Clubic.fr", "Mercredi", 11354);
-m.setValue("Clubic.fr", "Jeudi", 10058);
-m.setValue("Clubic.fr", "Vendredi", 9871);
-m.setValue("Clubic.fr", "Samedi", 8254);
-m.setValue("Clubic.fr", "Dimanche", 5477);
-
-m.setValue("Google.fr", "Lundi", 9855);
-m.setValue("Google.fr", "Mardi", 8870);
-m.setValue("Google.fr", "Mercredi", 8731);
-m.setValue("Google.fr", "Jeudi", 7488);
-m.setValue("Google.fr", "Vendredi", 8159);
-m.setValue("Google.fr", "Samedi", 6547);
-m.setValue("Google.fr", "Dimanche", 4512);
-
-m.setValue("Yahoo.fr", "Lundi", 3241);
-m.setValue("Yahoo.fr", "Mardi", 2544);
-m.setValue("Yahoo.fr", "Mercredi", 2597);
-m.setValue("Yahoo.fr", "Jeudi", 3108);
-m.setValue("Yahoo.fr", "Vendredi", 2114);
-m.setValue("Yahoo.fr", "Samedi", 2045);
-m.setValue("Yahoo.fr", "Dimanche", 950);
-
-/*var diag1 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'column');
-diag1.setData(m);
-var diag2 = new HistoDiagram(document.getElementsByTagName('canvas')[1], 'row');
-diag2.setData(m);
-var diag3 = new PieDiagram(document.getElementsByTagName('canvas')[2], 'column');
-diag3.setData(m);
-var diag4 = new PieDiagram(document.getElementsByTagName('canvas')[3], 'row');
-diag4.setData(m);
-*/
-var ids = new InternalDataSource('testpre');
+//var ids = new InternalDataSource('testpre');
 //var eds = new ExternalDataSource('test.xml');
+
+var json = null;
+var dataMatrix = new DataMatrix();
+
+var jsonCallback = function(text) {
+	json = eval('(' + text + ')');
+	
+	$.each(json.series, function(i, childNode) {
+		if(!dataMatrix.hasRowLabel(childNode.name)){
+			if(childNode.name == '' || childNode.name == null){
+				throw "nom de la colomne non defini";
+			}
+			dataMatrix.addRowLabel(childNode.name);
+		}
+		if(!dataMatrix.hasColumnLabel(childNode.label)){
+			if(childNode.label == '' || childNode.label == null){
+				throw "nom de la serie non defini";
+			}
+			dataMatrix.addColumnLabel(childNode.label);
+		}
+		if(isNaN(parseInt(childNode.value))){
+    		throw "valeur non defini";
+    	}
+        dataMatrix.setValue(childNode.name, childNode.label, parseInt(childNode.value));
+	});
+};
+
+var cds = new ConnectorDataSource(
+		function(callback) {
+			this.url = "test.json";
+			var xmlHandler = function(XHO, callback){
+		        if (XHO.readyState == 4 && XHO.status == 200){
+					callback(XHO.responseText);
+				}
+			};
+			
+			var xmlhttp = null;
+			if (window.XMLHttpRequest) { 
+				xmlhttp = new XMLHttpRequest();
+				if (xmlhttp.overrideMimeType) {	
+					xmlhttp.overrideMimeType('text/xml');
+				}
+			} 
+			else if (window.ActiveXObject) {
+				try {
+					xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+				} 
+				catch (e) {
+					try {
+						xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+					} 
+					catch (e) {}
+				}
+			}
+			if (!xmlhttp) {
+				throw "Impossible de créer une requete XML";
+				return null;
+			}
+			xmlhttp.onreadystatechange = function() {xmlHandler(xmlhttp, callback);};
+	        xmlhttp.open("GET", this.url, true);
+			xmlhttp.send(null);
+			return xmlhttp.responseText;//reponse du serveur transmettant du xml
+		},
+		function() {
+			return dataMatrix;
+		}
+);
+
 var iss = new InternalStyleSource('testpre');
 //var ess = new ExternalStyleSource('styleSource.xml');
-ids.loadData(function() {
-    var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
-    diag5.setData(ids.getDataMatrix());
-    iss.loadData(function() {
-    	diag5.setStyle(iss.getStyleMatrix());
-    });
+//ids.loadData(function() {
+  //  var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
+    //diag5.setData(ids.getDataMatrix());
+    //iss.loadData(function() {
+    	//diag5.setStyle(iss.getStyleMatrix());
+    //});
     //ess.loadData(function(xml){
     	//diag5.setStyle(ess.getStyleMatrix(xml));
     //});
-});
+//});
 
 /*eds.loadData(function(xml) {
     var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
     diag5.setData(eds.getDataMatrix(xml));
-    //iss.loadData(function() {
-    	//diag5.setStyle(iss.getStyleMatrix());
-    //});
+    iss.loadData(function() {
+    	diag5.setStyle(iss.getStyleMatrix());
+    });
     ess.loadData(function(xml){
     	diag5.setStyle(ess.getStyleMatrix(xml));
     });
 });*/
 
-/*
-$.each(m.getRowLabels(), function(i, r) {
-    $.each(m.getColumnLabels(), function(j, c) {
-        alert(r + " | " + c + " | " + m.getValueByLabel(r, c));
-    });
+var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
+cds.loadData(jsonCallback);
+diag5.setData(cds.getDataMatrix());
+iss.loadData(function() {
+	diag5.setStyle(iss.getStyleMatrix());
 });
-alert(m.getTopValue());
-*/
+    /*ess.loadData(function(xml){
+    	diag5.setStyle(ess.getStyleMatrix(xml));
+    });*/
