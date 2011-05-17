@@ -35,14 +35,13 @@ var PieDiagram = function(canvasRef, direction) {
 		PieDiagram.prototype.refreshParts = function() {
 			var total = this.data.getTotal();
 			this.parts = new Array();
-			if (this.dir == 'row') { // Pourcentage de chaque ligne
+			if (this.dir == 'row') { // Pourcentage de chaque ligne		
 				$.each(this.data.getRowLabels(), $.proxy(function(i, rowLabel) {
-					this.parts.push({value: this.data.getRowTotal(rowLabel) / total});
-					
+					this.parts.push({value: this.data.getRowTotal(rowLabel) / total, label: rowLabel}); // value=Pourcentage, label=Sujet (par exemple Google.com, etc)
 				}, this));
 			} else {
 				$.each(this.data.getColumnLabels(), $.proxy(function(i, columnLabel) {
-					this.parts.push({value: this.data.getColumnTotal(columnLabel) / total});
+					this.parts.push({value: this.data.getColumnTotal(columnLabel) / total, label: columnLabel}); // value=Pourcentage, label=Sujet (par exemple Google.com, etc)
 				},this));
 			}
 			var startArc = -Math.PI / 2;
@@ -137,12 +136,14 @@ var PieDiagram = function(canvasRef, direction) {
 			this.refreshParts();
 			var that = this;
 			var infoBullePercent;
+			var infoBulleLabel;
 			var infoNeeded = false;
 			
 			$.each(this.parts, $.proxy(function(i, part) {
 				if (i == that.currentSlice) {
 					context.fillStyle = this.applyAlphaToColor(colors[i < colors.length ? i : i % colors.length], .5);
 					infoBullePercent = part['value'];
+					infoBulleLabel = part['label'];
 					infoNeeded = true;
 				} else {
 					context.fillStyle = this.applyAlphaToColor(colors[i < colors.length ? i : i % colors.length], 1);
@@ -165,14 +166,14 @@ var PieDiagram = function(canvasRef, direction) {
 				//TODO: trouver la bonne combinaison pour avoir l'angle orienté avec cohérence
 				var yPos = height - (Math.sin(-textArc) * this.radius * textConfig.positionOnRadius + this.center.y);
 				context.fillStyle = "white"; // TODO: a fixer quelque part
-				context.fillText(parseFloat(part['value'] * 100).toFixed(2) + "%", xPos-(context.measureText(parseFloat(part * 100).toFixed(2)).width)/2, yPos);
+				context.fillText(parseFloat(part['value'] * 100).toFixed(2) + "%", xPos-(context.measureText(parseFloat(part['value'] * 100).toFixed(2) + "%").width)/2, yPos);
 
 			}, this));
 			if (infoNeeded == true) {
 				context.fillStyle = "green";
-				context.fillRect(this.posMouseX+15, this.posMouseY+10, (context.measureText(parseFloat(infoBullePercent * 100).toFixed(2) + "%").width)+10, 20);
+				context.fillRect(this.posMouseX+15, this.posMouseY+10, (context.measureText(infoBulleLabel+": "+parseFloat(infoBullePercent * 100).toFixed(2) + "%").width)+10, 20);
 				context.fillStyle = "white";
-				context.fillText(parseFloat(infoBullePercent * 100).toFixed(2) + "%", this.posMouseX+20, this.posMouseY+23);
+				context.fillText(infoBulleLabel+": "+parseFloat(infoBullePercent * 100).toFixed(2) + "%", this.posMouseX+20, this.posMouseY+23);
 			}
 			 
 		};
