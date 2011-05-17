@@ -19,7 +19,7 @@ var LineDiagram = function(canvasRef, direction) {
 		LineDiagram.prototype.drawDiagram = function() {
 			var context = this.canvas.getContext('2d');
 			var absLabels = null;
-            var columnLabels = null;
+            var lineLabels = null;
             var shift = 5;
 			if (this.dir == 'column') {
 				absLabels = this.data.getRowLabels();
@@ -30,37 +30,21 @@ var LineDiagram = function(canvasRef, direction) {
 			}
 			
 	
-			// TODO: génériser
-            var currentX = this.getLeftShift() + 20;
+            var currentX = this.getLeftShift();
             var deltaX = (this.getWidth() - this.getLeftShift()) / absLabels.length;
-           // alert(deltaX);
             var lineHeight = 0;
-            context.strokeStyle = 'blue';
+            var colors = this.getColors();
             $.each(lineLabels, $.proxy(function(i, lineLabel){
-            	//alert(lineLabel);
+                context.strokeStyle = colors[i];
 				$.each(absLabels, $.proxy(function(j, absLabel) {
-					//alert(absLabel);
 					var currentHeight = this.getPixelPerUnit() * this.data.getValueByLabelAndDirection(lineLabel, absLabel, this.dir);
-					//alert(currentHeight);
 					var currentY = this.getHeight() - this.getBottomShift() - currentHeight;
 					if (j == 0) {
-						context.lineCap = 'round';
 						context.beginPath();
-						
 						context.moveTo(currentX, currentY);
-						//context.stroke();
-						//j++;
 					} else {
-						
-						context.lineWidth = 2;
-						context.lineCap = 'round';
 						context.lineTo(currentX, currentY);
-						//context.lineTo(currentX+deltaX, currentY);
-						
 						context.stroke();
-						//context.lineCap = 'square';
-						//j++;
-						
 					}
 					
 					var xLegendPosition = currentX - context.measureText(absLabel).width / 2;
@@ -70,20 +54,13 @@ var LineDiagram = function(canvasRef, direction) {
 				}, this)
 								
 				);
-				currentX = this.getLeftShift()+20;
+				currentX = this.getLeftShift();
 				context.strokeStyle = 'red';
-				//context.lineCap = 'square';
-				currentX = this.getLeftShift()+20;
-				//context.strokeStyle = 'black';
-				context.lineCap = 'round';
+				currentX = this.getLeftShift();
+				context.strokeStyle = 'black';
 				
 			}, this));
-            
-            
-			
 		};
-			
-		
 	}
 };
 

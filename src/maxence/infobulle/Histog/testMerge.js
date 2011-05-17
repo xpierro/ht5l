@@ -28,29 +28,9 @@ m.setValue("Yahoo.fr", "Vendredi", 800);
 m.setValue("Yahoo.fr", "Samedi", 2045);
 m.setValue("Yahoo.fr", "Dimanche", 950);
 
-//var diag1 = new LineDiagram(document.getElementsByTagName('canvas')[0], 'row');
-var diag1 = new PieDiagram(document.getElementsByTagName('canvas')[0], 'row');
+// TODO: intégrer au diagramme directement la gestion du mousemove
+var diag1 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
 document.getElementsByTagName('canvas')[0].onmousemove = function(event) {
 	diag1.handleClick(event, diag1);
 };
 diag1.setData(m);
-
-/*
-var diag1 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'column');
-diag1.setData(m);
-var diag2 = new HistoDiagram(document.getElementsByTagName('canvas')[1], 'row');
-diag2.setData(m);
-var diag3 = new PieDiagram(document.getElementsByTagName('canvas')[2], 'column');
-diag3.setData(m);
-var diag4 = new PieDiagram(document.getElementsByTagName('canvas')[3], 'row');
-diag4.setData(m);
-*/
-
-/*
-$.each(m.getRowLabels(), function(i, r) {
-    $.each(m.getColumnLabels(), function(j, c) {
-        alert(r + " | " + c + " | " + m.getValueByLabel(r, c));
-    });
-});
-alert(m.getTopValue());
-*/

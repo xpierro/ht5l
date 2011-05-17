@@ -6,7 +6,7 @@
  * ____________|_____________|______________
  * LabelLigne2 |Valeur3......|Valeur4......|
  *
- * Le sens de parcour se fait "en ligne" ou en "colonne". Parcourir en ligne signifie qu'on considère une valeur
+ * Le sens de parcourt se fait "en ligne" ou en "colonne". Parcourir en ligne signifie qu'on considère une valeur
  * comme le resultat d'une fonction d'acces de [LabelLigne][LabelColonne] tandis que parcourir en colonne est inverse:
  * [LabelColonne][LabelLigne].
  *
@@ -15,10 +15,13 @@
  */
 
 var DataMatrix = function() {
-    // Attributs privés
+    // Intitulés des lignes de la matrice
 	this.rowLabels = new Array();
+
+    // Intitulés des colonnes de la matrice
 	this.columnLabels = new Array();
 
+    // Lignes de la matrice
 	this.rows = new Array();
 
 	/**
@@ -27,6 +30,13 @@ var DataMatrix = function() {
 	 */
     if (typeof DataMatrix.initialized == "undefined" ) {
         DataMatrix.initialized = true;
+
+        /**
+         * Retourne vrai si la ligne existe
+         */
+        DataMatrix.prototype.hasRowLabel = function(label) {
+            return this.rowLabels.indexOf(label) >= 0;
+        };
 
     	/**
     	 * Retourne la largeur de la matrice.
@@ -165,6 +175,27 @@ var DataMatrix = function() {
                 $.each(this.columnLabels, $.proxy(function(columnIndex, columnLabel) {
                     var currentValue = this.getValueByLabel(rowLabel, columnLabel);
                     if (currentValue > top) {
+                        top = currentValue;
+                    }
+                }, this));
+            }, this));
+    		return top;
+    	};
+
+        /**
+    	 * Retourne la valeur minimale contenu dans la matrice
+    	 */
+    	DataMatrix.prototype.getBottomValue = function() {
+    		var top;
+            try {
+                top = this.getValue(0, 0);
+            } catch(e) {
+                top = 0;
+            }
+            $.each(this.rowLabels, $.proxy(function(rowIndex, rowLabel) {
+                $.each(this.columnLabels, $.proxy(function(columnIndex, columnLabel) {
+                    var currentValue = this.getValueByLabel(rowLabel, columnLabel);
+                    if (currentValue < top) {
                         top = currentValue;
                     }
                 }, this));
