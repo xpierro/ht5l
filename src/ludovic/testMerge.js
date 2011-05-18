@@ -39,7 +39,7 @@ var ids = new InternalDataSource('testpre');
 var iss = new InternalStyleSource('testpre');
 //var ess = new ExternalStyleSource('styleSource.xml');
 ids.loadData(function() {
-    var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
+    var diag5 = new Histo3DDiagram(document.getElementsByTagName('canvas')[0], 'row');
     diag5.setData(ids.getDataMatrix());
     iss.loadData(function() {
     	diag5.setStyle(iss.getStyleMatrix());

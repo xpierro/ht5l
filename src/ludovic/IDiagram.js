@@ -227,7 +227,7 @@ var IDiagram = function(canvasRef) {
             //context.font = "12pt";
             var yHeight = this.getHeight();
             context.save();
-            context.translate(-35, yHeight / 2 + context.measureText(this.data.getYLegend()).width / 2);
+            context.translate(-35, yHeight / 2  - this.yAxisConfig.bottomShift / 2 + context.measureText(this.data.getYLegend()).width / 2);
             context.rotate(-Math.PI/2);
             context.fillText(this.data.getYLegend(), 0, 50);
             context.restore();
