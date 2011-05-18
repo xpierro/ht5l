@@ -44,6 +44,10 @@ var PieDiagram = function(canvasRef, direction) {
 		PieDiagram.prototype.drawAxis = function() {
 			// Vide
 		};
+
+		PieDiagram.prototype.drawYLabelLegend = function() {
+			// Vide
+		}
 		
 		PieDiagram.prototype.refreshParts = function() {
 			var total = this.data.getTotal();

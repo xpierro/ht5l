@@ -72,7 +72,7 @@ var cds = new ConnectorDataSource(
 var iss = new InternalStyleSource('testpre');
 //var ess = new ExternalStyleSource('styleSource.xml');
 ids.loadData(function() {
-    var diag5 = new LineDiagram(document.getElementsByTagName('canvas')[0], 'row');
+    var diag5 = new PieDiagram(document.getElementsByTagName('canvas')[0], 'row');
     //document.getElementsByTagName('canvas')[0].onmousemove = function(event) {
     	//diag5.handleClick(event, diag5);
     //};
