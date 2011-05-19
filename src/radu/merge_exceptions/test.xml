@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<ylegend>bla bla</ylegend>
+	<series>
+		<serie name= "Clubic.fr">
+			<value label= "lundi" >1254</value>
+			<value label= "Mardi" >1325</value>
+			<value label= "Mercredi" >600</value>
+		</serie>
+		<serie name= "Yahoo.fr">
+			<value label= "lundi" >1288</value>
+			<value label= "Mardi" >2015</value>
+			<value label= "Mercredi" >800</value>
+		</serie>
+	</series>
+</root>
