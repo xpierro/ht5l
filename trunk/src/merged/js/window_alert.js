@@ -10,7 +10,9 @@ function window_alert(title, msg) {
 	chaine += "<p style='text-align: center;'>" + msg + "</p>";
 	chaine += "</div>";
 	chaine += "</div>";
-	body.innerHTML = chaine;
+    if (body != null) {
+	    body.innerHTML = chaine;
+    }
 }
 
 function hidden_div() {
