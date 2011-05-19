@@ -16,6 +16,11 @@ var jsFiles = new Array("DataMatrix.js", "IStyleSource.js", "InternalStyleSource
  *            Url du script
  */
 var loadScript = function(url) {
+    /**
+     * @TODO :
+     *  gestion des exceptions :
+     *      - url : null, incorrect
+     */
 	var script = document.createElement('script');
 	script.setAttribute('type', 'text/javascript');
 	script.setAttribute('src', url);

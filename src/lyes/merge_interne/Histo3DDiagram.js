@@ -11,13 +11,13 @@ var Histo3DDiagram = function(canvasRef, direction) {
         }
     } catch(e) {
         if (e == "refCanvas null") {
-            window_alert("Erreur de données", "La référence du canvas ne peut être nulle")
+            window_alert("Erreur de données", "La référence du canvas ne peut être nulle");
         }
         if (e == "dir null") {
             window_alert("Erreur de données", "La direction du diagramme doit être précisée");
         }
         if (e == "unknown dir") {
-            window_alert("Erreur de lecture", "Direction de lecture invalide")
+            window_alert("Erreur de lecture", "Direction de lecture invalide");
         }
     }
     HistoDiagram.call(this, canvasRef, direction);
