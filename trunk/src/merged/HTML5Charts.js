@@ -1,11 +1,13 @@
 /**
- * Charge tous les scripts nÈcessaire au fonctionnement de la biblioth?que
+ * Charge tous les scripts n√©cessaire au fonctionnement de la biblioth?que
  * Conception: Pierre Collignon.
  */
 
-// On dÈfinit les fichier:
-var jsFiles = new Array("DataMatrix.js", "IDiagram.js", "PieDiagram.js", "HistoDiagram.js",
-                        "IDataSource.js", "InternalDataSource.js", "testMerge.js");
+// On d√©finit les fichiers:
+var jsFiles = new Array("DataMatrix.js", "IStyleSource.js", "InternalStyleSource.js", "ExternalStyleSource.js",
+		"StyleMatrix.js", "IDataSource.js", "InternalDataSource.js","ExternalDataSource.js","ConnectorDataSource.js",
+		"IDiagram.js", "PieDiagram.js", "HistoDiagram.js", "LineDiagram.js","Histo3DDiagram.js", "window_alert.js",
+		"testMerge.js");
 
 /**
  * Charge un script
@@ -13,12 +15,12 @@ var jsFiles = new Array("DataMatrix.js", "IDiagram.js", "PieDiagram.js", "HistoD
  */
 var loadScript = function(url) {
 	var script = document.createElement('script');
-	script.setAttribute('type','text/javascript');
+	script.setAttribute('type', 'text/javascript');
 	script.setAttribute('src', url);
 	document.getElementsByTagName('head')[0].appendChild(script);
 };
 
-// On charge tout (sans utiliser JQuery qu'on ins?re nous meme)
+// On charge tout (sans utiliser JQuery qu'on ins√®re nous meme)
 for (var i = 0; i < jsFiles.length; i++) {
 	loadScript(jsFiles[i]);
 }

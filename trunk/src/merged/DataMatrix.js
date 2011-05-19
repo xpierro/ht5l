@@ -6,7 +6,7 @@
  * ____________|_____________|______________
  * LabelLigne2 |Valeur3......|Valeur4......|
  *
- * Le sens de parcour se fait "en ligne" ou en "colonne". Parcourir en ligne signifie qu'on considère une valeur
+ * Le sens de parcourt se fait "en ligne" ou en "colonne". Parcourir en ligne signifie qu'on considère une valeur
  * comme le resultat d'une fonction d'acces de [LabelLigne][LabelColonne] tandis que parcourir en colonne est inverse:
  * [LabelColonne][LabelLigne].
  *
@@ -15,10 +15,16 @@
  */
 
 var DataMatrix = function() {
-    // Attributs privés
+    // Intitulés des lignes de la matrice
 	this.rowLabels = new Array();
-	this.columnLabels = new Array();
 
+    // Intitulés des colonnes de la matrice
+	this.columnLabels = new Array();
+	
+	// Légende en Y
+    this.yLegend = new String();
+
+    // Lignes de la matrice
 	this.rows = new Array();
 
 	/**
@@ -27,6 +33,20 @@ var DataMatrix = function() {
 	 */
     if (typeof DataMatrix.initialized == "undefined" ) {
         DataMatrix.initialized = true;
+
+        /**
+         * Retourne vrai si la ligne existe
+         */
+        DataMatrix.prototype.hasRowLabel = function(label) {
+            return this.rowLabels.indexOf(label) >= 0;
+        };
+        
+        /**
+         * Retourne vrai si la colonne existe
+         */
+        DataMatrix.prototype.hasColumnLabel = function(label) {
+            return this.columnLabels.indexOf(label) >= 0;
+        };
 
     	/**
     	 * Retourne la largeur de la matrice.
@@ -69,6 +89,22 @@ var DataMatrix = function() {
     		return total;
     	};
 
+    	/**
+         * Retourne la légende en y
+         */
+        DataMatrix.prototype.getYLegend = function() {
+            return this.yLegend;
+        };
+
+        /**
+         * Spécifie la légende en y
+         * @param yLeg
+         */
+        DataMatrix.prototype.setYLegend = function(yLeg) {
+            this.yLegend = yLeg;
+        };
+
+    	
     	/**
     	 * Spécifie le nom de chaque colonne
     	 */
@@ -120,9 +156,6 @@ var DataMatrix = function() {
     	 * Retoune la valeur entrée dans la matrice selon les labels.
     	 */
     	DataMatrix.prototype.getValueByLabel = function(rowLabel, columnLabel) {
-    		if (!this.rows[rowLabel] || !this.rows[rowLabel][columnLabel]) {
-    			throw "Label/Valeur indéfinis : " + rowLabel + "," + columnLabel;
-    		}
     		return this.rows[rowLabel][columnLabel];
     	};
 
@@ -133,9 +166,6 @@ var DataMatrix = function() {
          * @param secondLabel Label de colonne si dir == 'row' | Label de ligne si dir == 'column'
     	 */
     	DataMatrix.prototype.getValueByLabelAndDirection = function(firstLabel, secondLabel, dir) {
-    		if (!this.rows[firstLabel] && !this.rows[secondLabel]) {
-    			throw "Label/Valeur indéfinis : " + firstLabel + ";" + secondLabel;
-    		}
     		if (dir == 'row') {
     			return this.rows[firstLabel][secondLabel];
     		} else {
@@ -165,6 +195,27 @@ var DataMatrix = function() {
                 $.each(this.columnLabels, $.proxy(function(columnIndex, columnLabel) {
                     var currentValue = this.getValueByLabel(rowLabel, columnLabel);
                     if (currentValue > top) {
+                        top = currentValue;
+                    }
+                }, this));
+            }, this));
+    		return top;
+    	};
+
+        /**
+    	 * Retourne la valeur minimale contenu dans la matrice
+    	 */
+    	DataMatrix.prototype.getBottomValue = function() {
+    		var top;
+            try {
+                top = this.getValue(0, 0);
+            } catch(e) {
+                top = 0;
+            }
+            $.each(this.rowLabels, $.proxy(function(rowIndex, rowLabel) {
+                $.each(this.columnLabels, $.proxy(function(columnIndex, columnLabel) {
+                    var currentValue = this.getValueByLabel(rowLabel, columnLabel);
+                    if (currentValue < top) {
                         top = currentValue;
                     }
                 }, this));
