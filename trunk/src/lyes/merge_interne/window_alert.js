@@ -21,7 +21,7 @@ var dragged = null;
 
 
 function start_drag(objet,event) {
-  dragged = document.getElementById('first'); 
+  dragged = document.getElementById('first');
 }
 
 function drag_onmousemove(event) {
