@@ -4,7 +4,7 @@
 var json = null;
 var dataMatrix = new DataMatrix();
 
-var jsonCallback = function(text) {
+var jsonCallback = function(text, usercallback) {
 	json = eval('(' + text + ')');
 	
 	$.each(json.series, function(i, childNode) {
@@ -25,14 +25,15 @@ var jsonCallback = function(text) {
     	}
         dataMatrix.setValue(childNode.name, childNode.label, parseInt(childNode.value));
 	});
+    usercallback();
 };
 
 var cds = new ConnectorDataSource(
-		function(callback) {
+		function(callback, usercallback) {
 			this.url = "test.json";
 			var xmlHandler = function(XHO, callback){
 		        if (XHO.readyState == 4 && XHO.status == 200){
-					callback(XHO.responseText);
+					callback(XHO.responseText, usercallback);
 				}
 			};
 			
@@ -58,10 +59,9 @@ var cds = new ConnectorDataSource(
 				throw "Impossible de créer une requete XML";
 				return null;
 			}
-			xmlhttp.onreadystatechange = function() {xmlHandler(xmlhttp, callback);};
+			xmlhttp.onreadystatechange = function() {xmlHandler(xmlhttp, callback, usercallback);};
 	        xmlhttp.open("GET", this.url, true);
 			xmlhttp.send(null);
-			return xmlhttp.responseText;//reponse du serveur transmettant du xml
 		},
 		function() {
 			return dataMatrix;
@@ -93,8 +93,13 @@ var iss = new InternalStyleSource('testpre');
 });*/
 
 var diag5 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
-cds.loadData(jsonCallback);
-diag5.setData(cds.getDataMatrix());
+
+var userCallback = function() {
+    diag5.setData(cds.getDataMatrix());
+};
+
+cds.loadData(jsonCallback, userCallback);
+
 iss.loadData(function() {
 	diag5.setStyle(iss.getStyleMatrix());
 });
