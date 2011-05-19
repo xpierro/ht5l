@@ -1,0 +1,85 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+body{
+	background: url('../images/bg.jpg') top;
+	background-attachment: fixed;
+	font-family: 'Lucida Sans unicode', verdana;
+}
+
+canvas{
+	display: block;
+	margin: 10px;
+}
+
+.wrapper{
+	margin: 0px;
+	padding:20px 0px 20px 0px;
+}
+.canvas_container{
+	background: url('../images/bg_canvas.png') center repeat-y;
+	width: 900px;
+	text-align: center;
+	float: right;
+	margin: 0px 20px 0px 20px;
+}
+.canvas_top{
+	background: url('../images/bg_canvas_top.png') bottom no-repeat;
+	height:18px;
+	width:900px;
+	text-align: center;
+	float: right;
+	margin: 20px 20px 0px 20px;
+}
+
+.canvas_bottom{
+	background: url('../images/bg_canvas_bottom.png') top no-repeat;
+	height:18px;
+	width:900px;
+	text-align: center;
+	float: right;
+	margin: 00px 20px 20px 20px;
+}
+
+#test4{
+	padding:20px 0px 20px 0px;
+}
+
+.sidebar{
+	float: left;
+	width:250px;
+	position: fixed;
+	margin: 20px 0px 0px 50px;
+	background: url('../images/bg_sidebar2.png') center repeat-y;
+	padding: 10px 0px 10px 0px;
+	color: #f4f4f4;
+}
+
+.sidebar ul{
+	list-style: none;
+	padding: 10px 0px 10px 0px;
+}
+
+.sidebar a{
+	display: block;
+	text-decoration: none;
+	margin: 0px 10px 0px 10px;
+	padding: 5px;
+	height: 26px;
+	color: #f4f4f4;
+	line-height: 22px;
+}
+.sidebar a:hover{
+	color: #ffea00;
+}
+.logo, .description{
+	padding: 10px;
+}
+.description .menu_link {
+	text-align:center;
+}
+
+.manuel{
+	visibility: hidden;
+}
