@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+     <head>
+		<title> HTML5 Charts Documentation</title>
+		
+		<link rel="stylesheet" media="screen" type="text/css" title="Design" href="css/design.css"/>		
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/HTML5Charts.js"></script>
+		
+		<script type="text/javascript" src="js/jquery.scrollTo-1.4.2-min.js"></script>
+		<script type="text/javascript" src="js/effects.js"></script>
+
+    </head>
+	
+	<body>
+		
+		<div class="wrapper">
+		
+			<div class="sidebar">
+				<div class="logo">
+					Manuel d'utilisation
+				</div>
+				<hr/>
+				<ul>
+					<li> <a class="menu_link" onclick="manu(1)" href="#manuel" > Français </a> </li>
+					<li> <a class="menu_link" onclick="manu(2)" href="#manuel"> English </a> </li>
+					<li> <a class="menu_link" onclick="manu(3)" href="#manuel"> Española </a> </li>
+					<li> <a class="menu_link" onclick="manu(4)" href="#manuel"> Deutsche </a> </li>
+				</ul>
+			</div>
+			
+			<div class="main_content">
+				<div class="canvas_top"></div>
+				<div class="canvas_container">
+					<div id="manuel">						
+					</div>
+				</div>
+				<div class="canvas_bottom"></div>
+					
+			</div>
+			
+        <pre id="testpre" style="visibility:hidden;">
+            <?xml version="1.0" encoding="UTF-8"?>
+                <root>
+                    <labels>
+                        <column>Clubic.fr</column>
+                        <column>Yahoo.fr</column>
+                        <row>Lundi</row>
+                        <row>Mardi</row>
+                    </labels>
+
+                    <rows>
+                        <row>
+                            <value>1254</value>
+                            <value>1325</value>
+                        </row>
+                        <row>
+                            <value>1288</value>
+                            <value>2015</value>
+                        </row>
+                    </rows>
+                </root>
+        </pre>
+		
+		<div class="footer"></div>
+		</div>
+		
+		<div class="manuel" id="manuel_fr">
+			fr
+		</div>
+		
+		<div class="manuel" id="manuel_en">
+			en
+		</div>
+		
+		<div class="manuel" id="manuel_esp">
+			esp
+		</div>
+		
+		<div class="manuel" id="manuel_al">
+			al
+		</div>
+	</body>
+</html>
