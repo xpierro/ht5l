@@ -73,9 +73,9 @@ var iss = new InternalStyleSource('testpre');
 //var ess = new ExternalStyleSource('styleSource.xml');
 ids.loadData(function() {
     var diag5 = new PieDiagram(document.getElementsByTagName('canvas')[0], 'row');
-    //document.getElementsByTagName('canvas')[0].onmousemove = function(event) {
-    	//diag5.handleClick(event, diag5);
-    //};
+    document.getElementsByTagName('canvas')[0].onmousemove = function(event) {
+    	diag5.handleClick(event, diag5);
+    };
     diag5.setData(ids.getDataMatrix());
     iss.loadData(function() {
     	diag5.setStyle(iss.getStyleMatrix());

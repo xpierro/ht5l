@@ -44,19 +44,19 @@ var InternalDataSource = function(preId) {
             $.each(series.childNodes, function(i, childNode) {
                 if (childNode.tagName == 'serie') {
                 	if(childNode.attributes.getNamedItem('name') == null || childNode.attributes.getNamedItem('name').value == ""){
-                		throw "nom de la serie non defini";
+                		 window_alert("XSD pas respecté", "nom de la serie non defini");
                 	}
                     dataMatrix.addColumnLabel(childNode.attributes.getNamedItem('name').value);
                     $.each(childNode.childNodes, function(j, grandChildNode) {                   
                         if (grandChildNode.tagName == 'value') {
                             if (!dataMatrix.hasRowLabel(grandChildNode.attributes.getNamedItem('label').value)) {
                             	if(grandChildNode.attributes.getNamedItem('label') == null || grandChildNode.attributes.getNamedItem('label').value == ""){
-                            		throw "nom de la colomne non defini";
+                            		window_alert("XSD pas respecté", "nom de la colomne non defini");
                             	}
                                 dataMatrix.addRowLabel(grandChildNode.attributes.getNamedItem('label').value);
                             }
                             if(isNaN(parseInt(grandChildNode.textContent))){
-                        		throw "valeur non defini";
+                                window_alert("XSD pas respecté", "valeur non definie");
                         	}
                             dataMatrix.setValue(dataMatrix.getRowLabels()[(j - 1) / 2],
                                                 dataMatrix.getColumnLabels()[(i - 1) / 2],

@@ -142,7 +142,10 @@ var DataMatrix = function() {
     	 * fournies.
     	 */
     	DataMatrix.prototype.setValue = function(rowLabel, columnLabel, value) {
-    		if ($.inArray(rowLabel, this.rowLabels) != -1 && $.inArray(columnLabel, this.columnLabels) != -1) {
+            /**
+             * @TODO: traitement de l'exception : la valeur n'est pas une valeur numerique
+             */
+            if ($.inArray(rowLabel, this.rowLabels) != -1 && $.inArray(columnLabel, this.columnLabels) != -1) {
     			if (!this.rows[rowLabel]) {
     				this.rows[rowLabel] = new Array();
     			}
