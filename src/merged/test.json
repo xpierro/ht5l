@@ -1,24 +1,108 @@
-{ 
-  "series": [ 
-	      {
-	      	  "name": "Clubic.fr",
-	      	  "label": "Lundi",
-	          "value": "1254"
-	      }, 
-	      {
-	      	  "name": "Clubic.fr",
-	      	  "label": "Mardi",
-	          "value": "1325"
-	      }, 
-	      {
-	      	  "name": "Yahoo.fr",
-	      	  "label": "Lundi",
-	          "value": "1288"
-	      }, 
-	      {
-	      	  "name": "Yahoo.fr",
-	      	  "label": "Mardi",
-	          "value": "2015"
-	      }
-   ] 
+{
+    "series": [
+        {
+            "name": "Google.fr",
+            "label": "Lundi",
+            "value": "8564"
+        },
+        {
+            "name": "Google.fr",
+            "label": "Mardi",
+            "value": "8432"
+        },
+        {
+            "name": "Google.fr",
+            "label": "Mercredi",
+            "value": "7002"
+        },
+        {
+            "name": "Google.fr",
+            "label": "Jeudi",
+            "value": "9250"
+        },
+        {
+            "name": "Google.fr",
+            "label": "Vendredi",
+            "value": "8989"
+        },
+        {
+            "name": "Google.fr",
+            "label": "Samedi",
+            "value": "8745"
+        },
+        {
+            "name": "Google.fr",
+            "label": "Dimanche",
+            "value": "5000"
+        },
+        {
+            "name": "Kernel.org",
+            "label": "Lundi",
+            "value": "8464"
+        },
+        {
+            "name": "Kernel.org",
+            "label": "Mardi",
+            "value": "9432"
+        },
+        {
+            "name": "Kernel.org",
+            "label": "Mercredi",
+            "value": "3560"
+        },
+        {
+            "name": "Kernel.org",
+            "label": "Jeudi",
+            "value": "8420"
+        },
+        {
+            "name": "Kernel.org",
+            "label": "Vendredi",
+            "value": "7562"
+        },
+        {
+            "name": "Kernel.org",
+            "label": "Samedi",
+            "value": "2560"
+        },
+        {
+            "name": "Kernel.org",
+            "label": "Dimanche",
+            "value": "4850"
+        },{
+            "name": "Bing.fr",
+            "label": "Lundi",
+            "value": "8162"
+        },
+        {
+            "name": "Bing.fr",
+            "label": "Mardi",
+            "value": "8632"
+        },
+        {
+            "name": "Bing.fr",
+            "label": "Mercredi",
+            "value": "7002"
+        },
+        {
+            "name": "Bing.fr",
+            "label": "Jeudi",
+            "value": "7898"
+        },
+        {
+            "name": "Bing.fr",
+            "label": "Vendredi",
+            "value": "7898"
+        },
+        {
+            "name": "Bing.fr",
+            "label": "Samedi",
+            "value": "6584"
+        },
+        {
+            "name": "Bing.fr",
+            "label": "Dimanche",
+            "value": "6000"
+        }
+    ]
 } 

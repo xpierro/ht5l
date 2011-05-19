@@ -27,9 +27,9 @@ m.setValue("Yahoo.fr", "Dimanche", 950);
 
 var diag1 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'column');
 diag1.setData(m);
-var diag2 = new HistoDiagram(document.getElementsByTagName('canvas')[1], 'row');
+var diag2 = new Histo3DDiagram(document.getElementsByTagName('canvas')[1], 'row');
 diag2.setData(m);
-var diag3 = new PieDiagram(document.getElementsByTagName('canvas')[2], 'column');
+var diag3 = new LineDiagram(document.getElementsByTagName('canvas')[2], 'column');
 diag3.setData(m);
 var diag4 = new PieDiagram(document.getElementsByTagName('canvas')[3], 'row');
 diag4.setData(m);

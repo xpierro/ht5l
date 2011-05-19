@@ -35,7 +35,7 @@ var LineDiagram = function(canvasRef, direction) {
 			}
 
             var currentX = this.getLeftShift() + 20;
-            var deltaX = (this.getWidth() - this.getLeftShift()) / absLabels.length;
+            var deltaX = (this.getWidth() - this.getLeftShift()) / (absLabels.length - 1);
             var colors = this.getColors();
             $.each(lineLabels, $.proxy(function(i, lineLabel){
                 context.strokeStyle = colors[i];
@@ -52,10 +52,16 @@ var LineDiagram = function(canvasRef, direction) {
 						context.lineTo(currentX, currentY);
 						context.stroke();
 					}
-					
-					var xLegendPosition = currentX - context.measureText(absLabel).width / 2;
-		            context.fillStyle = 'black'; // TODO: a fixer ailleurs
-		            context.fillText(absLabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
+					var xLegendPosition = 0;
+                    if (j < absLabels.length - 1) {
+					    xLegendPosition = currentX - context.measureText(absLabel).width / 2;
+                    } else {
+                        xLegendPosition = this.getWidth() - context.measureText(absLabel).width - 1;
+                    }
+                    if (i = 1) { //TODO: etre sur
+                        context.fillStyle = 'black'; // TODO: a fixer ailleurs
+                        context.fillText(absLabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
+                    }
 		            currentX += deltaX;
 				}, this)
 								
