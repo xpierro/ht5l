@@ -31,30 +31,58 @@ var InternalStyleSource = function(preId) {
          * Renvoie la matrice représentant les données lues.
          */
         InternalStyleSource.prototype.getStyleMatrix = function() {
-            var styleMat = new StyleMatrix();
-
-        	var colors = this.xml.getElementsByTagName('colors')[0];
-            $.each(colors.childNodes, function(index, childNode) {
-            	if (childNode.tagName == 'color') {
-            		styleMat.addColor(childNode.textContent);
-            		
-            	}
-            });
-
-            var legend = this.xml.getElementsByTagName('legend')[0];
-            $.each(legend.childNodes, function(index, childNode) {
-            	if (childNode.tagName == 'x') {
-            		styleMat.setLegendX(parseInt(childNode.textContent));
-                } else if (childNode.tagName == 'y') {
-                	styleMat.setLegendY(childNode.textContent);
-                } else if (childNode.tagName == 'w'){
-                	styleMat.setLegendW(childNode.textContent);
-                } else if (childNode.tagName == 'h'){
-                	styleMat.setLegendH(childNode.textContent);
-                }
-            });
-            
-            return styleMat;
+            try{
+	        	var styleMat = new StyleMatrix();
+	
+	        	var colors = this.xml.getElementsByTagName('colors')[0];
+	        	if(colors.childNodes.length == 1){
+	        		throw 'Le nombre de couleurs ne doit pas être nul';
+	        	}
+	            $.each(colors.childNodes, function(index, childNode) {
+	            	if (childNode.tagName == 'color') {
+	            		if(childNode.textContent == '' || isNaN(parseInt(childNode.textContent)) == false){
+	            			throw 'La couleur n\'est pas spécifiée';
+	            		}
+	            		styleMat.addColor(childNode.textContent);
+	            	} else if (childNode.tagName != undefined){
+	                	throw 'La balise de couleurs est mal formée';
+	                }
+	            });
+	
+	            var legend = this.xml.getElementsByTagName('legend')[0];
+	            if(legend.childNodes.length != 5){
+	        		throw 'La légende est mal formée';
+	        	}
+	            $.each(legend.childNodes, function(index, childNode) {
+	            	if (childNode.tagName == 'x') {
+	            		if(childNode.textContent == '' || isNaN(parseInt(childNode.textContent))){
+                         	throw 'La valeur X de la légende est mal formatée';
+                     	}
+	            		styleMat.setLegendX(parseInt(childNode.textContent));
+	                } else if (childNode.tagName == 'y') {
+	                	if(childNode.textContent == '' || isNaN(parseInt(childNode.textContent))){
+                         	throw 'La valeur Y de la légende est mal formatée';
+                     	}
+	                	styleMat.setLegendY(childNode.textContent);
+	                } else if (childNode.tagName == 'w'){
+	                	if(childNode.textContent == '' || isNaN(parseInt(childNode.textContent))){
+                         	throw 'La valeur W de la légende est mal formatée';
+                     	}
+	                	styleMat.setLegendW(childNode.textContent);
+	                } else if (childNode.tagName == 'h'){
+	                	if(childNode.textContent == '' || isNaN(parseInt(childNode.textContent))){
+                         	throw 'La valeur H de la légende est mal formatée';
+                     	}
+	                	styleMat.setLegendH(childNode.textContent);
+	                } else if (childNode.tagName != undefined){
+	                	throw 'La légende est mal formée';
+	                }
+	            });
+	            
+	            return styleMat;
+            }catch(e){
+            	window_alert('Feuille de style non conforme', e);
+            }
         }
     }
 };
