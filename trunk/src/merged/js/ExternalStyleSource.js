@@ -76,7 +76,7 @@ var ExternalStyleSource = function(url) {
 	        	}
 		    	 $.each(colors.childNodes, function(index, childNode) {
 		         	if (childNode.tagName == 'color') {
-		         		if(childNode.textContent == '' || isNaN(parseInt(childNode.textContent)) == false){
+		         		if(childNode.textContent == ''){
 	            			throw 'La couleur n\'est pas spécifiée';
 	            		}
 		         		styleMat.addColor(childNode.textContent);
@@ -86,7 +86,7 @@ var ExternalStyleSource = function(url) {
 		         });
 		
 		    	 var legend =  xmlResponse.getElementsByTagName('legend')[0];
-		    	 if(legend.childNodes.length != 5){
+		    	 if(legend.childNodes.length != 9){
 		        		throw 'La légende est mal formée';
 		    	 }
 		         $.each(legend.childNodes, function(index, childNode) {

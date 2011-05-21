@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <style>
 	<colors>
-			<color>Aqua</color>
-			<color>Black</color>
+			<color>Red</color>
+			<color>Orange</color>
+			<color>Yellow</color>
+			<color>Green</color>
 			<color>Blue</color>
+			<color>Indigo</color>
+			<color>Violet</color>
 			<color>BlueViolet</color>
 			<color>Brown</color>
 			<color>Chartreuse</color>
@@ -14,14 +18,9 @@
 			<color>DarkMagenta</color>
 			<color>DeepPink</color>
 			<color>Gold</color>
-			<color>Green</color>
 			<color>GreenYellow</color>
 			<color>Lime</color>
-			<color>Orange</color>
 			<color>Pink</color>
-			<color>Red</color>
-			<color>Violet</color>
-			<color>Yellow</color>
 	</colors>
 	<legend>
 		<x>0</x>
