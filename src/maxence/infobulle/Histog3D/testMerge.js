@@ -1,7 +1,7 @@
 var m = new DataMatrix();
 m.setColumnLabels(new Array("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"));
 m.setRowLabels(new Array("Clubic.fr", "Google.fr", "Yahoo.fr"));
-m.setValue("Clubic.fr", "Lundi", 12541);
+m.setValue("Clubic.fr", "Lundi", -12541);
 m.setValue("Clubic.fr", "Mardi", 10533);
 m.setValue("Clubic.fr", "Mercredi", 11400);
 m.setValue("Clubic.fr", "Jeudi", 10058);
