@@ -11,23 +11,26 @@ var HistoDiagram = function(canvasRef, direction) {
 	try {
         if (canvasRef == null) {
             throw "refCanvas null"
-    }
-    if (direction == null)  {
-        throw "dir null"
-    }
-    if (direction != 'row' && direction != 'column') {
-        throw "unknown dir"
-    }
+   		}
+    	if (direction == null)  {
+    	    throw "dir null"
+    	}
+   		if (direction != 'row' && direction != 'column') {
+        	throw "unknown dir"
+    	}
 	} catch(e) {
-    if (e == "refCanvas null") {
-        window_alert("Erreur de données", "La référence du canvas ne peut être nulle")
-    }
-    if (e == "dir null") {
-        window_alert("Erreur de données", "La direction du diagramme doit être précisée");
-    }
-    if (e == "unknown dir") {
-        window_alert("Erreur de lecture", "Direction de lecture invalide")
-    }
+    	if (e == "refCanvas null") {
+    	    window_alert("Erreur de données", "La référence du canvas ne peut être nulle")
+    	}
+    	if (e == "dir null") {
+    	    window_alert("Erreur de données", "La direction du diagramme doit être précisée");
+    	}
+    	if (e == "unknown dir") {
+    	    window_alert("Erreur de lecture", "Direction de lecture invalide")
+    	}
+	}
+	if (direction != 'row' && direction != 'column') {
+		throw "Direction de lecture invalide : " + direction;
 	}
 	this.dir = direction;
     this.currentSlice = null;
@@ -178,12 +181,21 @@ var HistoDiagram = function(canvasRef, direction) {
 				$.each(colorLabels, $.proxy(function(j, colorlabel) {
 					var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
 					var barHeight = this.getPixelPerUnit() * value;
-					if (mouseX >= currentX && mouseX <= currentX + barWidth
-                        && mouseY >= yZero - barHeight && mouseY <= yZero) {
-                        that.currentSlice = {abs: abslabel, color: colorlabel};
-                        that.redraw();
-                        found = 1;
-                    }
+					if (barHeight > 0) {
+						if (mouseX >= currentX && mouseX <= currentX + barWidth
+	                        && mouseY >= yZero - barHeight && mouseY <= yZero) {
+	                        that.currentSlice = {abs: abslabel, color: colorlabel};
+	                        that.redraw();
+	                        found = 1;
+	                    }
+	                } else {
+	                	if (mouseX >= currentX && mouseX <= currentX + barWidth
+	                        && mouseY >= yZero && mouseY <= yZero - barHeight) {
+	                        that.currentSlice = {abs: abslabel, color: colorlabel};
+	                        that.redraw();
+	                        found = 1;
+	                    }
+	                }
 					currentX += barWidth;
 				}, this));
 				currentX += shift;
@@ -195,12 +207,8 @@ var HistoDiagram = function(canvasRef, direction) {
             }
         };
     }
-    var that = this;
-    canvasRef.onmousemove = function(event) {
-	    that.handleClick(event, that);
-    };
 };
 
 // Héritage: chainage des prototypes.
-HistoDiagram.prototype = new IDiagram(null); // TODO: on rÃ©pÃ¨te deux fois, trouver mieux
+HistoDiagram.prototype = new IDiagram(null); // TODO: on répète deux fois, trouver mieux
 HistoDiagram.prototype.constructor = HistoDiagram;
