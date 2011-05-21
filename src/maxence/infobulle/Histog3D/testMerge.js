@@ -28,7 +28,7 @@ m.setValue("Yahoo.fr", "Vendredi", 800);
 m.setValue("Yahoo.fr", "Samedi", 2045);
 m.setValue("Yahoo.fr", "Dimanche", 950);
 
-// TODO: intégrer au diagramme directement la gestion du mousemove
+// TODO: intï¿½grer au diagramme directement la gestion du mousemove
 var diag1 = new Histo3DDiagram(document.getElementsByTagName('canvas')[0], 'row');
 document.getElementsByTagName('canvas')[0].onmousemove = function(event) {
 	diag1.handleClick(event, diag1);
