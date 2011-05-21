@@ -26,50 +26,98 @@ var Histo3DDiagram = function(canvasRef, direction) {
             var context = this.canvas.getContext('2d');
 			context.strokeStyle = "black";
 			context.beginPath();
-				// Ligne des abscisses
+                
+            if (this.data.getBottomValue() < 0 || this.data.getTopValue() < 0) {
+				context.moveTo(this.yAxisConfig.leftShift, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
+				context.lineTo(this.getWidth() - this.config3D.x, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
+                context.moveTo(this.yAxisConfig.leftShift + this.config3D.x, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 - this.config3D.y);
+				context.lineTo(this.getWidth(), (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 - this.config3D.y);
+                context.moveTo(this.getWidth(), (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 - this.config3D.y);
+                context.lineTo(this.getWidth() - this.config3D.x, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
+            } else {
 				context.moveTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
 				context.lineTo(this.getWidth() - this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift);
                 context.moveTo(this.yAxisConfig.leftShift + this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
 				context.lineTo(this.getWidth(), this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
                 context.moveTo(this.getWidth(), this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
                 context.lineTo(this.getWidth() - this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift);
+            }
+                
 			context.closePath();
 			context.stroke();
         };
 
-        Histo3DDiagram.prototype.drawYAxis = function() {
-            var context = this.canvas.getContext('2d');
+        Histo3DDiagram.prototype.drawYAxis = function(){
+			// TODO: Récupérer la couleur dynamiquement à partir du css.
+			var context = this.canvas.getContext('2d');
 			context.strokeStyle = "black";
             context.fillStyle = "black";
 			context.beginPath();
-				// Lignes des ordonnées
+				// Ligne des ordonnées
 				context.moveTo(this.yAxisConfig.leftShift, this.yAxisConfig.topShift);
 				context.lineTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
                 context.moveTo(this.yAxisConfig.leftShift + this.config3D.x, this.yAxisConfig.topShift - this.config3D.y);
                 context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
-            context.closePath();
+			context.closePath();
 			context.stroke();
-
-
 
 			// Dessin des intervalles en y
 			var currentValue = this.data.getTopValue();
-			var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
-			var dataInterval = Math.round(currentValue / this.yAxisConfig.nbIntervals);
+			var lengthInterval = null;
+			var dataInterval = null;
+            if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
+                var maxTop = this.data.getTopValue() < 0 ? -this.data.getTopValue() : this.data.getTopValue();
+                var maxBottom = this.data.getBottomValue() < 0 ? -this.data.getBottomValue() : this.data.getBottomValue();
+                var max = maxTop > maxBottom ? maxTop : maxBottom;
+                currentValue = max;
+                dataInterval = Math.round(2 * max / this.yAxisConfig.nbIntervals);
+                lengthInterval = Math.floor(((this.getHeight() - this.yAxisConfig.bottomShift - this.yAxisConfig.topShift) / 2) / (this.yAxisConfig.nbIntervals / 2));
+            } else {
+                dataInterval = Math.round(currentValue / this.yAxisConfig.nbIntervals);
+                lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
+            }
 			var stepWidth = this.yAxisConfig.stepWidth; // Longueur de la graduation
-			for (var y = this.yAxisConfig.topShift; y < this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
-				context.moveTo(this.yAxisConfig.leftShift, y);
-				context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, y - this.config3D.y);
-				context.stroke();
-				var textWidth = context.measureText(currentValue).width;
-				context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
-				currentValue -= dataInterval;
-			}
-            // Dessin de la dernière barre sans 0
-            context.moveTo(this.yAxisConfig.leftShift, y);
-            context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, y - this.config3D.y);
-            context.stroke();
-        };
+            if (this.data.getTopValue() < 0|| this.data.getBottomValue() < 0) {
+                currentValue = 0;
+                for (var y = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2; y >= this.yAxisConfig.topShift; y -= lengthInterval) {
+                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+                    context.moveTo(this.yAxisConfig.leftShift, y);
+					context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, y - this.config3D.y);
+
+                    var textWidth = context.measureText(currentValue).width;
+                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    context.stroke();
+
+                    currentValue += dataInterval;
+                }
+                currentValue = -dataInterval;
+                for (var y = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 + lengthInterval; y <= this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
+                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+                    context.moveTo(this.yAxisConfig.leftShift, y);
+					context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, y - this.config3D.y);
+
+                    var textWidth = context.measureText(currentValue).width;
+                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    context.stroke();
+                    currentValue -= dataInterval;
+                }
+            }  else {
+                for (var y = this.yAxisConfig.topShift; y < this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
+                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+                    context.moveTo(this.yAxisConfig.leftShift, y);
+					context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, y - this.config3D.y);
+
+                    var textWidth = context.measureText(currentValue).width;
+                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    context.stroke();
+                    currentValue -= dataInterval;
+                }
+            }
+		};
+
 
         Histo3DDiagram.prototype.drawDiagram = function() {
             var context = this.canvas.getContext('2d');
@@ -96,6 +144,12 @@ var Histo3DDiagram = function(canvasRef, direction) {
 			var barWidth = ((this.getWidth() - currentX - globalShift - this.config3D.x)
                             / (this.data.getColumnNumber() * this.data.getRowNumber()));
 
+            if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
+                var yZero = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2;
+            } else {
+                var yZero = this.getHeight() - this.getBottomShift();
+            }
+
             var infoBulleValeur;
 			var infoBulleLabel;
 			var infoNeeded = false;
@@ -120,38 +174,76 @@ var Histo3DDiagram = function(canvasRef, direction) {
 					var barHeight = this.getPixelPerUnit() * value;
 					context.fillStyle = color;
                     context.strokeStyle = 'black';
+                    
+                    if (barHeight<0) {
+	                    context.beginPath();
+	                        context.moveTo(currentX, yZero - barHeight);
+	                        context.lineTo(currentX + this.config3D.x, yZero - barHeight - this.config3D.y);
+	                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - barHeight - this.config3D.y);
+	                        context.lineTo(currentX + barWidth, yZero - barHeight);
+	                    context.closePath();
+	                } else {
+	                	context.beginPath();
+	                        context.moveTo(currentX, yZero);
+	                        context.lineTo(currentX + this.config3D.x, yZero - this.config3D.y);
+	                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - this.config3D.y);
+	                        context.lineTo(currentX + barWidth, yZero);
+	                    context.closePath();
+	                }
+	                context.stroke();
+                    context.fill();
+                    
+                    //Face gauche
+                    context.beginPath();
+                        context.moveTo(currentX, yZero);
+                        context.lineTo(currentX + this.config3D.x, yZero - this.config3D.y);
+                        context.lineTo(currentX + this.config3D.x, yZero - barHeight - this.config3D.y);
+                        context.lineTo(currentX, yZero - barHeight);
+                    context.closePath();
+                    context.stroke();
+                    context.fill();
+
 
                     context.strokeRect(currentX + this.config3D.x,
-                                     this.getHeight() - this.getBottomShift() - barHeight - this.config3D.y,
+                                     yZero - barHeight - this.config3D.y,
                                      barWidth,
                                      barHeight);
                     context.fillRect(currentX + this.config3D.x,
-                                     this.getHeight() - this.getBottomShift() - barHeight - this.config3D.y,
+                                     yZero - barHeight - this.config3D.y,
                                      barWidth,
                                      barHeight);
                     context.strokeRect(currentX,
-                                     this.getHeight() - this.getBottomShift() - barHeight,
+                                     yZero - barHeight,
                                      barWidth,
                                      barHeight);
 					context.fillRect(currentX,
-                                     this.getHeight() - this.getBottomShift() - barHeight,
+                                     yZero - barHeight,
                                      barWidth,
                                      barHeight);
-                    context.beginPath();
-                        context.moveTo(currentX, this.getHeight() - this.getBottomShift() - barHeight);
-                        context.lineTo(currentX + this.config3D.x, this.getHeight() - this.getBottomShift() - barHeight - this.config3D.y);
-                        context.lineTo(currentX + barWidth + this.config3D.x, this.getHeight() - this.getBottomShift() - barHeight - this.config3D.y);
-                        context.lineTo(currentX + barWidth, this.getHeight() - this.getBottomShift() - barHeight);
-                    context.closePath();
+                    if (barHeight>0) {
+	                    context.beginPath();
+	                        context.moveTo(currentX, yZero - barHeight);
+	                        context.lineTo(currentX + this.config3D.x, yZero - barHeight - this.config3D.y);
+	                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - barHeight - this.config3D.y);
+	                        context.lineTo(currentX + barWidth, yZero - barHeight);
+	                    context.closePath();
+	                } else {
+	                	context.beginPath();
+	                        context.moveTo(currentX, yZero);
+	                        context.lineTo(currentX + this.config3D.x, yZero - this.config3D.y);
+	                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - this.config3D.y);
+	                        context.lineTo(currentX + barWidth, yZero);
+	                    context.closePath();
+	                }
                     context.stroke();
                     context.fill();
 
                     // Face droite
                     context.beginPath();
-                        context.moveTo(currentX + barWidth, this.getHeight() - this.getBottomShift());
-                        context.lineTo(currentX + barWidth + this.config3D.x, this.getHeight() - this.getBottomShift() - this.config3D.y);
-                        context.lineTo(currentX + barWidth + this.config3D.x, this.getHeight() - this.getBottomShift() - barHeight - this.config3D.y);
-                        context.lineTo(currentX + barWidth, this.getHeight() - this.getBottomShift() - barHeight);
+                        context.moveTo(currentX + barWidth, yZero);
+                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - this.config3D.y);
+                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - barHeight - this.config3D.y);
+                        context.lineTo(currentX + barWidth, yZero - barHeight);
                     context.closePath();
                     context.stroke();
                     context.fill();
@@ -222,12 +314,21 @@ var Histo3DDiagram = function(canvasRef, direction) {
 				$.each(colorLabels, $.proxy(function(j, colorlabel) {
 					var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
 					var barHeight = this.getPixelPerUnit() * value;
-					if (mouseX >= currentX && mouseX <= currentX + barWidth
-                        && mouseY >= yZero - barHeight && mouseY <= yZero) {
-                        that.currentSlice = {abs: abslabel, color: colorlabel};
-                        that.redraw();
-                        found = 1;
-                    }
+					if (barHeight > 0) {
+						if (mouseX >= currentX - this.config3D.x && mouseX <= currentX + barWidth
+	                        && mouseY >= yZero - barHeight - this.config3D.y && mouseY <= yZero) {
+	                        that.currentSlice = {abs: abslabel, color: colorlabel};
+	                        that.redraw();
+	                        found = 1;
+	                    }
+	                } else {
+	                	if (mouseX >= currentX - this.config3D.x && mouseX <= currentX + barWidth
+	                        && mouseY >= yZero - this.config3D.y && mouseY <= yZero - barHeight) {
+	                        that.currentSlice = {abs: abslabel, color: colorlabel};
+	                        that.redraw();
+	                        found = 1;
+	                    }
+	                }
 					currentX += barWidth;
 				}, this));
 				currentX += shift;
