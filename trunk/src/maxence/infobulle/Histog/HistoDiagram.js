@@ -160,12 +160,21 @@ var HistoDiagram = function(canvasRef, direction) {
 				$.each(colorLabels, $.proxy(function(j, colorlabel) {
 					var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
 					var barHeight = this.getPixelPerUnit() * value;
-					if (mouseX >= currentX && mouseX <= currentX + barWidth
-                        && mouseY >= yZero - barHeight && mouseY <= yZero) {
-                        that.currentSlice = {abs: abslabel, color: colorlabel};
-                        that.redraw();
-                        found = 1;
-                    }
+					if (barHeight > 0) {
+						if (mouseX >= currentX && mouseX <= currentX + barWidth
+	                        && mouseY >= yZero - barHeight && mouseY <= yZero) {
+	                        that.currentSlice = {abs: abslabel, color: colorlabel};
+	                        that.redraw();
+	                        found = 1;
+	                    }
+	                } else {
+	                	if (mouseX >= currentX && mouseX <= currentX + barWidth
+	                        && mouseY >= yZero && mouseY <= yZero - barHeight) {
+	                        that.currentSlice = {abs: abslabel, color: colorlabel};
+	                        that.redraw();
+	                        found = 1;
+	                    }
+	                }
 					currentX += barWidth;
 				}, this));
 				currentX += shift;
