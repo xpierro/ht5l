@@ -22,10 +22,10 @@
 			<color>Lime</color>
 			<color>Pink</color>
 	</colors>
-	<legend>
+	<legende>
 		<x>0</x>
 		<y>0</y>
 		<w>500</w>
 		<h>120</h>
-	</legend>
+	</legende>
 </style>

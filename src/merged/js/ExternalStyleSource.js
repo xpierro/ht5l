@@ -85,7 +85,7 @@ var ExternalStyleSource = function(url) {
 	                }
 		         });
 		
-		    	 var legend =  xmlResponse.getElementsByTagName('legend')[0];
+		    	 var legend =  xmlResponse.getElementsByTagName('legende')[0];
 		    	 if(legend.childNodes.length != 9){
 		        		throw 'La légende est mal formée';
 		    	 }
