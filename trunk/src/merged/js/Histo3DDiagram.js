@@ -385,6 +385,10 @@ var Histo3DDiagram = function(canvasRef, direction) {
             return rgba;
         };
     }
+    var that = this;
+    canvasRef.onmousemove = function(event) {
+	    that.handleClick(event, that);
+    };
 };
 
 // Héritage: chainage des prototypes.
