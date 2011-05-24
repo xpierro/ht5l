@@ -26,6 +26,9 @@ var DataMatrix = function() {
 
     // Lignes de la matrice
 	this.rows = new Array();
+	
+	//Message d'erreur
+	this.error = new String();
 
 	/**
 	 * Prototypage, toutes les methodes définies ici ne seront pas dupliquées

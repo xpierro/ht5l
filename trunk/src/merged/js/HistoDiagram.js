@@ -46,80 +46,80 @@ var HistoDiagram = function(canvasRef, direction) {
 		HistoDiagram.prototype.drawDiagram = function() {
 			var context = this.canvas.getContext('2d');
 
-			var shift = 5; // Décalage entre deux ensembles en abscisse
-            var firstShift = 20; // Premier décalage
-			var currentX = this.getLeftShift() + firstShift; // Position en x sur le canvas du pinceau
+				var shift = 5; // Décalage entre deux ensembles en abscisse
+	            var firstShift = 20; // Premier décalage
+				var currentX = this.getLeftShift() + firstShift; // Position en x sur le canvas du pinceau
 
-			// Calcul des ensemble servant d'abscisse et de couleur selon la direction de parcours
-			// du tableau de données
-            var absLabels = null;
-            var colorLabels = null;
-			if (this.dir == 'column') {
-				absLabels = this.data.getRowLabels();
-				colorLabels = this.data.getColumnLabels();
-			} else {
-				absLabels = this.data.getColumnLabels();
-				colorLabels = this.data.getRowLabels();
-			}
-
-			var globalShift = (absLabels.length - 1) * shift; // Somme des décalages entre deux ensembles en abscisse
-
-			// Largeur d'une barre
-			var barWidth = ((this.getWidth() - currentX   - globalShift)
-                            / (this.data.getColumnNumber() * this.data.getRowNumber()));
-
-            if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
-                var yZero = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2;
-            } else {
-                var yZero = this.getHeight() - this.getBottomShift();
-            }
-            
-            var infoBulleValeur;
-			var infoBulleLabel;
-			var infoNeeded = false;
-			
-			$.each(absLabels, $.proxy(function(i, abslabel){
-				$.each(colorLabels, $.proxy(function(j, colorlabel) {
-					var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
-					var color = this.getColors()[j < this.getColors().length ? j : j % this.getColors().length];
-                    if (this.currentSlice != null) {
-                        if(this.currentSlice.abs == abslabel && this.currentSlice.color == colorlabel) {
-                            color = this.applyAlphaToColor(this.getColors()[j < this.getColors().length ? j : j % this.getColors().length], .5);
-                            infoNeeded = true;
-                            infoBulleLabel = colorlabel;
-                            infoBulleValeur = value;
-                        } else {
-                            color = this.applyAlphaToColor(this.getColors()[j < this.getColors().length ? j : j % this.getColors().length], 1);
-                        }
-                    }
-
-					var barHeight = this.getPixelPerUnit() * value;
-					context.fillStyle = color;
-					context.fillRect(currentX,
-                                     yZero - barHeight,
-                                     barWidth,
-                                     barHeight);
-					currentX += barWidth;
-				}, this));
-				var xLegendPosition = firstShift + this.getLeftShift() + (i * 5) + (i * barWidth * colorLabels.length)
-                                  + ((barWidth * colorLabels.length) / 2) - context.measureText(abslabel).width / 2;
-				context.fillStyle = 'black'; // TODO: a fixer ailleurs
-				context.fillText(abslabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
-				currentX += shift;
-			}, this));
-			if (infoNeeded == true) {
-				if (this.getWidth()<this.posMouseX+15+(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10) {
-					context.fillStyle = "green";
-					context.fillRect(this.posMouseX-5-(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+10, (context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
-					context.fillStyle = "white";
-					context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX-(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+23);
+				// Calcul des ensemble servant d'abscisse et de couleur selon la direction de parcours
+				// du tableau de données
+	            var absLabels = null;
+	            var colorLabels = null;
+				if (this.dir == 'column') {
+					absLabels = this.data.getRowLabels();
+					colorLabels = this.data.getColumnLabels();
 				} else {
-					context.fillStyle = "green";
-					context.fillRect(this.posMouseX+15, this.posMouseY+10, (context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
-					context.fillStyle = "white";
-					context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX+20, this.posMouseY+23);
+					absLabels = this.data.getColumnLabels();
+					colorLabels = this.data.getRowLabels();
 				}
-			} 
+
+				var globalShift = (absLabels.length - 1) * shift; // Somme des décalages entre deux ensembles en abscisse
+
+				// Largeur d'une barre
+				var barWidth = ((this.getWidth() - currentX   - globalShift)
+	                            / (this.data.getColumnNumber() * this.data.getRowNumber()));
+
+	            if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
+	                var yZero = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2;
+	            } else {
+	                var yZero = this.getHeight() - this.getBottomShift();
+	            }
+	            
+	            var infoBulleValeur;
+				var infoBulleLabel;
+				var infoNeeded = false;
+				
+				$.each(absLabels, $.proxy(function(i, abslabel){
+					$.each(colorLabels, $.proxy(function(j, colorlabel) {
+						var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
+						var color = this.getColors()[j < this.getColors().length ? j : j % this.getColors().length];
+	                    if (this.currentSlice != null) {
+	                        if(this.currentSlice.abs == abslabel && this.currentSlice.color == colorlabel) {
+	                            color = this.applyAlphaToColor(this.getColors()[j < this.getColors().length ? j : j % this.getColors().length], .5);
+	                            infoNeeded = true;
+	                            infoBulleLabel = colorlabel;
+	                            infoBulleValeur = value;
+	                        } else {
+	                            color = this.applyAlphaToColor(this.getColors()[j < this.getColors().length ? j : j % this.getColors().length], 1);
+	                        }
+	                    }
+
+						var barHeight = this.getPixelPerUnit() * value;
+						context.fillStyle = color;
+						context.fillRect(currentX,
+	                                     yZero - barHeight,
+	                                     barWidth,
+	                                     barHeight);
+						currentX += barWidth;
+					}, this));
+					var xLegendPosition = firstShift + this.getLeftShift() + (i * 5) + (i * barWidth * colorLabels.length)
+	                                  + ((barWidth * colorLabels.length) / 2) - context.measureText(abslabel).width / 2;
+					context.fillStyle = 'black'; // TODO: a fixer ailleurs
+					context.fillText(abslabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
+					currentX += shift;
+				}, this));
+				if (infoNeeded == true) {
+					if (this.getWidth()<this.posMouseX+15+(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10) {
+						context.fillStyle = "green";
+						context.fillRect(this.posMouseX-5-(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+10, (context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
+						context.fillStyle = "white";
+						context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX-(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+23);
+					} else {
+						context.fillStyle = "green";
+						context.fillRect(this.posMouseX+15, this.posMouseY+10, (context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
+						context.fillStyle = "white";
+						context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX+20, this.posMouseY+23);
+					}
+				} 
 		};
 
 
@@ -140,7 +140,7 @@ var HistoDiagram = function(canvasRef, direction) {
         };
 
         HistoDiagram.prototype.handleClick = function(clickEvent, that) {
-            var mouseX = clickEvent.pageX - this.canvas.offsetLeft;
+					var mouseX = clickEvent.pageX - this.canvas.offsetLeft;
             var mouseY = clickEvent.pageY - this.canvas.offsetTop;
     
 			this.posMouseX = mouseX;
@@ -205,7 +205,7 @@ var HistoDiagram = function(canvasRef, direction) {
                 that.currentSlice = null;
                 that.redraw();
             }
-        };
+			};
     }
     var that = this;
     canvasRef.onmousemove = function(event) {
