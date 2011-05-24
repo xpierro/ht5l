@@ -33,15 +33,19 @@ var LineDiagram = function(canvasRef, direction) {
 				absLabels = this.data.getColumnLabels();
 				lineLabels = this.data.getRowLabels();
 			}
-
-            var currentX = this.getLeftShift() + 20;
-            var deltaX = (this.getWidth() - this.getLeftShift()) / (absLabels.length - 1);
-            var colors = this.getColors();
-            $.each(lineLabels, $.proxy(function(i, lineLabel){
-                context.strokeStyle = colors[i];
+			if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
+					var yZero = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2;
+			} else {
+					var yZero = this.getHeight() - this.getBottomShift();
+			}
+			var currentX = this.getLeftShift() + 20;
+			var deltaX = (this.getWidth() - this.getLeftShift()) / (absLabels.length - 1);
+			var colors = this.getColors();
+			$.each(lineLabels, $.proxy(function(i, lineLabel){
+					context.strokeStyle = colors[i];
 				$.each(absLabels, $.proxy(function(j, absLabel) {
 					var currentHeight = this.getPixelPerUnit() * this.data.getValueByLabelAndDirection(lineLabel, absLabel, this.dir);
-					var currentY = this.getHeight() - this.getBottomShift() - currentHeight;
+					var currentY = yZero - currentHeight;
 					if (j == 0) {
 						context.lineCap = 'round';
 						context.beginPath();

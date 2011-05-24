@@ -151,70 +151,75 @@ var PieDiagram = function(canvasRef, direction) {
 		/**
 		 * Dessin du diagramme en camembert.
 		 */
-		PieDiagram.prototype.drawDiagram = function() {
-			var context = this.canvas.getContext('2d');
-			var height = this.getHeight();
+			PieDiagram.prototype.drawDiagram = function() {
+				var context = this.canvas.getContext('2d');
+				var height = this.getHeight();
+		if (!(this.data.getTopValue() > 0 && this.data.getBottomValue() < 0)) {
 
-			var total = this.data.getTotal();
+				var total = this.data.getTotal();
 
-			//TODO: gérer les couleurs
-			var colors = this.getColors();
-			// TODO: faire un test de tous les cas possible + légende a tailler selon width/height pas que rect
-			this.radius = (this.getHeight() > this.getWidth() ? this.getWidth() : this.getHeight()) / 2.5 - 10;
-            this.radius = this.radius > 0 ? this.radius : 0;
-			this.center = {x: this.getWidth() / 2, y: this.getHeight() / 2};
-			var textConfig = { // TODO: faire mieux
-				positionOnRadius: 0.75,
-				distanceFromStart: 2
-			};
-			this.refreshParts();
-			var that = this;
-			var infoBullePercent;
-			var infoBulleLabel;
-			var infoNeeded = false;
-			
-			$.each(this.parts, $.proxy(function(i, part) {
-				if (i == that.currentSlice) {
-					context.fillStyle = this.applyAlphaToColor(colors[i < colors.length ? i : i % colors.length], .5);
-					infoBullePercent = part['value'];
-					infoBulleLabel = part['label'];
-					infoNeeded = true;
-				} else {
-					context.fillStyle = this.applyAlphaToColor(colors[i < colors.length ? i : i % colors.length], 1);
-				}
-				context.beginPath();
-					context.arc(this.center.x, this.center.y, this.radius, part['startArc'], part['endArc'], true);
-                    // /!\ Indispensable pour avoir une part complete.
-					context.lineTo(this.center.x, this.center.y);
-				context.closePath();
-				context.fill();
-			}, this));
-			
-			$.each(this.parts, $.proxy(function(i, part) {
+				//TODO: gérer les couleurs
+				var colors = this.getColors();
+				// TODO: faire un test de tous les cas possible + légende a tailler selon width/height pas que rect
+				this.radius = (this.getHeight() > this.getWidth() ? this.getWidth() : this.getHeight()) / 2.5 - 10;
+	            this.radius = this.radius > 0 ? this.radius : 0;
+				this.center = {x: this.getWidth() / 2, y: this.getHeight() / 2};
+				var textConfig = { // TODO: faire mieux
+					positionOnRadius: 0.75,
+					distanceFromStart: 2
+				};
+				this.refreshParts();
+				var that = this;
+				var infoBullePercent;
+				var infoBulleLabel;
+				var infoNeeded = false;
+				
+				$.each(this.parts, $.proxy(function(i, part) {
+					if (i == that.currentSlice) {
+						context.fillStyle = this.applyAlphaToColor(colors[i < colors.length ? i : i % colors.length], .5);
+						infoBullePercent = part['value'];
+						infoBulleLabel = part['label'];
+						infoNeeded = true;
+					} else {
+						context.fillStyle = this.applyAlphaToColor(colors[i < colors.length ? i : i % colors.length], 1);
+					}
+					context.beginPath();
+						context.arc(this.center.x, this.center.y, this.radius, part['startArc'], part['endArc'], true);
+	                    // /!\ Indispensable pour avoir une part complete.
+						context.lineTo(this.center.x, this.center.y);
+					context.closePath();
+					context.fill();
+				}, this));
+				
+				$.each(this.parts, $.proxy(function(i, part) {
 
-				// On utilise comme angle d'écriture du texte le milieu d'une part
-				var textArc = part['startArc'] - (2 * Math.PI) * part['value'] / textConfig.distanceFromStart;
-				// La position est celle du cercle trigo multipliée par le zoom (rayon plus grand que 1) puis translatée par le centre (> 0,0)
-				var xPos = Math.cos(textArc) * this.radius * textConfig.positionOnRadius + this.center.x;
-				// L'axe y est inversé par rapport au cercle trigo classique et l'angle est aussi inversé
-				//TODO: trouver la bonne combinaison pour avoir l'angle orienté avec cohérence
-				var yPos = height - (Math.sin(-textArc) * this.radius * textConfig.positionOnRadius + this.center.y);
-				context.fillStyle = "white"; // TODO: a fixer quelque part
-				context.fillText(parseFloat(part['value'] * 100).toFixed(2) + "%", xPos-(context.measureText(parseFloat(part['value'] * 100).toFixed(2) + "%").width)/2, yPos);
+					// On utilise comme angle d'écriture du texte le milieu d'une part
+					var textArc = part['startArc'] - (2 * Math.PI) * part['value'] / textConfig.distanceFromStart;
+					// La position est celle du cercle trigo multipliée par le zoom (rayon plus grand que 1) puis translatée par le centre (> 0,0)
+					var xPos = Math.cos(textArc) * this.radius * textConfig.positionOnRadius + this.center.x;
+					// L'axe y est inversé par rapport au cercle trigo classique et l'angle est aussi inversé
+					//TODO: trouver la bonne combinaison pour avoir l'angle orienté avec cohérence
+					var yPos = height - (Math.sin(-textArc) * this.radius * textConfig.positionOnRadius + this.center.y);
+					context.fillStyle = "white"; // TODO: a fixer quelque part
+					context.fillText(parseFloat(part['value'] * 100).toFixed(2) + "%", xPos-(context.measureText(parseFloat(part['value'] * 100).toFixed(2) + "%").width)/2, yPos);
 
-			}, this));
-			if (infoNeeded == true) {
-				context.fillStyle = "green";
-				context.fillRect(this.posMouseX + 15, this.posMouseY + 10, (context.measureText(infoBulleLabel + ": " + parseFloat(infoBullePercent * 100).toFixed(2) + "%").width) + 10, 20);
-				context.fillStyle = "white";
-				context.fillText(infoBulleLabel + ": " + parseFloat(infoBullePercent * 100).toFixed(2) + "%", this.posMouseX + 20, this.posMouseY + 23);
-			} 
-		};
+				}, this));
+				if (infoNeeded == true) {
+					context.fillStyle = "green";
+					context.fillRect(this.posMouseX + 15, this.posMouseY + 10, (context.measureText(infoBulleLabel + ": " + parseFloat(infoBullePercent * 100).toFixed(2) + "%").width) + 10, 20);
+					context.fillStyle = "white";
+					context.fillText(infoBulleLabel + ": " + parseFloat(infoBullePercent * 100).toFixed(2) + "%", this.posMouseX + 20, this.posMouseY + 23);
+				} 
+			} else {
+				context.fillStyle = "black";
+				context.fillText("Impossible de dessiner ce diagramme s'il y a des valeurs négatives et positives", 50, 50);
+			}
 	}
     var that = this;
     canvasRef.onmousemove = function(event) {
 	    that.handleClick(event, that);
     };
+	}
 };
 
 // Implémente IDiagram
