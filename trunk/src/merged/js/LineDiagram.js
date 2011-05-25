@@ -131,6 +131,8 @@ var LineDiagram = function(canvasRef, direction) {
 			}, this));
 			
 			if (infoNeeded == true) {
+				this.context.save();
+				this.context.setTransform(1, 0, 0, 1, 0, 0);
 				if (this.getWidth()<this.posMouseX+15+(this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10) {
 					this.context.fillStyle = "green";
 					this.context.fillRect(this.posMouseX-5-(this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+10, (context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
@@ -142,6 +144,7 @@ var LineDiagram = function(canvasRef, direction) {
 					this.context.fillStyle = "white";
 					this.context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX+20, this.posMouseY+23);
 				}
+				this.context.restore();
 			} 
 		};
 		
