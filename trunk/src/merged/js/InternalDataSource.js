@@ -81,8 +81,8 @@ var InternalDataSource = function(preId) {
                     }
                 });
                 return dataMatrix;
-            } catch( e) {
-                window_alert('XML non conforme', e);
+            } catch(e) {
+                error = e;
             }
         }
     }

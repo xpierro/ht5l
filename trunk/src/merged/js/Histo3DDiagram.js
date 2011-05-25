@@ -319,68 +319,70 @@ var Histo3DDiagram = function(canvasRef, direction) {
         };
 
         Histo3DDiagram.prototype.handleClick = function(clickEvent, that) {
-            var mouseX = (clickEvent.pageX - this.canvas.offsetLeft) / that.scale + this.mainX;
-            var mouseY = (clickEvent.pageY - this.canvas.offsetTop) / that.scale + this.mainY;
-            
-            this.posMouseX = mouseX;
-			this.posMouseY = mouseY;
+            if (that.data) {
+                var mouseX = (clickEvent.pageX - this.canvas.offsetLeft) / that.scale + this.mainX;
+                var mouseY = (clickEvent.pageY - this.canvas.offsetTop) / that.scale + this.mainY;
 
-			var shift = 5; // Décalage entre deux ensembles en abscisse
-            var firstShift = 20; // Premier décalage
-			var currentX = this.getLeftShift() + firstShift; // Position en x sur le canvas du pinceau
+                this.posMouseX = mouseX;
+                this.posMouseY = mouseY;
 
-			// Calcul des ensemble servant d'abscisse et de couleur selon la direction de parcours
-			// du tableau de données
-            var absLabels = null;
-            var colorLabels = null;
-			if (this.dir == 'column') {
-				absLabels = this.data.getRowLabels();
-				colorLabels = this.data.getColumnLabels();
-			} else {
-				absLabels = this.data.getColumnLabels();
-				colorLabels = this.data.getRowLabels();
-			}
+                var shift = 5; // Décalage entre deux ensembles en abscisse
+                var firstShift = 20; // Premier décalage
+                var currentX = this.getLeftShift() + firstShift; // Position en x sur le canvas du pinceau
 
-			var globalShift = (absLabels.length - 1) * shift; // Somme des décalages entre deux ensembles en abscisse
+                // Calcul des ensemble servant d'abscisse et de couleur selon la direction de parcours
+                // du tableau de données
+                var absLabels = null;
+                var colorLabels = null;
+                if (this.dir == 'column') {
+                    absLabels = this.data.getRowLabels();
+                    colorLabels = this.data.getColumnLabels();
+                } else {
+                    absLabels = this.data.getColumnLabels();
+                    colorLabels = this.data.getRowLabels();
+                }
 
-			// Largeur d'une barre
-			var barWidth = ((this.getWidth() - currentX   - globalShift)
-                            / (this.data.getColumnNumber() * this.data.getRowNumber()));
-            var yZero = 0;
-            if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
-                yZero = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2;
-            } else {
-                yZero = this.getHeight() - this.getBottomShift();
-            }
+                var globalShift = (absLabels.length - 1) * shift; // Somme des décalages entre deux ensembles en abscisse
 
-            var found = 0;
-			$.each(absLabels, $.proxy(function(i, abslabel){
-				$.each(colorLabels, $.proxy(function(j, colorlabel) {
-					var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
-					var barHeight = this.getPixelPerUnit() * value;
-					if (barHeight > 0) {
-						if (mouseX >= currentX - this.config3D.x && mouseX <= currentX + barWidth
-	                        && mouseY >= yZero - barHeight - this.config3D.y && mouseY <= yZero) {
-	                        that.currentSlice = {abs: abslabel, color: colorlabel};
-	                        that.redraw();
-	                        found = 1;
-	                    }
-	                } else {
-	                	if (mouseX >= currentX - this.config3D.x && mouseX <= currentX + barWidth
-	                        && mouseY >= yZero - this.config3D.y && mouseY <= yZero - barHeight) {
-	                        that.currentSlice = {abs: abslabel, color: colorlabel};
-	                        that.redraw();
-	                        found = 1;
-	                    }
-	                }
-					currentX += barWidth;
-				}, this));
-				currentX += shift;
-			}, this));
+                // Largeur d'une barre
+                var barWidth = ((this.getWidth() - currentX   - globalShift)
+                                / (this.data.getColumnNumber() * this.data.getRowNumber()));
+                var yZero = 0;
+                if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
+                    yZero = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2;
+                } else {
+                    yZero = this.getHeight() - this.getBottomShift();
+                }
 
-            if (that.currentSlice != null && found == 0) {
-                that.currentSlice = null;
-                that.redraw();
+                var found = 0;
+                $.each(absLabels, $.proxy(function(i, abslabel){
+                    $.each(colorLabels, $.proxy(function(j, colorlabel) {
+                        var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
+                        var barHeight = this.getPixelPerUnit() * value;
+                        if (barHeight > 0) {
+                            if (mouseX >= currentX - this.config3D.x && mouseX <= currentX + barWidth
+                                && mouseY >= yZero - barHeight - this.config3D.y && mouseY <= yZero) {
+                                that.currentSlice = {abs: abslabel, color: colorlabel};
+                                that.redraw();
+                                found = 1;
+                            }
+                        } else {
+                            if (mouseX >= currentX - this.config3D.x && mouseX <= currentX + barWidth
+                                && mouseY >= yZero - this.config3D.y && mouseY <= yZero - barHeight) {
+                                that.currentSlice = {abs: abslabel, color: colorlabel};
+                                that.redraw();
+                                found = 1;
+                            }
+                        }
+                        currentX += barWidth;
+                    }, this));
+                    currentX += shift;
+                }, this));
+
+                if (that.currentSlice != null && found == 0) {
+                    that.currentSlice = null;
+                    that.redraw();
+                }
             }
         };
 

@@ -87,8 +87,15 @@ var IDiagram = function(canvasRef) {
 		 * @param dataMatrix Matrice des données
 		 */
 		IDiagram.prototype.setData = function(dataMatrix) {
-			this.data = dataMatrix;
-            this.redraw();
+            if (dataMatrix) {
+			    this.data = dataMatrix;
+                this.redraw();
+            } else {
+                var context = this.canvas.getContext('2d');
+			    context.fillStyle = 'black';
+			    context.fillText(error, 50, 50);
+            }
+
 		};
 
         /**
@@ -118,12 +125,7 @@ var IDiagram = function(canvasRef) {
         		return {x: 150, y: 10, width: 500, height: 120 };
         	}
         };
-        
-		IDiagram.prototype.displayError = function(error) {
-			var context = this.canvas.getContext('2d');
-			context.fillStyle = 'black';
-			context.fillText(error, 50, 50);
-		};
+
 		/**
 		 *	Dessine la légende du diagramme.
 		 */
@@ -315,7 +317,7 @@ var IDiagram = function(canvasRef) {
 		/**
 		 *	Dessine le diagramme. 
 		 */
-		IDiagram.prototype.drawDiagram = function(){};
+		IDiagram.prototype.drawDiagram = function() { };
 		
 		/**
 		 * Dessine les lignes de visée
@@ -323,17 +325,23 @@ var IDiagram = function(canvasRef) {
 		IDiagram.prototype.drawYLines = function() { };
 		
 		IDiagram.prototype.redraw = function() {
-			var context = this.canvas.getContext('2d');
-			context.fillStyle = 'white';
-			context.fillRect(0, 0, this.getWidth(), this.getHeight());
-            if (this.data) {
-                this.drawAxis();
-                this.drawDiagram();
-                this.drawLegend();
-                this.drawYLabelLegend();
-                // TODO: juste pour le test: supprimer
-                context.strokeStyle = 'black';
-                context.strokeRect(0, 0, this.getWidth(), this.getHeight());
+            if (!this.data || !this.styleMatrix) {
+                var context = this.canvas.getContext('2d');
+			    context.fillStyle = 'black';
+			    context.fillText(error, 50, 50);
+            } else {
+                var context = this.canvas.getContext('2d');
+                context.fillStyle = 'white';
+                context.fillRect(0, 0, this.getWidth(), this.getHeight());
+                if (this.data) {
+                    this.drawAxis();
+                    this.drawDiagram();
+                    this.drawLegend();
+                    this.drawYLabelLegend();
+                    // TODO: juste pour le test: supprimer
+                    context.strokeStyle = 'black';
+                    context.strokeRect(0, 0, this.getWidth(), this.getHeight());
+                }
             }
 		};
     }
