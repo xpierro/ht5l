@@ -109,7 +109,7 @@ var ExternalDataSource = function(url) {
 	            });
 	            return dataMatrix;
         	} catch(e) {
-	    	   window_alert('XML non conforme', e);
+                error = e;
 	       }
         }
     }
