@@ -43,6 +43,12 @@ var Histo3DDiagram = function(canvasRef, direction) {
         	
 	this.posMouseX = 0;
 	this.posMouseY = 0;
+
+    this.scale = 1;
+	this.mainX = 0;
+	this.mainY = 0;
+
+    this.context = this.canvas.getContext('2d');
     
 	if (typeof Histo3DDiagram.initialized == "undefined") {
 		Histo3DDiagram.initialized = true;
@@ -52,43 +58,41 @@ var Histo3DDiagram = function(canvasRef, direction) {
         };
 
         Histo3DDiagram.prototype.drawXAxis = function() {
-            var context = this.canvas.getContext('2d');
-			context.strokeStyle = "black";
-			context.beginPath();
+
+			this.context.strokeStyle = "black";
+			this.context.beginPath();
                 
             if (this.data.getBottomValue() < 0 || this.data.getTopValue() < 0) {
-				context.moveTo(this.yAxisConfig.leftShift, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
-				context.lineTo(this.getWidth() - this.config3D.x, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
-                context.moveTo(this.yAxisConfig.leftShift + this.config3D.x, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 - this.config3D.y);
-				context.lineTo(this.getWidth(), (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 - this.config3D.y);
-                context.moveTo(this.getWidth(), (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 - this.config3D.y);
-                context.lineTo(this.getWidth() - this.config3D.x, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
+				this.context.moveTo(this.yAxisConfig.leftShift, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
+				this.context.lineTo(this.getWidth() - this.config3D.x, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
+                this.context.moveTo(this.yAxisConfig.leftShift + this.config3D.x, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 - this.config3D.y);
+				this.context.lineTo(this.getWidth(), (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 - this.config3D.y);
+                this.context.moveTo(this.getWidth(), (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 - this.config3D.y);
+                this.context.lineTo(this.getWidth() - this.config3D.x, (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2);
             } else {
-				context.moveTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
-				context.lineTo(this.getWidth() - this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift);
-                context.moveTo(this.yAxisConfig.leftShift + this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
-				context.lineTo(this.getWidth(), this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
-                context.moveTo(this.getWidth(), this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
-                context.lineTo(this.getWidth() - this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift);
+				this.context.moveTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
+				this.context.lineTo(this.getWidth() - this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift);
+                this.context.moveTo(this.yAxisConfig.leftShift + this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
+				this.context.lineTo(this.getWidth(), this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
+                this.context.moveTo(this.getWidth(), this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
+                this.context.lineTo(this.getWidth() - this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift);
             }
                 
-			context.closePath();
-			context.stroke();
+			this.context.closePath();
+			this.context.stroke();
         };
 
         Histo3DDiagram.prototype.drawYAxis = function(){
-			// TODO: Récupérer la couleur dynamiquement à partir du css.
-			var context = this.canvas.getContext('2d');
-			context.strokeStyle = "black";
-            context.fillStyle = "black";
-			context.beginPath();
+			this.context.strokeStyle = "black";
+            this.context.fillStyle = "black";
+			this.context.beginPath();
 				// Ligne des ordonnées
-				context.moveTo(this.yAxisConfig.leftShift, this.yAxisConfig.topShift);
-				context.lineTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
-                context.moveTo(this.yAxisConfig.leftShift + this.config3D.x, this.yAxisConfig.topShift - this.config3D.y);
-                context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
-			context.closePath();
-			context.stroke();
+				this.context.moveTo(this.yAxisConfig.leftShift, this.yAxisConfig.topShift);
+				this.context.lineTo(this.yAxisConfig.leftShift, this.getHeight() - this.yAxisConfig.bottomShift);
+                this.context.moveTo(this.yAxisConfig.leftShift + this.config3D.x, this.yAxisConfig.topShift - this.config3D.y);
+                this.context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, this.getHeight() - this.yAxisConfig.bottomShift - this.config3D.y);
+			this.context.closePath();
+			this.context.stroke();
 
 			// Dessin des intervalles en y
 			var currentValue = this.data.getTopValue();
@@ -109,39 +113,39 @@ var Histo3DDiagram = function(canvasRef, direction) {
             if (this.data.getTopValue() < 0|| this.data.getBottomValue() < 0) {
                 currentValue = 0;
                 for (var y = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2; y >= this.yAxisConfig.topShift; y -= lengthInterval) {
-                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
-                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
-                    context.moveTo(this.yAxisConfig.leftShift, y);
-					context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, y - this.config3D.y);
+                    this.context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    this.context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+                    this.context.moveTo(this.yAxisConfig.leftShift, y);
+					this.context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, y - this.config3D.y);
 
-                    var textWidth = context.measureText(currentValue).width;
-                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
-                    context.stroke();
+                    var textWidth = this.context.measureText(currentValue).width;
+                    this.context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    this.context.stroke();
 
                     currentValue += dataInterval;
                 }
                 currentValue = -dataInterval;
                 for (var y = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2 + lengthInterval; y <= this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
-                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
-                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
-                    context.moveTo(this.yAxisConfig.leftShift, y);
-					context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, y - this.config3D.y);
+                    this.context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    this.context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+                    this.context.moveTo(this.yAxisConfig.leftShift, y);
+					this.context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, y - this.config3D.y);
 
-                    var textWidth = context.measureText(currentValue).width;
-                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
-                    context.stroke();
+                    var textWidth = this.context.measureText(currentValue).width;
+                    this.context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    this.context.stroke();
                     currentValue -= dataInterval;
                 }
             }  else {
                 for (var y = this.yAxisConfig.topShift; y < this.getHeight() - this.yAxisConfig.bottomShift; y += lengthInterval) {
-                    context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
-                    context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
-                    context.moveTo(this.yAxisConfig.leftShift, y);
-					context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, y - this.config3D.y);
+                    this.context.moveTo(this.yAxisConfig.leftShift - stepWidth / 2, y);
+                    this.context.lineTo(this.yAxisConfig.leftShift + stepWidth / 2, y);
+                    this.context.moveTo(this.yAxisConfig.leftShift, y);
+					this.context.lineTo(this.yAxisConfig.leftShift + this.config3D.x, y - this.config3D.y);
 
-                    var textWidth = context.measureText(currentValue).width;
-                    context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
-                    context.stroke();
+                    var textWidth = this.context.measureText(currentValue).width;
+                    this.context.fillText(currentValue, this.yAxisConfig.leftShift - textWidth - stepWidth / 2 - 2, y + stepWidth / 2, textWidth);
+                    this.context.stroke();
                     currentValue -= dataInterval;
                 }
             }
@@ -149,7 +153,6 @@ var Histo3DDiagram = function(canvasRef, direction) {
 
 
         Histo3DDiagram.prototype.drawDiagram = function() {
-            var context = this.canvas.getContext('2d');
 
 			var shift = 5; // Décalage entre deux ensembles en abscisse
             var firstShift = 5; // Premier décalage
@@ -172,11 +175,11 @@ var Histo3DDiagram = function(canvasRef, direction) {
 			// Largeur d'une barre
 			var barWidth = ((this.getWidth() - currentX - globalShift - this.config3D.x)
                             / (this.data.getColumnNumber() * this.data.getRowNumber()));
-
+            var yZero = null;
             if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
-                var yZero = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2;
+                yZero = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2;
             } else {
-                var yZero = this.getHeight() - this.getBottomShift();
+                yZero = this.getHeight() - this.getBottomShift();
             }
 
             var infoBulleValeur;
@@ -186,8 +189,7 @@ var Histo3DDiagram = function(canvasRef, direction) {
 			$.each(absLabels, $.proxy(function(i, abslabel){
 				$.each(colorLabels, $.proxy(function(j, colorlabel) {
 					var value = this.data.getValueByLabelAndDirection(colorlabel, abslabel, this.dir);
-					var color = this.getColors()[j];
-
+					var color = this.getColors()[j < this.getColors().length ? j : j % this.getColors().length];
                     if (this.currentSlice != null) {
                         if(this.currentSlice.abs == abslabel && this.currentSlice.color == colorlabel) {
                             color = this.applyAlphaToColor(this.getColors()[j < this.getColors().length ? j : j % this.getColors().length], .5);
@@ -199,116 +201,129 @@ var Histo3DDiagram = function(canvasRef, direction) {
                         }
                     }
 
-
 					var barHeight = this.getPixelPerUnit() * value;
-					context.fillStyle = color;
-                    context.strokeStyle = 'black';
+					this.context.fillStyle = color;
+                    this.context.strokeStyle = 'black';
                     
-                    if (barHeight<0) {
-	                    context.beginPath();
-	                        context.moveTo(currentX, yZero - barHeight);
-	                        context.lineTo(currentX + this.config3D.x, yZero - barHeight - this.config3D.y);
-	                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - barHeight - this.config3D.y);
-	                        context.lineTo(currentX + barWidth, yZero - barHeight);
-	                    context.closePath();
+                    if (barHeight < 0) {
+	                    this.context.beginPath();
+	                        this.context.moveTo(currentX, yZero - barHeight);
+	                        this.context.lineTo(currentX + this.config3D.x, yZero - barHeight - this.config3D.y);
+	                        this.context.lineTo(currentX + barWidth + this.config3D.x, yZero - barHeight - this.config3D.y);
+	                        this.context.lineTo(currentX + barWidth, yZero - barHeight);
+	                    this.context.closePath();
 	                } else {
-	                	context.beginPath();
-	                        context.moveTo(currentX, yZero);
-	                        context.lineTo(currentX + this.config3D.x, yZero - this.config3D.y);
-	                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - this.config3D.y);
-	                        context.lineTo(currentX + barWidth, yZero);
-	                    context.closePath();
+	                	this.context.beginPath();
+	                        this.context.moveTo(currentX, yZero);
+	                        this.context.lineTo(currentX + this.config3D.x, yZero - this.config3D.y);
+	                        this.context.lineTo(currentX + barWidth + this.config3D.x, yZero - this.config3D.y);
+	                        this.context.lineTo(currentX + barWidth, yZero);
+	                    this.context.closePath();
 	                }
-	                context.stroke();
-                    context.fill();
+	                this.context.stroke();
+                    this.context.fill();
                     
                     //Face gauche
-                    context.beginPath();
-                        context.moveTo(currentX, yZero);
-                        context.lineTo(currentX + this.config3D.x, yZero - this.config3D.y);
-                        context.lineTo(currentX + this.config3D.x, yZero - barHeight - this.config3D.y);
-                        context.lineTo(currentX, yZero - barHeight);
-                    context.closePath();
-                    context.stroke();
-                    context.fill();
+                    this.context.beginPath();
+                        this.context.moveTo(currentX, yZero);
+                        this.context.lineTo(currentX + this.config3D.x, yZero - this.config3D.y);
+                        this.context.lineTo(currentX + this.config3D.x, yZero - barHeight - this.config3D.y);
+                        this.context.lineTo(currentX, yZero - barHeight);
+                    this.context.closePath();
+                    this.context.stroke();
+                    this.context.fill();
 
 
-                    context.strokeRect(currentX + this.config3D.x,
+                    this.context.strokeRect(currentX + this.config3D.x,
                                      yZero - barHeight - this.config3D.y,
                                      barWidth,
                                      barHeight);
-                    context.fillRect(currentX + this.config3D.x,
+                    this.context.fillRect(currentX + this.config3D.x,
                                      yZero - barHeight - this.config3D.y,
                                      barWidth,
                                      barHeight);
-                    context.strokeRect(currentX,
+                    this.context.strokeRect(currentX,
                                      yZero - barHeight,
                                      barWidth,
                                      barHeight);
-					context.fillRect(currentX,
+					this.context.fillRect(currentX,
                                      yZero - barHeight,
                                      barWidth,
                                      barHeight);
-                    if (barHeight>0) {
-	                    context.beginPath();
-	                        context.moveTo(currentX, yZero - barHeight);
-	                        context.lineTo(currentX + this.config3D.x, yZero - barHeight - this.config3D.y);
-	                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - barHeight - this.config3D.y);
-	                        context.lineTo(currentX + barWidth, yZero - barHeight);
-	                    context.closePath();
+                    if (barHeight > 0) {
+	                    this.context.beginPath();
+	                        this.context.moveTo(currentX, yZero - barHeight);
+	                        this.context.lineTo(currentX + this.config3D.x, yZero - barHeight - this.config3D.y);
+	                        this.context.lineTo(currentX + barWidth + this.config3D.x, yZero - barHeight - this.config3D.y);
+	                        this.context.lineTo(currentX + barWidth, yZero - barHeight);
+	                    this.context.closePath();
 	                } else {
-	                	context.beginPath();
-	                        context.moveTo(currentX, yZero);
-	                        context.lineTo(currentX + this.config3D.x, yZero - this.config3D.y);
-	                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - this.config3D.y);
-	                        context.lineTo(currentX + barWidth, yZero);
-	                    context.closePath();
+	                	this.context.beginPath();
+	                        this.context.moveTo(currentX, yZero);
+	                        this.context.lineTo(currentX + this.config3D.x, yZero - this.config3D.y);
+	                        this.context.lineTo(currentX + barWidth + this.config3D.x, yZero - this.config3D.y);
+	                        this.context.lineTo(currentX + barWidth, yZero);
+	                    this.context.closePath();
 	                }
-                    context.stroke();
-                    context.fill();
+                    this.context.stroke();
+                    this.context.fill();
 
                     // Face droite
-                    context.beginPath();
-                        context.moveTo(currentX + barWidth, yZero);
-                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - this.config3D.y);
-                        context.lineTo(currentX + barWidth + this.config3D.x, yZero - barHeight - this.config3D.y);
-                        context.lineTo(currentX + barWidth, yZero - barHeight);
-                    context.closePath();
-                    context.stroke();
-                    context.fill();
+                    this.context.beginPath();
+                        this.context.moveTo(currentX + barWidth, yZero);
+                        this.context.lineTo(currentX + barWidth + this.config3D.x, yZero - this.config3D.y);
+                        this.context.lineTo(currentX + barWidth + this.config3D.x, yZero - barHeight - this.config3D.y);
+                        this.context.lineTo(currentX + barWidth, yZero - barHeight);
+                    this.context.closePath();
+                    this.context.stroke();
+                    this.context.fill();
 
 					currentX += barWidth;
 				}, this));
 				var xLegendPosition = firstShift + this.getLeftShift() + (i * 5) + (i * barWidth * colorLabels.length)
-                                  + ((barWidth * colorLabels.length) / 2) - context.measureText(abslabel).width / 2;
-				context.fillStyle = 'black'; // TODO: a fixer ailleurs
-				context.fillText(abslabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
+                                  + ((barWidth * colorLabels.length) / 2) - this.context.measureText(abslabel).width / 2;
+				this.context.fillStyle = 'black'; // TODO: a fixer ailleurs
+				this.context.fillText(abslabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
 				currentX += shift;
 			}, this));
 			
 			if (infoNeeded == true) {
-				if (this.getWidth()<this.posMouseX+15+(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10) {
-					context.fillStyle = "green";
-					context.fillRect(this.posMouseX-5-(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+10, (context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
-					context.fillStyle = "white";
-					context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX-(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+23);
+				if (this.getWidth()<this.posMouseX+15+(this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10) {
+					this.context.fillStyle = "green";
+					this.context.fillRect(this.posMouseX-5-(this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+10, (this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
+					this.context.fillStyle = "white";
+					this.context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX-(this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+23);
 				} else {
-					context.fillStyle = "green";
-					context.fillRect(this.posMouseX+15, this.posMouseY+10, (context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
-					context.fillStyle = "white";
-					context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX+20, this.posMouseY+23);
+					this.context.fillStyle = "green";
+					this.context.fillRect(this.posMouseX+15, this.posMouseY+10, (this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
+					this.context.fillStyle = "white";
+					this.context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX+20, this.posMouseY+23);
 				}
 			} 
         };
 
+        Histo3DDiagram.prototype.getRGBFromName = function(name) {
+            var div = document.createElement("div");
+            div.style.color = name;
+            document.body.appendChild(div);
+            var rgb = window.getComputedStyle(div, null).color;
+            document.body.removeChild(div);
+                    return rgb;
+        };
+
+        Histo3DDiagram.prototype.applyAlphaToColor = function(name, alpha) {
+            var rgb = this.getRGBFromName(name);
+            var rgba = rgb.replace('rgb', 'rgba');
+            rgba = rgba.replace(')', ', ' + alpha + ')');
+            return rgba;
+        };
+
         Histo3DDiagram.prototype.handleClick = function(clickEvent, that) {
-            var mouseX = clickEvent.pageX - this.canvas.offsetLeft;
-            var mouseY = clickEvent.pageY - this.canvas.offsetTop;
+            var mouseX = (clickEvent.pageX - this.canvas.offsetLeft) / that.scale + this.mainX;;
+            var mouseY = (clickEvent.pageY - this.canvas.offsetTop) / that.scale + this.mainY;
             
             this.posMouseX = mouseX;
 			this.posMouseY = mouseY;
-
-            var context = this.canvas.getContext('2d');
 
 			var shift = 5; // Décalage entre deux ensembles en abscisse
             var firstShift = 20; // Premier décalage
@@ -369,26 +384,48 @@ var Histo3DDiagram = function(canvasRef, direction) {
             }
         };
 
-        Histo3DDiagram.prototype.getRGBFromName = function(name) {
-            var div = document.createElement("div");
-            div.style.color = name;
-            document.body.appendChild(div);
-            var rgb = window.getComputedStyle(div, null).color;
-            document.body.removeChild(div);
-                    return rgb;
-        };
+        Histo3DDiagram.prototype.zoom = function(clickEvent, that) {
+        	var mousex = clickEvent.pageX  - this.canvas.offsetLeft;
+    	    var mousey = clickEvent.pageY  - this.canvas.offsetTop;
 
-        Histo3DDiagram.prototype.applyAlphaToColor = function(name, alpha) {
-            var rgb = this.getRGBFromName(name);
-            var rgba = rgb.replace('rgb', 'rgba');
-            rgba = rgba.replace(')', ', ' + alpha + ')');
-            return rgba;
+    	    if (clickEvent.wheelDelta < 0) {
+    	    	this.context.setTransform(1, 0, 0, 1, 0, 0);
+    	    	this.scale = 1;
+    	    	this.mainX = 0;
+    	    	this.mainY = 0;
+    	    	this.redraw();
+    	    } else {
+
+	    	    var wheel = clickEvent.wheelDelta/120;
+
+	    	    var zoomer = 1 + wheel / 2;
+
+	    	    this.context.translate(this.mainX, this.mainY);
+	    	    this.context.scale(zoomer,zoomer);
+	    	    this.context.translate(
+	    	        -( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) ),
+	    	        -( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) )
+	    	    );
+
+	    	    this.mainX = ( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) );
+	    	    this.mainY = ( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) );
+	    	    this.scale *= zoomer;
+
+	    	    this.context.fillStyle = 'white';
+				this.context.fillRect(this.mainX, this.mainY, this.getWidth() / this.scale, this.getHeight() / this.scale );
+	    	    this.redraw();
+    	    }
         };
     }
     var that = this;
     canvasRef.onmousemove = function(event) {
 	    that.handleClick(event, that);
     };
+
+    $(canvasRef).bind('mousewheel', function(event) {
+    	that.zoom(event, that);
+    	return false;
+    });
 };
 
 // Héritage: chainage des prototypes.
