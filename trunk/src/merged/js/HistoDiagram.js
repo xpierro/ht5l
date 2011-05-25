@@ -246,6 +246,7 @@ var HistoDiagram = function(canvasRef, direction) {
                 this.context.fillStyle = 'white';
                 this.context.fillRect(this.mainX, this.mainY, this.getWidth() / this.scale, this.getHeight() / this.scale);
                 this.redraw();
+
             }
         };
     }
