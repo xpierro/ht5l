@@ -5,7 +5,7 @@ ids.loadData(function() {
     var diag1 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'row');
     var diag2 = new Histo3DDiagram(document.getElementsByTagName('canvas')[1], 'row');
     var diag3 = new LineDiagram(document.getElementsByTagName('canvas')[2], 'column');
-    var diag4 = new PieDiagram(document.getElementsByTagName('canvas')[3], 'column');
+    var diag4 = new PieDiagram(document.getElementsByTagName('canvas')[3], 'row');
 
     var matrix = ids.getDataMatrix();
 
