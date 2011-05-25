@@ -142,7 +142,7 @@ var IDiagram = function(canvasRef) {
 
             var colors = this.getColors();
             //Dessin des éléments de la légende.
-			var pos = {x: rectangle.x, y: rectangle.y}; // Position du pinceau
+			var pos = {x: parseInt(rectangle.x), y: parseInt(rectangle.y)}; // Position du pinceau
             var squareSide = 10; //Taille du carré coloré
             var shift = 5; // Décalage du texte en x par rapport au rectangle coloré
             var xStep = widest.length + squareSide + 2 * shift; // Pas de déplacement en x
@@ -157,6 +157,7 @@ var IDiagram = function(canvasRef) {
 
                 // Dessin du texte
 				context.fillStyle = 'black';
+                var truc = pos.y + squareSide;
 				context.fillText(label, pos.x + squareSide + shift, pos.y + squareSide);
 
                 // Translation du pinceau
