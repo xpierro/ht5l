@@ -81,7 +81,7 @@ var InternalStyleSource = function(preId) {
 	            
 	            return styleMat;
             }catch(e){
-            	window_alert('Feuille de style non conforme', e);
+            	error = e;
             }
         }
     }
