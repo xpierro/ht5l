@@ -73,10 +73,11 @@ var HistoDiagram = function(canvasRef, direction) {
 			var barWidth = ((this.getWidth() - currentX   - globalShift)
                             / (this.data.getColumnNumber() * this.data.getRowNumber()));
 
+            var yZero = null;
             if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
-                var yZero = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2;
+                yZero = (this.getHeight() - this.yAxisConfig.bottomShift + this.yAxisConfig.topShift) / 2;
             } else {
-                var yZero = this.getHeight() - this.getBottomShift();
+                yZero = this.getHeight() - this.getBottomShift();
             }
             
             var infoBulleValeur;
@@ -210,9 +211,9 @@ var HistoDiagram = function(canvasRef, direction) {
             }
         };
         
-        HistoDiagram.prototype.zoom = function(clickEvent, that) {	
-        	var mousex = clickEvent.clientX  - this.canvas.offsetLeft;
-    	    var mousey = clickEvent.clientY  - this.canvas.offsetTop;
+        HistoDiagram.prototype.zoom = function(clickEvent, that) {
+        	var mousex = clickEvent.pageX  - this.canvas.offsetLeft;
+    	    var mousey = clickEvent.pageY  - this.canvas.offsetTop;
 
     	    if (clickEvent.wheelDelta < 0) {
     	    	this.context.setTransform(1, 0, 0, 1, 0, 0);
