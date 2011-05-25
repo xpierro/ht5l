@@ -16,10 +16,18 @@ var LineDiagram = function(canvasRef, direction) {
 	}
 	this.dir = direction;
 	this.currentSlice = null;
-	this.posMouseX = 0;
+
+    this.posMouseX = 0;
 	this.posMouseY = 0;
+
+    this.scale = 1;
+	this.mainX = 0;
+	this.mainY = 0;
+
 	this.circleWidth = 7;
-	
+
+    this.context = this.canvas.getContext('2d');
+
 	if (typeof LineDiagram.initialized == "undefined") {
 		LineDiagram.initialized = true;
 
@@ -27,7 +35,7 @@ var LineDiagram = function(canvasRef, direction) {
          * Dessin du diagramme
          */
 		LineDiagram.prototype.drawDiagram = function() {
-			var context = this.canvas.getContext('2d');
+
 			var absLabels = null;
             var lineLabels = null;
             if (this.dir == 'column') {
@@ -51,30 +59,30 @@ var LineDiagram = function(canvasRef, direction) {
 			var infoBulleValeur;
 			
 			$.each(lineLabels, $.proxy(function(i, lineLabel){
-					context.strokeStyle = colors[i];
+					this.context.strokeStyle = colors[i];
 					var fillColor = colors[i];
 				$.each(absLabels, $.proxy(function(j, absLabel) {
 					var currentHeight = this.getPixelPerUnit() * this.data.getValueByLabelAndDirection(lineLabel, absLabel, this.dir);
 					var currentY = yZero - currentHeight;
 					if (j == 0) {
-						context.lineCap = 'round';
-						context.beginPath();
-						context.moveTo(currentX, currentY);
+						this.context.lineCap = 'round';
+						this.context.beginPath();
+						this.context.moveTo(currentX, currentY);
 					} else {
-						context.lineWidth = 2;
-						context.lineCap = 'round';
-						context.lineTo(currentX, currentY);
-						context.stroke();
+						this.context.lineWidth = 2;
+						this.context.lineCap = 'round';
+						this.context.lineTo(currentX, currentY);
+						this.context.stroke();
 					}
 					var xLegendPosition = 0;
                     if (j < absLabels.length - 1) {
-					    xLegendPosition = currentX - context.measureText(absLabel).width / 2;
+					    xLegendPosition = currentX - this.context.measureText(absLabel).width / 2;
                     } else {
-                        xLegendPosition = this.getWidth() - context.measureText(absLabel).width - 1;
+                        xLegendPosition = this.getWidth() - this.context.measureText(absLabel).width - 1;
                     }
                     if (i = 1) { //TODO: etre sur
-                        context.fillStyle = 'black'; // TODO: a fixer ailleurs
-                        context.fillText(absLabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
+                        this.context.fillStyle = 'black'; // TODO: a fixer ailleurs
+                        this.context.fillText(absLabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
                     }
 		            currentX += deltaX;
 				}, this));
@@ -91,12 +99,12 @@ var LineDiagram = function(canvasRef, direction) {
 					
 					if (this.currentSlice != null) {
 	                	if(this.currentSlice.abs == absLabel && this.currentSlice.color == lineLabel) {
-	                    	context.fillStyle = fillColor;
-	                    	context.beginPath();					
-							context.arc(currentX, currentY, this.circleWidth, 0, Math.PI*2, true);
-							context.closePath();
-							context.fill();
-							context.stroke();
+	                    	this.context.fillStyle = fillColor;
+	                    	this.context.beginPath();
+							this.context.arc(currentX, currentY, this.circleWidth, 0, Math.PI*2, true);
+							this.context.closePath();
+							this.context.fill();
+							this.context.stroke();
 	                        infoNeeded = true;
 	                        infoBulleLabel = lineLabel;
 	                        infoBulleValeur = value;
@@ -105,34 +113,34 @@ var LineDiagram = function(canvasRef, direction) {
 
 					var xLegendPosition = 0;
                     if (j < absLabels.length - 1) {
-					    xLegendPosition = currentX - context.measureText(absLabel).width / 2;
+					    xLegendPosition = currentX - this.context.measureText(absLabel).width / 2;
                     } else {
-                        xLegendPosition = this.getWidth() - context.measureText(absLabel).width - 1;
+                        xLegendPosition = this.getWidth() - this.context.measureText(absLabel).width - 1;
                     }
                     if (i = 1) { //TODO: etre sur
-                        context.fillStyle = 'black'; // TODO: a fixer ailleurs
-                        context.fillText(absLabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
+                        this.context.fillStyle = 'black'; // TODO: a fixer ailleurs
+                        this.context.fillText(absLabel, xLegendPosition , this.getHeight() - this.getBottomShift() + 10);
                     }
 		            currentX += deltaX;
 				}, this));
 				
 				currentX = this.getLeftShift() + 20;
-				context.strokeStyle = 'red';
+				this.context.strokeStyle = 'red';
 				currentX = this.getLeftShift() + 20;
-				context.lineCap = 'round';
+				this.context.lineCap = 'round';
 			}, this));
 			
 			if (infoNeeded == true) {
-				if (this.getWidth()<this.posMouseX+15+(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10) {
-					context.fillStyle = "green";
-					context.fillRect(this.posMouseX-5-(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+10, (context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
-					context.fillStyle = "white";
-					context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX-(context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+23);
+				if (this.getWidth()<this.posMouseX+15+(this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10) {
+					this.context.fillStyle = "green";
+					this.context.fillRect(this.posMouseX-5-(this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+10, (context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
+					this.context.fillStyle = "white";
+					this.context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX-(this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)-10, this.posMouseY+23);
 				} else {
-					context.fillStyle = "green";
-					context.fillRect(this.posMouseX+15, this.posMouseY+10, (context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
-					context.fillStyle = "white";
-					context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX+20, this.posMouseY+23);
+					this.context.fillStyle = "green";
+					this.context.fillRect(this.posMouseX+15, this.posMouseY+10, (this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10, 20);
+					this.context.fillStyle = "white";
+					this.context.fillText(infoBulleLabel+": "+parseFloat(infoBulleValeur), this.posMouseX+20, this.posMouseY+23);
 				}
 			} 
 		};
@@ -154,13 +162,11 @@ var LineDiagram = function(canvasRef, direction) {
         };
 		
 		LineDiagram.prototype.handleClick = function(clickEvent, that) {
-			var mouseX = clickEvent.pageX - this.canvas.offsetLeft;
-            var mouseY = clickEvent.pageY - this.canvas.offsetTop;
+			var mouseX = (clickEvent.pageX - this.canvas.offsetLeft) / that.scale + this.mainX;
+            var mouseY = (clickEvent.pageY - this.canvas.offsetTop) / that.scale + this.mainY;
     
 			this.posMouseX = mouseX;
 			this.posMouseY = mouseY;
-
-            var context = this.canvas.getContext('2d');
 
 			var absLabels = null;
             var lineLabels = null;
@@ -182,7 +188,7 @@ var LineDiagram = function(canvasRef, direction) {
 
             var found = 0;
 			$.each(lineLabels, $.proxy(function(i, lineLabel){
-					context.strokeStyle = colors[i];
+					this.context.strokeStyle = colors[i];
 					currentX = this.getLeftShift() + 20;
 				$.each(absLabels, $.proxy(function(j, absLabel) {
 					var currentHeight = this.getPixelPerUnit() * this.data.getValueByLabelAndDirection(lineLabel, absLabel, this.dir);
@@ -201,12 +207,51 @@ var LineDiagram = function(canvasRef, direction) {
                 that.currentSlice = null;
                 that.redraw();
             }
-		};	
+		};
+
+        LineDiagram.prototype.zoom = function(clickEvent, that) {
+        	var mousex = clickEvent.pageX  - this.canvas.offsetLeft;
+    	    var mousey = clickEvent.pageY  - this.canvas.offsetTop;
+
+    	    if (clickEvent.wheelDelta < 0) {
+    	    	this.context.setTransform(1, 0, 0, 1, 0, 0);
+    	    	this.scale = 1;
+    	    	this.mainX = 0;
+    	    	this.mainY = 0;
+    	    	this.redraw();
+    	    } else {
+
+	    	    var wheel = clickEvent.wheelDelta/120;
+
+	    	    var zoomer = 1 + wheel / 2;
+
+	    	    this.context.translate(this.mainX, this.mainY);
+	    	    this.context.scale(zoomer,zoomer);
+	    	    this.context.translate(
+	    	        -( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) ),
+	    	        -( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) )
+	    	    );
+
+	    	    this.mainX = ( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) );
+	    	    this.mainY = ( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) );
+	    	    this.scale *= zoomer;
+
+	    	    this.context.fillStyle = 'white';
+				this.context.fillRect(this.mainX, this.mainY, this.getWidth() / this.scale, this.getHeight() / this.scale );
+	    	    this.redraw();
+    	    }
+        };
 	}
+
 	var that = this;
     canvasRef.onmousemove = function(event) {
 	    that.handleClick(event, that);
     };
+
+    $(canvasRef).bind('mousewheel', function(event) {
+    	that.zoom(event, that);
+    	return false;
+    });
 };
 
 // Implémente IDiagram

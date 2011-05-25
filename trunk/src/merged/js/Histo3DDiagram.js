@@ -319,7 +319,7 @@ var Histo3DDiagram = function(canvasRef, direction) {
         };
 
         Histo3DDiagram.prototype.handleClick = function(clickEvent, that) {
-            var mouseX = (clickEvent.pageX - this.canvas.offsetLeft) / that.scale + this.mainX;;
+            var mouseX = (clickEvent.pageX - this.canvas.offsetLeft) / that.scale + this.mainX;
             var mouseY = (clickEvent.pageY - this.canvas.offsetTop) / that.scale + this.mainY;
             
             this.posMouseX = mouseX;
