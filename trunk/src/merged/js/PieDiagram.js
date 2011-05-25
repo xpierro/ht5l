@@ -181,43 +181,45 @@ var PieDiagram = function(canvasRef, direction) {
          * @param that Diagramme camembert en court de surlignage.
          */
         PieDiagram.prototype.handleClick = function(clickEvent, that) {
-            var mouseX = clickEvent.pageX - this.canvas.offsetLeft;
-            var mouseY = clickEvent.pageY - this.canvas.offsetTop;
+            if (that.data) {
+                var mouseX = clickEvent.pageX - this.canvas.offsetLeft;
+                var mouseY = clickEvent.pageY - this.canvas.offsetTop;
 
-            this.posMouseX = mouseX;
-            this.posMouseY = mouseY;
+                this.posMouseX = mouseX;
+                this.posMouseY = mouseY;
 
-            var xFromCenter = mouseX - that.center.x;
-            var yFromCenter = mouseY - that.center.y;
-            var distanceFromCenter =
-                    Math.sqrt(Math.pow(Math.abs(xFromCenter), 2)
-                            + Math.pow(Math.abs(yFromCenter), 2));
+                var xFromCenter = mouseX - that.center.x;
+                var yFromCenter = mouseY - that.center.y;
+                var distanceFromCenter =
+                        Math.sqrt(Math.pow(Math.abs(xFromCenter), 2)
+                                + Math.pow(Math.abs(yFromCenter), 2));
 
-            if (distanceFromCenter <= that.radius) {
-                var clickAngle = -Math.atan2(yFromCenter, xFromCenter);
-                if (clickAngle < 0) {
-                    clickAngle += 2 * Math.PI;
-                }
-                clickAngle *= -1;
-                if (clickAngle <= 0 && clickAngle > -Math.PI / 2) {
-                    clickAngle -= 2 * Math.PI;
-                }
+                if (distanceFromCenter <= that.radius) {
+                    var clickAngle = -Math.atan2(yFromCenter, xFromCenter);
+                    if (clickAngle < 0) {
+                        clickAngle += 2 * Math.PI;
+                    }
+                    clickAngle *= -1;
+                    if (clickAngle <= 0 && clickAngle > -Math.PI / 2) {
+                        clickAngle -= 2 * Math.PI;
+                    }
 
-                for (var slice in that.parts) {
-                    //alert('start : ' + that.parts[slice]['startArc'] + '- end : '
-                    //	+ that.parts[slice]['endArc'] + ' - current: ' + clickAngle);
-                    if (clickAngle <= that.parts[slice]['startArc']
-                            && clickAngle >= that.parts[slice]['endArc']) {
-                        that.currentSlice = slice;
+                    for (var slice in that.parts) {
+                        //alert('start : ' + that.parts[slice]['startArc'] + '- end : '
+                        //	+ that.parts[slice]['endArc'] + ' - current: ' + clickAngle);
+                        if (clickAngle <= that.parts[slice]['startArc']
+                                && clickAngle >= that.parts[slice]['endArc']) {
+                            that.currentSlice = slice;
 
-                        that.redraw();
-                        return;
+                            that.redraw();
+                            return;
+                        }
                     }
                 }
-            }
-            if (that.currentSlice != -1) {
-                that.currentSlice = -1;
-                that.redraw();
+                if (that.currentSlice != -1) {
+                    that.currentSlice = -1;
+                    that.redraw();
+                }
             }
         };
 
