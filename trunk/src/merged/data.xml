@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <ylegend>Nombre de visiteur</ylegend>
+    <ylegend>Nombre de visites</ylegend>
     <series>
         <serie name="Google.fr">
             <value label="Lundi">8564</value>
@@ -8,7 +8,7 @@
             <value label="Mercredi" >7002.14</value>
             <value label="Jeudi" >9250.87</value>
             <value label="Vendredi">8989.76</value>
-            <value label="Samedi" >8745.87</value>
+            <value label="Samedi" >100</value>
             <value label="Dimanche">5000.76</value>
         </serie>
         <serie name="Kernel.org">

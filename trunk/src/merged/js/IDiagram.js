@@ -122,7 +122,7 @@ var IDiagram = function(canvasRef) {
         	if (this.styleMatrix) {
         		return this.styleMatrix.getLegendRectangle();
         	} else {
-        		return {x: 150, y: 10, width: 500, height: 120 };
+        		return {x: 40, y: 475, width: 500, height: 120 };
         	}
         };
 

@@ -53,7 +53,7 @@ var cds = new ConnectorDataSource(
 				}
 			}
 			if (!xmlhttp) {
-				throw "Impossible de créer une requete XML";
+				throw "Impossible de crï¿½er une requete XML";
 				return null;
 			}
 			xmlhttp.onreadystatechange = function() {xmlHandler(xmlhttp, callback, usercallback);};
@@ -68,7 +68,7 @@ var cds = new ConnectorDataSource(
 
 var userCallback = function() {
     var diag1 = new HistoDiagram(document.getElementsByTagName('canvas')[0], 'column');
-    var diag2 = new Histo3DDiagram(document.getElementsByTagName('canvas')[1], 'row');
+    var diag2 = new Histo3DDiagram(document.getElementsByTagName('canvas')[1], 'column');
     var diag3 = new LineDiagram(document.getElementsByTagName('canvas')[2], 'row');
     var diag4 = new PieDiagram(document.getElementsByTagName('canvas')[3], 'column');
 
