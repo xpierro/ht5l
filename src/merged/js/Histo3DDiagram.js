@@ -53,10 +53,6 @@ var Histo3DDiagram = function(canvasRef, direction) {
 	if (typeof Histo3DDiagram.initialized == "undefined") {
 		Histo3DDiagram.initialized = true;
 
-        Histo3DDiagram.prototype.drawDiagram = function() {
-
-        };
-
         Histo3DDiagram.prototype.drawXAxis = function() {
 
 			this.context.strokeStyle = "black";

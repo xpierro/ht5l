@@ -325,7 +325,7 @@ var IDiagram = function(canvasRef) {
 		IDiagram.prototype.drawYLines = function() { };
 		
 		IDiagram.prototype.redraw = function() {
-            if (!this.data || !this.styleMatrix) {
+            if (!this.data) {
                 var context = this.canvas.getContext('2d');
 			    context.fillStyle = 'black';
 			    context.fillText(error, 50, 50);
