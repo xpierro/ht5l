@@ -1,12 +1,12 @@
 /**
- * Charge tous les scripts n�cessaire au fonctionnement de la biblioth?que
+ * Charge tous les scripts nécessaire au fonctionnement de la biblioth?que
  * Conception: Pierre Collignon.
  */
 
-// On d�finit les fichiers:
+// On définit les fichiers:
 var jsFiles = new Array("js/DataMatrix.js", "js/IStyleSource.js", "js/InternalStyleSource.js", "js/ExternalStyleSource.js",
 		"js/StyleMatrix.js", "js/IDataSource.js", "js/InternalDataSource.js","js/ExternalDataSource.js","js/ConnectorDataSource.js",
-		"js/IDiagram.js", "js/PieDiagram.js", "js/HistoDiagram.js", "js/LineDiagram.js","js/Histo3DDiagram.js", "js/window_alert.js",
+		"js/IDiagram.js", "js/PieDiagram.js", "js/HistoDiagram.js", "js/LineDiagram.js","js/Histo3DDiagram.js",
 		"js/testMerge_int.js");
 
 var error = new String();

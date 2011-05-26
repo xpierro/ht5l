@@ -9,20 +9,14 @@
  * @param direction Direction de lecture 2D de la matrice
  */
 var LineDiagram = function(canvasRef, direction) {
-	IDiagram.call(this, canvasRef);
-	
 	if (direction != 'row' && direction != 'column') {
-		throw "Direction de lecture invalide : " + direction;
+		return;
 	}
+
+    IDiagram.call(this, canvasRef);
+
 	this.dir = direction;
 	this.currentSlice = null;
-
-    this.posMouseX = 0;
-	this.posMouseY = 0;
-
-    this.scale = 1;
-	this.mainX = 0;
-	this.mainY = 0;
 
 	this.circleWidth = 7;
 
@@ -130,7 +124,7 @@ var LineDiagram = function(canvasRef, direction) {
 				this.context.lineCap = 'round';
 			}, this));
 			
-			if (infoNeeded == true) {
+			if (infoNeeded) {
 				this.context.save();
 				this.context.setTransform(1, 0, 0, 1, 0, 0);
 				if (this.getWidth()<this.posMouseX+15+(this.context.measureText(infoBulleLabel+": "+parseFloat(infoBulleValeur)).width)+10) {
@@ -147,27 +141,12 @@ var LineDiagram = function(canvasRef, direction) {
 				this.context.restore();
 			} 
 		};
+
 		
-        LineDiagram.prototype.getRGBFromName = function(name) {
-            var div = document.createElement("div");
-            div.style.color = name;
-            document.body.appendChild(div);
-            var rgb = window.getComputedStyle(div, null).color;
-            document.body.removeChild(div);
-                    return rgb;
-        };
-		
-		LineDiagram.prototype.applyAlphaToColor = function(name, alpha) {
-            var rgb = this.getRGBFromName(name);
-            var rgba = rgb.replace('rgb', 'rgba');
-            rgba = rgba.replace(')', ', ' + alpha + ')');
-            return rgba;
-        };
-		
-		LineDiagram.prototype.handleClick = function(clickEvent, that) {
-			if (that.data) {
-                var mouseX = (clickEvent.pageX - this.canvas.offsetLeft) / that.scale + this.mainX;
-                var mouseY = (clickEvent.pageY - this.canvas.offsetTop) / that.scale + this.mainY;
+		LineDiagram.prototype.handleAnim = function(clickEvent) {
+			if (this.data) {
+                var mouseX = (clickEvent.pageX - this.canvas.offsetLeft) / this.scale + this.mainX;
+                var mouseY = (clickEvent.pageY - this.canvas.offsetTop) / this.scale + this.mainY;
 
                 this.posMouseX = mouseX;
                 this.posMouseY = mouseY;
@@ -199,64 +178,21 @@ var LineDiagram = function(canvasRef, direction) {
                         var currentY = yZero - currentHeight;
                         if (mouseX >= currentX - this.circleWidth && mouseX <= currentX + this.circleWidth
                             && mouseY >= currentY - this.circleWidth && mouseY <= currentY + this.circleWidth) {
-                            that.currentSlice = {abs: absLabel, color: lineLabel};
-                            that.redraw();
+                            this.currentSlice = {abs: absLabel, color: lineLabel};
+                            this.redraw();
                             found = 1;
                         }
                         currentX += deltaX;
                     }, this));
                 }, this));
 
-                if (that.currentSlice != null && found == 0) {
-                    that.currentSlice = null;
-                    that.redraw();
+                if (this.currentSlice != null && found == 0) {
+                    this.currentSlice = null;
+                    this.redraw();
                 }
             }
 		};
-
-        LineDiagram.prototype.zoom = function(clickEvent, that) {
-        	var mousex = clickEvent.pageX  - this.canvas.offsetLeft;
-    	    var mousey = clickEvent.pageY  - this.canvas.offsetTop;
-
-    	    if (clickEvent.wheelDelta < 0) {
-    	    	this.context.setTransform(1, 0, 0, 1, 0, 0);
-    	    	this.scale = 1;
-    	    	this.mainX = 0;
-    	    	this.mainY = 0;
-    	    	this.redraw();
-    	    } else {
-
-	    	    var wheel = clickEvent.wheelDelta/120;
-
-	    	    var zoomer = 1 + wheel / 2;
-
-	    	    this.context.translate(this.mainX, this.mainY);
-	    	    this.context.scale(zoomer,zoomer);
-	    	    this.context.translate(
-	    	        -( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) ),
-	    	        -( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) )
-	    	    );
-
-	    	    this.mainX = ( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) );
-	    	    this.mainY = ( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) );
-	    	    this.scale *= zoomer;
-
-	    	    this.context.fillStyle = 'white';
-				this.context.fillRect(this.mainX, this.mainY, this.getWidth() / this.scale, this.getHeight() / this.scale );
-	    	    this.redraw();
-    	    }
-        };
-	}
-
-	var that = this;
-    canvasRef.onmousemove = function(event) {
-	    that.handleClick(event, that);
-    };
-
-    $(canvasRef).bind('mousewheel', function(event) {
-    	that.zoom(event, that);
-    	return false;
-    });
+    }
 };
 
 // Implémente IDiagram

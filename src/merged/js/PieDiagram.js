@@ -13,10 +13,6 @@
 var PieDiagram = function(canvasRef, direction) {
     IDiagram.call(this, canvasRef);
 
-    this.scale = 1;
-	this.mainX = 0;
-	this.mainY = 0;
-
     this.context = this.canvas.getContext('2d');
 
     this.getWidestText = function(texts) {
@@ -63,11 +59,11 @@ var PieDiagram = function(canvasRef, direction) {
             this.parts = new Array();
             if (this.dir == 'row') { // Pourcentage de chaque ligne
                 $.each(this.data.getRowLabels(), $.proxy(function(i, rowLabel) {
-                    this.parts.push({value: this.data.getRowTotal(rowLabel) / total, label: rowLabel}); // value=Pourcentage, label=Sujet (par exemple Google.com, etc)
+                    this.parts.push({value: this.data.getRowTotal(rowLabel) / total, label: rowLabel, plain: this.data.getRowTotal(rowLabel)}); // value=Pourcentage, label=Sujet (par exemple Google.com, etc)
                 }, this));
             } else {
                 $.each(this.data.getColumnLabels(), $.proxy(function(i, columnLabel) {
-                    this.parts.push({value: this.data.getColumnTotal(columnLabel) / total, label: columnLabel}); // value=Pourcentage, label=Sujet (par exemple Google.com, etc)
+                    this.parts.push({value: this.data.getColumnTotal(columnLabel) / total, label: columnLabel, plain: getColumnTotal(columnLabel)}); // value=Pourcentage, label=Sujet (par exemple Google.com, etc)
                 }, this));
             }
             var startArc = -Math.PI / 2;
@@ -111,7 +107,7 @@ var PieDiagram = function(canvasRef, direction) {
                 $.each(this.parts, $.proxy(function(i, part) {
                     if (i == that.currentSlice) {
                         this.context.fillStyle = this.applyAlphaToColor(colors[i < colors.length ? i : i % colors.length], .5);
-                        infoBullePercent = part['value'];
+                        infoBullePercent = part['plain'];
                         infoBulleLabel = part['label'];
                         infoNeeded = true;
                     } else {
@@ -144,7 +140,7 @@ var PieDiagram = function(canvasRef, direction) {
                     this.context.fillStyle = "green";
                     this.context.fillRect(this.posMouseX + 15, this.posMouseY + 10, (this.context.measureText(infoBulleLabel + ": " + parseFloat(infoBullePercent * 100).toFixed(2) + "%").width) + 10, 20);
                     this.context.fillStyle = "white";
-                    this.context.fillText(infoBulleLabel + ": " + parseFloat(infoBullePercent * 100).toFixed(2) + "%", this.posMouseX + 20, this.posMouseY + 23);
+                    this.context.fillText(infoBulleLabel + ": " + parseFloat(infoBullePercent * 100).toFixed(2), this.posMouseX + 20, this.posMouseY + 23);
                     this.context.restore();
                 }
             } else {
@@ -154,50 +150,24 @@ var PieDiagram = function(canvasRef, direction) {
         };
 
         /**
-         * Retourne une couleur RGB à partir d'un nom HTML
-         * @param name Nom HTML d'une couleur.
-         */
-        PieDiagram.prototype.getRGBFromName = function(name) {
-            var div = document.createElement("div");
-            div.style.color = name;
-            document.body.appendChild(div);
-            var rgb = window.getComputedStyle(div, null).color;
-            document.body.removeChild(div);
-            return rgb;
-        };
-
-        /**
-         * Applique une coordonnée alpha à une couleur RGB
-         * @param name  Nom HTML
-         * @param alpha Coordonnée alpha
-         */
-        PieDiagram.prototype.applyAlphaToColor = function(name, alpha) {
-            var rgb = this.getRGBFromName(name);
-            var rgba = rgb.replace('rgb', 'rgba');
-            rgba = rgba.replace(')', ', ' + alpha + ')');
-            return rgba;
-        };
-
-        /**
          * Gère les évènements souris
          * @param clickEvent Evenement de souris
-         * @param that Diagramme camembert en court de surlignage.
          */
-        PieDiagram.prototype.handleClick = function(clickEvent, that) {
-            if (that.data) {
-                var mouseX = clickEvent.pageX - this.canvas.offsetLeft;
-                var mouseY = clickEvent.pageY - this.canvas.offsetTop;
+        PieDiagram.prototype.handleAnim = function(clickEvent) {
+            if (this.data) {
+                var mouseX = (clickEvent.pageX - this.canvas.offsetLeft) / this.scale + this.mainX;
+                var mouseY = (clickEvent.pageY - this.canvas.offsetTop) / this.scale + this.mainY;
 
                 this.posMouseX = mouseX;
                 this.posMouseY = mouseY;
 
-                var xFromCenter = mouseX - that.center.x;
-                var yFromCenter = mouseY - that.center.y;
+                var xFromCenter = mouseX - this.center.x;
+                var yFromCenter = mouseY - this.center.y;
                 var distanceFromCenter =
                         Math.sqrt(Math.pow(Math.abs(xFromCenter), 2)
                                 + Math.pow(Math.abs(yFromCenter), 2));
 
-                if (distanceFromCenter <= that.radius) {
+                if (distanceFromCenter <= this.radius) {
                     var clickAngle = -Math.atan2(yFromCenter, xFromCenter);
                     if (clickAngle < 0) {
                         clickAngle += 2 * Math.PI;
@@ -207,21 +177,19 @@ var PieDiagram = function(canvasRef, direction) {
                         clickAngle -= 2 * Math.PI;
                     }
 
-                    for (var slice in that.parts) {
-                        //alert('start : ' + that.parts[slice]['startArc'] + '- end : '
-                        //	+ that.parts[slice]['endArc'] + ' - current: ' + clickAngle);
-                        if (clickAngle <= that.parts[slice]['startArc']
-                                && clickAngle >= that.parts[slice]['endArc']) {
-                            that.currentSlice = slice;
+                    for (var slice in this.parts) {
+                        if (clickAngle <= this.parts[slice]['startArc']
+                                && clickAngle >= this.parts[slice]['endArc']) {
+                            this.currentSlice = slice;
 
-                            that.redraw();
+                            this.redraw();
                             return;
                         }
                     }
                 }
-                if (that.currentSlice != -1) {
-                    that.currentSlice = -1;
-                    that.redraw();
+                if (this.currentSlice != -1) {
+                    this.currentSlice = -1;
+                    this.redraw();
                 }
             }
         };
@@ -259,16 +227,6 @@ var PieDiagram = function(canvasRef, direction) {
     	    }
         };
     }
-
-    var that = this;
-    canvasRef.onmousemove = function(event) {
-    that.handleClick(event, that);
-    };
-
-    $(canvasRef).bind('mousewheel', function(event) {
-    	that.zoom(event, that);
-    	return false;
-    });
 };
 
 // Implémente IDiagram
