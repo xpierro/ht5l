@@ -135,13 +135,7 @@ var PieDiagram = function(canvasRef, direction) {
 
                 }, this));
                 if (infoNeeded) {
-                    this.context.save();
-                    this.context.setTransform(1, 0, 0, 1, 0, 0);
-                    this.context.fillStyle = "green";
-                    this.context.fillRect(this.posMouseX + 15, this.posMouseY + 10, (this.context.measureText(infoBulleLabel + ": " + parseFloat(infoBullePercent * 100).toFixed(2) + "%").width) + 10, 20);
-                    this.context.fillStyle = "white";
-                    this.context.fillText(infoBulleLabel + ": " + parseFloat(infoBullePercent * 100).toFixed(2), this.posMouseX + 20, this.posMouseY + 23);
-                    this.context.restore();
+                    this.displayToolTip(infoBulleLabel, infoBullePercent);
                 }
             } else {
                 this.context.fillStyle = "black";

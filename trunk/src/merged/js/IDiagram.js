@@ -423,6 +423,26 @@ var IDiagram = function(canvasRef) {
                 this.redraw();
             }
         };
+
+        IDiagram.prototype.displayToolTip = function(text, value) {
+            this.context.fillStyle = "green";
+
+            // On va dessiner à la vraie position de la souris.
+            var mousePosX = (this.posMouseX - this.mainX) * this.scale;
+            var mousePosY = (this.posMouseY - this.mainY) * this.scale;
+            this.context.save();
+            this.context.setTransform(1, 0, 0, 1, 0, 0);
+            if (this.getWidth() < this.posMouseX + 15 + (this.context.measureText(text + ": " + parseFloat(value)).width) + 10) {
+                    this.context.fillRect(mousePosX - 5 - (this.context.measureText(text + ": " + parseFloat(value)).width) - 10, mousePosY + 10, (this.context.measureText(text + ": " + parseFloat(value)).width) + 10, 20);
+                    this.context.fillStyle = "white";
+                    this.context.fillText(text + ": " + parseFloat(value), mousePosX - (this.context.measureText(text + ": " + parseFloat(value)).width) - 10, mousePosY + 23);
+                } else {
+                    this.context.fillRect(mousePosX + 15, mousePosY + 10, (this.context.measureText(text + ": " + parseFloat(value)).width) + 10, 20);
+                    this.context.fillStyle = "white";
+                    this.context.fillText(text + ": " + parseFloat(value), mousePosX + 20, mousePosY + 23);
+                }
+                this.context.restore();
+        };
     }
 
 
