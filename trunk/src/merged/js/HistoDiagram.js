@@ -6,41 +6,16 @@
  * Corrections: Pierre Collignon et Abdourahmane Djigo
  */
 var HistoDiagram = function(canvasRef, direction) {
+
+    if (direction != 'row' && direction != 'column') {
+        return;
+    }
+
     IDiagram.call(this, canvasRef);
 
-    try {
-        if (canvasRef == null) {
-            throw "refCanvas null"
-        }
-        if (direction == null) {
-            throw "dir null"
-        }
-        if (direction != 'row' && direction != 'column') {
-            throw "unknown dir"
-        }
-    } catch(e) {
-        if (e == "refCanvas null") {
-            window_alert("Erreur de données", "La référence du canvas ne peut être nulle")
-        }
-        if (e == "dir null") {
-            window_alert("Erreur de données", "La direction du diagramme doit être précisée");
-        }
-        if (e == "unknown dir") {
-            window_alert("Erreur de lecture", "Direction de lecture invalide")
-        }
-    }
-    if (direction != 'row' && direction != 'column') {
-        throw "Direction de lecture invalide : " + direction;
-    }
     this.dir = direction;
     this.currentSlice = null;
 
-    this.posMouseX = 0;
-    this.posMouseY = 0;
-
-    this.scale = 1;
-    this.mainX = 0;
-    this.mainY = 0;
     this.context = this.canvas.getContext('2d');
 
     if (typeof HistoDiagram.initialized == "undefined") {
@@ -131,27 +106,10 @@ var HistoDiagram = function(canvasRef, direction) {
             }
         };
 
-
-        HistoDiagram.prototype.getRGBFromName = function(name) {
-            var div = document.createElement("div");
-            div.style.color = name;
-            document.body.appendChild(div);
-            var rgb = window.getComputedStyle(div, null).color;
-            document.body.removeChild(div);
-            return rgb;
-        };
-
-        HistoDiagram.prototype.applyAlphaToColor = function(name, alpha) {
-            var rgb = this.getRGBFromName(name);
-            var rgba = rgb.replace('rgb', 'rgba');
-            rgba = rgba.replace(')', ', ' + alpha + ')');
-            return rgba;
-        };
-
-        HistoDiagram.prototype.handleClick = function(clickEvent, that) {
-            if (that.data) {
-                var mouseX = (clickEvent.pageX - this.canvas.offsetLeft) / that.scale + this.mainX;
-                var mouseY = (clickEvent.pageY - this.canvas.offsetTop) / that.scale + this.mainY;
+        HistoDiagram.prototype.handleAnim = function(clickEvent) {
+            if (this.data) {
+                var mouseX = (clickEvent.pageX - this.canvas.offsetLeft) / this.scale + this.mainX;
+                var mouseY = (clickEvent.pageY - this.canvas.offsetTop) / this.scale + this.mainY;
 
                 this.posMouseX = mouseX;
                 this.posMouseY = mouseY;
@@ -192,15 +150,15 @@ var HistoDiagram = function(canvasRef, direction) {
                         if (barHeight > 0) {
                             if (mouseX >= currentX && mouseX <= currentX + barWidth
                                     && mouseY >= yZero - barHeight && mouseY <= yZero) {
-                                that.currentSlice = {abs: abslabel, color: colorlabel};
-                                that.redraw();
+                                this.currentSlice = {abs: abslabel, color: colorlabel};
+                                this.redraw();
                                 found = 1;
                             }
                         } else {
                             if (mouseX >= currentX && mouseX <= currentX + barWidth
                                     && mouseY >= yZero && mouseY <= yZero - barHeight) {
-                                that.currentSlice = {abs: abslabel, color: colorlabel};
-                                that.redraw();
+                                this.currentSlice = {abs: abslabel, color: colorlabel};
+                                this.redraw();
                                 found = 1;
                             }
                         }
@@ -209,58 +167,13 @@ var HistoDiagram = function(canvasRef, direction) {
                     currentX += shift;
                 }, this));
 
-                if (that.currentSlice != null && found == 0) {
-                    that.currentSlice = null;
-                    that.redraw();
+                if (this.currentSlice != null && found == 0) {
+                    this.currentSlice = null;
+                    this.redraw();
                 }
             }
         };
-
-        HistoDiagram.prototype.zoom = function(clickEvent, that) {
-            var mousex = clickEvent.pageX - this.canvas.offsetLeft;
-            var mousey = clickEvent.pageY - this.canvas.offsetTop;
-
-            if (clickEvent.wheelDelta < 0) {
-                this.context.setTransform(1, 0, 0, 1, 0, 0);
-                this.scale = 1;
-                this.mainX = 0;
-                this.mainY = 0;
-                this.redraw();
-            } else {
-
-                var wheel = clickEvent.wheelDelta / 120;
-
-                var zoomer = 1 + wheel / 2;
-
-                this.context.translate(this.mainX, this.mainY);
-                this.context.scale(zoomer, zoomer);
-                this.context.translate(
-                        -( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) ),
-                        -( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) )
-                        );
-
-                this.mainX = ( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) );
-                this.mainY = ( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) );
-                this.scale *= zoomer;
-
-                this.context.fillStyle = 'white';
-                this.context.fillRect(this.mainX, this.mainY, this.getWidth() / this.scale, this.getHeight() / this.scale);
-                this.redraw();
-
-            }
-        };
     }
-
-    var that = this;
-    canvasRef.onmousemove = function(event) {
-        that.handleClick(event, that);
-    };
-
-    $(canvasRef).bind('mousewheel', function(event) {
-        that.zoom(event, that);
-        return false;
-    });
-
 };
 
 // Héritage: chainage des prototypes.
