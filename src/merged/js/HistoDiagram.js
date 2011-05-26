@@ -89,20 +89,7 @@ var HistoDiagram = function(canvasRef, direction) {
                 currentX += shift;
             }, this));
             if (infoNeeded) {
-                this.context.save();
-                this.context.setTransform(1, 0, 0, 1, 0, 0);
-                if (this.getWidth() < this.posMouseX + 15 + (this.context.measureText(infoBulleLabel + ": " + parseFloat(infoBulleValeur)).width) + 10) {
-                    this.context.fillStyle = "green";
-                    this.context.fillRect(this.posMouseX - 5 - (this.context.measureText(infoBulleLabel + ": " + parseFloat(infoBulleValeur)).width) - 10, this.posMouseY + 10, (this.context.measureText(infoBulleLabel + ": " + parseFloat(infoBulleValeur)).width) + 10, 20);
-                    this.context.fillStyle = "white";
-                    this.context.fillText(infoBulleLabel + ": " + parseFloat(infoBulleValeur), this.posMouseX - (this.context.measureText(infoBulleLabel + ": " + parseFloat(infoBulleValeur)).width) - 10, this.posMouseY + 23);
-                } else {
-                    this.context.fillStyle = "green";
-                    this.context.fillRect(this.posMouseX + 15, this.posMouseY + 10, (this.context.measureText(infoBulleLabel + ": " + parseFloat(infoBulleValeur)).width) + 10, 20);
-                    this.context.fillStyle = "white";
-                    this.context.fillText(infoBulleLabel + ": " + parseFloat(infoBulleValeur), this.posMouseX + 20, this.posMouseY + 23);
-                }
-                this.context.restore();
+                this.displayToolTip(infoBulleLabel, infoBulleValeur);
             }
         };
 
