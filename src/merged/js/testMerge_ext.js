@@ -12,11 +12,11 @@ eds.loadData(function(xmlResponse) {
     diag2.setData(matrix);
     diag3.setData(matrix);
     diag4.setData(matrix);
-    
-    ess.loadData(function(xml){
-    	diag1.setStyle(ess.getStyleMatrix(xml));
-    	diag2.setStyle(ess.getStyleMatrix(xml));
-    	diag3.setStyle(ess.getStyleMatrix(xml));
-    	diag4.setStyle(ess.getStyleMatrix(xml));
+
+    ess.loadData(function(xml) {
+        diag1.setStyle(ess.getStyleMatrix(xml));
+        diag2.setStyle(ess.getStyleMatrix(xml));
+        diag3.setStyle(ess.getStyleMatrix(xml));
+        diag4.setStyle(ess.getStyleMatrix(xml));
     });
 });

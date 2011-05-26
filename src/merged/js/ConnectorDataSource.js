@@ -9,9 +9,9 @@
  * @param getDataMatrix Fonction retournant une dataMatrix correspondant aux données chargées.
  */
 var ConnectorDataSource = function(loadData, getDataMatrix) {
-	IDataSource.call(this);
-	ConnectorDataSource.prototype.loadData = loadData;
-	ConnectorDataSource.prototype.getDataMatrix = getDataMatrix;
+    IDataSource.call(this);
+    ConnectorDataSource.prototype.loadData = loadData;
+    ConnectorDataSource.prototype.getDataMatrix = getDataMatrix;
 };
 
 /**

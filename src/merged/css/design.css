@@ -1,10 +1,9 @@
 *{
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 }
 body{
-	background: url('../images/bg.jpg') top;
-	background-attachment: fixed;
+	background: url('../images/bg.jpg') fixed;
 	font-family: 'Lucida Sans unicode', verdana;
 }
 
@@ -13,16 +12,12 @@ canvas{
 	margin: 10px;
 }
 
-.wrapper{
-	margin: 0px;
-	padding:20px 0px 20px 0px;
-}
 .canvas_container{
 	background: url('../images/bg_canvas.png') center repeat-y;
 	width: 900px;
 	text-align: center;
 	float: right;
-	margin: 0px 20px 0px 20px;
+	margin: 0 20px 0 20px;
 }
 .canvas_top{
 	background: url('../images/bg_canvas_top.png') bottom no-repeat;
@@ -30,7 +25,7 @@ canvas{
 	width:900px;
 	text-align: center;
 	float: right;
-	margin: 20px 20px 0px 20px;
+	margin: 20px 20px 0 20px;
 }
 
 .canvas_bottom{
@@ -43,28 +38,28 @@ canvas{
 }
 
 #test4{
-	padding:20px 0px 20px 0px;
+	padding:20px 0 20px 0;
 }
 
 .sidebar{
 	float: left;
 	width:250px;
 	position: fixed;
-	margin: 20px 0px 0px 50px;
+	margin: 20px 0 0 50px;
 	background: url('../images/bg_sidebar2.png') center repeat-y;
-	padding: 10px 0px 10px 0px;
+	padding: 10px 0 10px 0;
 	color: #f4f4f4;
 }
 
 .sidebar ul{
 	list-style: none;
-	padding: 10px 0px 10px 0px;
+	padding: 10px 0 10px 0;
 }
 
 .sidebar a{
 	display: block;
 	text-decoration: none;
-	margin: 0px 10px 0px 10px;
+	margin: 0 10px 0 10px;
 	padding: 5px;
 	height: 26px;
 	color: #f4f4f4;

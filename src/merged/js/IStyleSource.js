@@ -3,18 +3,20 @@
  * Conception: Lyes Kimouche
  */
 var IStyleSource = function() {
-	if (typeof IStyleSource.initialized == "undefined" ) {
-		IStyleSource.initialized = true;
+    if (typeof IStyleSource.initialized == "undefined") {
+        IStyleSource.initialized = true;
 
         /**
          * Charge les données depuis la source.
          * @param callback Fonction appelée lors de la fin du chargement des données.
          */
-		IStyleSource.prototype.loadData = function(callback) { };
+        IStyleSource.prototype.loadData = function(callback) {
+        };
 
         /**
          *  Retourne la matrice représentant les données.
          */
-		IStyleSource.prototype.getStyleMatrix = function() { };
-	}
+        IStyleSource.prototype.getStyleMatrix = function() {
+        };
+    }
 };

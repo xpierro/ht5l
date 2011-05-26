@@ -195,36 +195,36 @@ var PieDiagram = function(canvasRef, direction) {
         };
 
         PieDiagram.prototype.zoom = function(clickEvent, that) {
-        	var mousex = clickEvent.pageX  - this.canvas.offsetLeft;
-    	    var mousey = clickEvent.pageY  - this.canvas.offsetTop;
+            var mousex = clickEvent.pageX - this.canvas.offsetLeft;
+            var mousey = clickEvent.pageY - this.canvas.offsetTop;
 
-    	    if (clickEvent.wheelDelta < 0) {
-    	    	this.context.setTransform(1, 0, 0, 1, 0, 0);
-    	    	this.scale = 1;
-    	    	this.mainX = 0;
-    	    	this.mainY = 0;
-    	    	this.redraw();
-    	    } else {
+            if (clickEvent.wheelDelta < 0) {
+                this.context.setTransform(1, 0, 0, 1, 0, 0);
+                this.scale = 1;
+                this.mainX = 0;
+                this.mainY = 0;
+                this.redraw();
+            } else {
 
-	    	    var wheel = clickEvent.wheelDelta/120;
+                var wheel = clickEvent.wheelDelta / 120;
 
-	    	    var zoomer = 1 + wheel / 2;
+                var zoomer = 1 + wheel / 2;
 
-	    	    this.context.translate(this.mainX, this.mainY);
-	    	    this.context.scale(zoomer,zoomer);
-	    	    this.context.translate(
-	    	        -( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) ),
-	    	        -( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) )
-	    	    );
+                this.context.translate(this.mainX, this.mainY);
+                this.context.scale(zoomer, zoomer);
+                this.context.translate(
+                        -( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) ),
+                        -( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) )
+                        );
 
-	    	    this.mainX = ( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) );
-	    	    this.mainY = ( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) );
-	    	    this.scale *= zoomer;
+                this.mainX = ( mousex / this.scale + this.mainX - mousex / ( this.scale * zoomer ) );
+                this.mainY = ( mousey / this.scale + this.mainY - mousey / ( this.scale * zoomer ) );
+                this.scale *= zoomer;
 
-	    	    this.context.fillStyle = 'white';
-				this.context.fillRect(this.mainX, this.mainY, this.getWidth() / this.scale, this.getHeight() / this.scale );
-	    	    this.redraw();
-    	    }
+                this.context.fillStyle = 'white';
+                this.context.fillRect(this.mainX, this.mainY, this.getWidth() / this.scale, this.getHeight() / this.scale);
+                this.redraw();
+            }
         };
     }
 };
