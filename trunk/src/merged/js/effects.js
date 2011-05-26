@@ -9,7 +9,7 @@ $(document).ready(function() {
                 $(this).stop().animate({"margin-left": "10px"}, 100);
 
             }
-    );
+            );
 
     $("a.menu_link").click(function() {
         $.scrollTo($(this).attr("href"), 1000, 'easeOutCubic');
@@ -20,17 +20,16 @@ $(document).ready(function() {
 });
 
 function manu(lang) {
-    var code = lang;
-    if (code == 1) {
+    if (lang == 1) {
         document.getElementById("manuel").innerHTML = document.getElementById("manuel_fr").innerHTML;
     }
-    if (code == 2) {
+    if (lang == 2) {
         document.getElementById("manuel").innerHTML = document.getElementById("manuel_en").innerHTML;
     }
-    if (code == 3) {
+    if (lang == 3) {
         document.getElementById("manuel").innerHTML = document.getElementById("manuel_esp").innerHTML;
     }
-    if (code == 4) {
+    if (lang == 4) {
         document.getElementById("manuel").innerHTML = document.getElementById("manuel_al").innerHTML;
     }
 }

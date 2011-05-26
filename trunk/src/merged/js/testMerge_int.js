@@ -13,11 +13,11 @@ ids.loadData(function() {
     diag2.setData(matrix);
     diag3.setData(matrix);
     diag4.setData(matrix);
-    
+
     iss.loadData(function() {
-    	diag1.setStyle(iss.getStyleMatrix());
-    	diag2.setStyle(iss.getStyleMatrix());
-    	diag3.setStyle(iss.getStyleMatrix());
-    	diag4.setStyle(iss.getStyleMatrix());
+        diag1.setStyle(iss.getStyleMatrix());
+        diag2.setStyle(iss.getStyleMatrix());
+        diag3.setStyle(iss.getStyleMatrix());
+        diag4.setStyle(iss.getStyleMatrix());
     });
 });

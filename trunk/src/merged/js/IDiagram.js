@@ -170,7 +170,6 @@ var IDiagram = function(canvasRef) {
 
                 // Dessin du texte
                 context.fillStyle = 'black';
-                var truc = pos.y + squareSide;
                 context.fillText(label, pos.x + squareSide + shift, pos.y + squareSide);
 
                 // Translation du pinceau
@@ -311,15 +310,16 @@ var IDiagram = function(canvasRef) {
          * Renvoie le nombre de pixel par unité en y
          */
         IDiagram.prototype.getPixelPerUnit = function() {
+            var lengthInterval = null;
             if (this.data.getTopValue() < 0 || this.data.getBottomValue() < 0) {
                 var maxTop = this.data.getTopValue() < 0 ? -this.data.getTopValue() : this.data.getTopValue();
                 var maxBottom = this.data.getBottomValue() < 0 ? -this.data.getBottomValue() : this.data.getBottomValue();
                 var max = maxTop > maxBottom ? maxTop : maxBottom;
-                var dataInterval = Math.round(2 * max / this.yAxisConfig.nbIntervals);
-                var lengthInterval = Math.round(((this.getHeight() - this.yAxisConfig.bottomShift - this.yAxisConfig.topShift) / 2) / (this.yAxisConfig.nbIntervals / 2));
+                dataInterval = Math.round(2 * max / this.yAxisConfig.nbIntervals);
+                lengthInterval = Math.round(((this.getHeight() - this.yAxisConfig.bottomShift - this.yAxisConfig.topShift) / 2) / (this.yAxisConfig.nbIntervals / 2));
                 return lengthInterval / dataInterval;
             } else {
-                var lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
+                lengthInterval = (this.getHeight() - this.yAxisConfig.topShift - this.yAxisConfig.bottomShift) / this.yAxisConfig.nbIntervals;
                 var dataInterval = Math.round(this.data.getTopValue() / this.yAxisConfig.nbIntervals);
                 return lengthInterval / dataInterval;
             }
@@ -387,44 +387,43 @@ var IDiagram = function(canvasRef) {
 
         /**
          * Fonction abstraite de gestion de l'évènement d'illumination
-         * @param mouseevent Evenement de souris
+         * @param mouseEvent Evenement de souris
          */
         IDiagram.prototype.handleAnim = function(mouseEvent) {
         };
 
         IDiagram.prototype.handleZoom = function(wheelEvent) {
-            var mousex = wheelEvent.pageX  - this.canvas.offsetLeft;
-    	    var mousey = wheelEvent.pageY  - this.canvas.offsetTop;
+            var mousex = wheelEvent.pageX - this.canvas.offsetLeft;
+            var mousey = wheelEvent.pageY - this.canvas.offsetTop;
 
-    	    if (wheelEvent.wheelDelta < 0) { // Le dézoom réinitialise
-    	    	this.context.setTransform(1, 0, 0, 1, 0, 0);
-    	    	this.scale = 1;
-    	    	this.mainX = 0;
-    	    	this.mainY = 0;
-    	    	this.redraw();
-    	    } else {
-	    	    var wheel = wheelEvent.wheelDelta / 120;
+            if (wheelEvent.wheelDelta < 0) { // Le dézoom réinitialise
+                this.context.setTransform(1, 0, 0, 1, 0, 0);
+                this.scale = 1;
+                this.mainX = 0;
+                this.mainY = 0;
+                this.redraw();
+            } else {
+                var wheel = wheelEvent.wheelDelta / 120;
 
-	    	    var zoom = 1 + wheel / 2;
+                var zoom = 1 + wheel / 2;
 
-	    	    this.context.translate(this.mainX, this.mainY);
-	    	    this.context.scale(zoom,zoom);
-	    	    this.context.translate(
-	    	        -( mousex / this.scale + this.mainX - mousex / ( this.scale * zoom ) ),
-	    	        -( mousey / this.scale + this.mainY - mousey / ( this.scale * zoom ) )
-	    	    );
+                this.context.translate(this.mainX, this.mainY);
+                this.context.scale(zoom, zoom);
+                this.context.translate(
+                        -( mousex / this.scale + this.mainX - mousex / ( this.scale * zoom ) ),
+                        -( mousey / this.scale + this.mainY - mousey / ( this.scale * zoom ) )
+                        );
 
-	    	    this.mainX = ( mousex / this.scale + this.mainX - mousex / ( this.scale * zoom ) );
-	    	    this.mainY = ( mousey / this.scale + this.mainY - mousey / ( this.scale * zoom ) );
-	    	    this.scale *= zoom;
+                this.mainX = ( mousex / this.scale + this.mainX - mousex / ( this.scale * zoom ) );
+                this.mainY = ( mousey / this.scale + this.mainY - mousey / ( this.scale * zoom ) );
+                this.scale *= zoom;
 
-	    	    this.context.fillStyle = 'white';
-				this.context.fillRect(this.mainX, this.mainY, this.getWidth() / this.scale, this.getHeight() / this.scale );
-	    	    this.redraw();
-    	    }
+                this.context.fillStyle = 'white';
+                this.context.fillRect(this.mainX, this.mainY, this.getWidth() / this.scale, this.getHeight() / this.scale);
+                this.redraw();
+            }
         };
     }
-
 
 
     //Inscription de l'évènement d'animation
@@ -435,8 +434,8 @@ var IDiagram = function(canvasRef) {
     }
 
     $(canvasRef).bind('mousewheel', $.proxy(function(event) {
-    	this.handleZoom(event);
-    	return false;
+        this.handleZoom(event);
+        return false;
     }, this));
 
 };

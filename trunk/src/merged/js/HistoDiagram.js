@@ -88,9 +88,9 @@ var HistoDiagram = function(canvasRef, direction) {
                 this.context.fillText(abslabel, xLegendPosition, this.getHeight() - this.getBottomShift() + 10);
                 currentX += shift;
             }, this));
-            if (infoNeeded == true) {
-		this.context.save();
-		this.context.setTransform(1, 0, 0, 1, 0, 0);
+            if (infoNeeded) {
+                this.context.save();
+                this.context.setTransform(1, 0, 0, 1, 0, 0);
                 if (this.getWidth() < this.posMouseX + 15 + (this.context.measureText(infoBulleLabel + ": " + parseFloat(infoBulleValeur)).width) + 10) {
                     this.context.fillStyle = "green";
                     this.context.fillRect(this.posMouseX - 5 - (this.context.measureText(infoBulleLabel + ": " + parseFloat(infoBulleValeur)).width) - 10, this.posMouseY + 10, (this.context.measureText(infoBulleLabel + ": " + parseFloat(infoBulleValeur)).width) + 10, 20);
@@ -102,7 +102,7 @@ var HistoDiagram = function(canvasRef, direction) {
                     this.context.fillStyle = "white";
                     this.context.fillText(infoBulleLabel + ": " + parseFloat(infoBulleValeur), this.posMouseX + 20, this.posMouseY + 23);
                 }
-		this.context.restore();
+                this.context.restore();
             }
         };
 
@@ -177,5 +177,5 @@ var HistoDiagram = function(canvasRef, direction) {
 };
 
 // Héritage: chainage des prototypes.
-HistoDiagram.prototype = new IDiagram(null); // TODO: on répète deux fois, trouver mieux
+HistoDiagram.prototype = new IDiagram(null);
 HistoDiagram.prototype.constructor = HistoDiagram;

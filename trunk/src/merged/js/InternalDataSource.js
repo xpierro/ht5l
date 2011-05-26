@@ -13,7 +13,7 @@ var InternalDataSource = function(preId) {
     this.pre = preId;
 
     this.xml = null;
-    if (typeof InternalDataSource.initialized == "undefined" ) {
+    if (typeof InternalDataSource.initialized == "undefined") {
         InternalDataSource.initialized = true;
         /**
          * Charge à partir d'une balise <pre> d'id this.pre un flux xml.
@@ -24,7 +24,7 @@ var InternalDataSource = function(preId) {
                 var parser = new DOMParser();
                 // Utiliser /g remplace TOUTES les occurences.
                 this.xml = parser.parseFromString(
-                        document.getElementById(this.pre).innerHTML.trim().replace(/\n/g, ''),"text/xml");
+                        document.getElementById(this.pre).innerHTML.trim().replace(/\n/g, ''), "text/xml");
                 callback(this.xml);
             } else {
                 throw "Impossible de transformer la chaine fournie";
@@ -39,7 +39,7 @@ var InternalDataSource = function(preId) {
             try {
                 var dataMatrix = new DataMatrix();
 
-                if(this.xml.getElementsByTagName('ylegend')[0] == null) {
+                if (this.xml.getElementsByTagName('ylegend')[0] == null) {
                     throw 'La légende en Y n\'est pas spécifiée';
                 }
                 var yLeg = this.xml.getElementsByTagName('ylegend')[0];
@@ -51,7 +51,7 @@ var InternalDataSource = function(preId) {
                 }
                 $.each(series.childNodes, function(i, childNode) {
                     if (childNode.tagName == 'serie') {
-                        if(childNode.attributes.getNamedItem('name') == null || childNode.attributes.getNamedItem('name').value == ""){
+                        if (childNode.attributes.getNamedItem('name') == null || childNode.attributes.getNamedItem('name').value == "") {
                             throw 'Le nom de la série n\'est pas spécifié';
                         }
                         dataMatrix.addColumnLabel(childNode.attributes.getNamedItem('name').value);
@@ -60,23 +60,23 @@ var InternalDataSource = function(preId) {
                         }
                         $.each(childNode.childNodes, function(j, grandChildNode) {
                             if (grandChildNode.tagName == 'value') {
-                                if(grandChildNode.attributes.getNamedItem('label') == null || grandChildNode.attributes.getNamedItem('label').value == ""){
+                                if (grandChildNode.attributes.getNamedItem('label') == null || grandChildNode.attributes.getNamedItem('label').value == "") {
                                     throw 'Le label est mal formé';
                                 }
                                 if (!dataMatrix.hasRowLabel(grandChildNode.attributes.getNamedItem('label').value)) {
                                     dataMatrix.addRowLabel(grandChildNode.attributes.getNamedItem('label').value);
                                 }
-                                if(grandChildNode.textContent == "" || isNaN(parseInt(grandChildNode.textContent))){
+                                if (grandChildNode.textContent == "" || isNaN(parseInt(grandChildNode.textContent))) {
                                     throw 'La valeur est mal formatée';
                                 }
                                 dataMatrix.setValue(dataMatrix.getRowLabels()[(j - 1) / 2],
-                                                    dataMatrix.getColumnLabels()[(i - 1) / 2],
-                                                    parseInt(grandChildNode.textContent));
-                            }	else if (grandChildNode.tagName != undefined){
+                                        dataMatrix.getColumnLabels()[(i - 1) / 2],
+                                        parseInt(grandChildNode.textContent));
+                            } else if (grandChildNode.tagName != undefined) {
                                 throw "La série est mal formée";
                             }
                         });
-                    } else if (childNode.tagName != undefined){
+                    } else if (childNode.tagName != undefined) {
                         throw "La série est mal formée";
                     }
                 });
@@ -87,7 +87,7 @@ var InternalDataSource = function(preId) {
         }
     }
 };
-	
+
 // Implémente IDataSource
 InternalDataSource.prototype = new IDataSource();
 InternalDataSource.prototype.constructor = InternalDataSource;

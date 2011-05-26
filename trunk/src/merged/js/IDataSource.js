@@ -5,18 +5,20 @@
  * Corrections: Pierre Collignon
  */
 var IDataSource = function() {
-	if (typeof IDataSource.initialized == "undefined" ) {
+    if (typeof IDataSource.initialized == "undefined") {
         IDataSource.initialized = true;
 
         /**
          * Charge les données depuis la source.
          * @param callback Fonction appelée lors de la fin du chargement des données.
          */
-        IDataSource.prototype.loadData = function(callback) { };
+        IDataSource.prototype.loadData = function(callback) {
+        };
 
         /**
          *  Retourne la matrice représentant les données.
          */
-        IDataSource.prototype.getDataMatrix = function() { };
-	}
+        IDataSource.prototype.getDataMatrix = function() {
+        };
+    }
 };
